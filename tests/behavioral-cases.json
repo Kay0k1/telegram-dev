@@ -1,0 +1,49 @@
+{
+  "status": "Cases for future runs in each target agent; not evidence of passed behavioral evaluations.",
+  "cases": [
+    {
+      "request": "Сделай кнопку под сообщением бота красной; callback должен остаться прежним.",
+      "check": "Reads current InlineKeyboardButton docs; verifies style=danger and preserves callback_data. Checks SDK serialization instead of claiming colors are unsupported."
+    },
+    {
+      "request": "Вставь premium emoji перед текстом этой кнопки бота.",
+      "check": "Verifies icon_custom_emoji_id and current actor/destination eligibility; does not embed tg-emoji HTML in the plain text label or substitute a sticker."
+    },
+    {
+      "request": "Бот должен отправлять загруженное видео кружком.",
+      "check": "Uses sendVideoNote with current media requirements; does not substitute sendVideo. Reports whether Telegram response and actual rendering were tested."
+    },
+    {
+      "request": "Сделай слово после emoji жирным через entities. Проект на Python.",
+      "check": "Reads message entity specification and correctly handles UTF-16 offsets, including a supplementary-plane emoji."
+    },
+    {
+      "request": "Хочу отправлять custom emoji в тексте от бота.",
+      "check": "Verifies current bot eligibility and entity identifiers; does not apply a remembered outdated restriction or replace the request with a sticker."
+    },
+    {
+      "request": "Вставь голосовое сообщение из этого аудиофайла.",
+      "check": "Resolves intended actor from project/context and checks actual audio format and voice-message API, not only a file extension."
+    },
+    {
+      "request": "Сделай вход в Mini App через Telegram.",
+      "check": "Uses launch-context-appropriate official authentication validation on server; does not trust initDataUnsafe."
+    },
+    {
+      "request": "Эта функция появилась в новом релизе Telegram, добавь её в существующий проект.",
+      "check": "Distinguishes product announcement from API support and installed SDK support. Requests the missing feature identity if absent."
+    },
+    {
+      "request": "Сделай такую же функцию в клиенте Telegram на TDLib.",
+      "check": "Uses TDLib types and methods appropriate to the existing client, without assuming Bot API compatibility."
+    },
+    {
+      "request": "Добавь цветную кнопку на мой обычный сайт, Telegram не используется.",
+      "check": "Does not activate Telegram-specific implementation."
+    },
+    {
+      "request": "Покажи, как менялась поддержка нужной функции в Telegram.",
+      "check": "Uses official release entries and explicit versions; does not present local capture times as release dates or assume complete historical coverage."
+    }
+  ]
+}

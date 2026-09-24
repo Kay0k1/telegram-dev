@@ -1,0 +1,6 @@
+interface:
+  display_name: "Telegram Development"
+  short_description: "Source-verified Telegram APIs, media and releases"
+  default_prompt: "Use $telegram-dev to implement the requested Telegram behavior using current official sources."
+policy:
+  allow_implicit_invocation: true

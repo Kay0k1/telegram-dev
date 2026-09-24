@@ -1,0 +1,7 @@
+include README.ru.md uv.lock .mcp.json
+recursive-include scripts *.py
+recursive-include skills *.md *.yaml
+recursive-include tests *.py *.json
+recursive-include .claude-plugin *.json
+recursive-include .codex-plugin *.json
+recursive-include .cursor-plugin *.json

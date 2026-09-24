@@ -1,0 +1,18 @@
+{
+  "name": "telegram-dev",
+  "version": "0.2.0",
+  "description": "Telegram development skill; run the project installer to connect documentation MCP",
+  "author": {
+    "name": "Kay0k1"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Telegram Dev",
+    "shortDescription": "Telegram development with official sources",
+    "longDescription": "Search a local, refreshable Telegram documentation corpus and use API-aware development skills.",
+    "developerName": "Kay0k1",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Use Telegram Dev to implement and verify the requested Telegram feature."
+  }
+}

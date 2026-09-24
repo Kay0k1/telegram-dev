@@ -1,0 +1,10 @@
+{
+  "name": "telegram-dev",
+  "version": "0.2.0",
+  "description": "Telegram development skill with official documentation search",
+  "author": {"name": "Kay0k1"},
+  "license": "MIT",
+  "repository": "https://github.com/Kay0k1/telegram-dev",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

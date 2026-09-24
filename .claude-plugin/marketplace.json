@@ -1,0 +1,11 @@
+{
+  "name": "telegram-dev-tools",
+  "owner": {"name": "Kay0k1"},
+  "plugins": [
+    {
+      "name": "telegram-dev",
+      "source": "./",
+      "description": "Telegram development skill with official documentation search"
+    }
+  ]
+}
