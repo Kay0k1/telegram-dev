@@ -1,0 +1,35 @@
+services:
+  telegram-dev:
+    build: ..
+    restart: unless-stopped
+    environment:
+      TELEGRAM_KNOWLEDGE_DB: /data/corpus.sqlite3
+      TELEGRAM_MCP_ALLOWED_HOSTS: ${MCP_DOMAIN:?Set MCP_DOMAIN in deploy/.env}
+      TELEGRAM_MCP_ALLOWED_ORIGINS: https://${MCP_DOMAIN}
+      TELEGRAM_DOC_MAX_AGE_SECONDS: 21600
+      TELEGRAM_DOC_SYNC_INTERVAL_SECONDS: 21600
+      TELEGRAM_DOC_SYNC_PAGES: 120
+    volumes:
+      - documentation:/data
+    expose:
+      - "8000"
+  caddy:
+    image: caddy:2.11.2-alpine
+    restart: unless-stopped
+    environment:
+      MCP_DOMAIN: ${MCP_DOMAIN:?Set MCP_DOMAIN in deploy/.env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./challenges:/srv/challenges:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      telegram-dev:
+        condition: service_healthy
+volumes:
+  documentation:
+  caddy-data:
+  caddy-config:

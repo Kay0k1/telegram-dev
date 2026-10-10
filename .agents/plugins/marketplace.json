@@ -1,0 +1,20 @@
+{
+  "name": "telegram-dev-tools",
+  "interface": {
+    "displayName": "Telegram Dev Tools"
+  },
+  "plugins": [
+    {
+      "name": "telegram-dev",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

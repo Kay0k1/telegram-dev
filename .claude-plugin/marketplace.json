@@ -1,11 +1,17 @@
 {
   "name": "telegram-dev-tools",
   "owner": {"name": "Kay0k1"},
+  "metadata": {"description": "Independent Telegram development tools with official documentation", "version": "0.3.0"},
   "plugins": [
     {
       "name": "telegram-dev",
       "source": "./",
-      "description": "Telegram development skill with official documentation search"
+      "description": "Source-verified Telegram development with official documentation search",
+      "version": "0.3.0",
+      "homepage": "https://github.com/Kay0k1/telegram-dev",
+      "repository": "https://github.com/Kay0k1/telegram-dev",
+      "license": "MIT",
+      "keywords": ["telegram", "documentation", "bot-api", "mini-apps", "mtproto", "tdlib"]
     }
   ]
 }

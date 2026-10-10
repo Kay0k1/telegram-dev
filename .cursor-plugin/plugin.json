@@ -1,10 +1,13 @@
 {
   "name": "telegram-dev",
-  "version": "0.2.0",
-  "description": "Telegram development skill with official documentation search",
+  "version": "0.3.0",
+  "description": "Source-verified Telegram development: Bot API, Mini Apps, MTProto, TDLib, media and public releases",
   "author": {"name": "Kay0k1"},
   "license": "MIT",
   "repository": "https://github.com/Kay0k1/telegram-dev",
+  "homepage": "https://github.com/Kay0k1/telegram-dev",
+  "keywords": ["telegram", "bot-api", "mini-apps", "mtproto", "tdlib", "documentation"],
+  "logo": "assets/logo.svg",
   "skills": "./skills/",
   "mcpServers": "./.mcp.json"
 }

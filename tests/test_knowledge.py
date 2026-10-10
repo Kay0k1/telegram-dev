@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import telegram_knowledge as k
@@ -19,6 +20,21 @@ class KnowledgeTests(unittest.TestCase):
     def tearDown(self):
         k.DB = self.old_db
         self.temp.cleanup()
+
+    def test_resumed_sync_completes_cached_pages_and_respects_failure_backoff(self):
+        url = "https://core.telegram.org/bots/api"
+        unavailable = "https://core.telegram.org/api/entities"
+        with k.connect() as conn:
+            k.save(conn, url, (url, "Bot API", "# sendVoice\nDocumented voice message method", []))
+            conn.execute("INSERT INTO frontier VALUES (?,'pending',NULL)", (unavailable,))
+            conn.execute("INSERT INTO attempts VALUES (?,?,?)", (unavailable, k.now(), "source temporarily offline"))
+            conn.execute("UPDATE frontier SET state='pending'")
+        with patch.object(k, "SEEDS", [url, unavailable]), patch.object(k, "fetch") as fetch:
+            status = k.sync(max_pages=2, workers=1)
+        fetch.assert_not_called()
+        self.assertEqual(status["frontier"].get("pending", 0), 0)
+        self.assertEqual(status["frontier"]["done"], 1)
+        self.assertEqual(status["frontier"]["error"], 1)
 
     def test_changes_replace_search_but_preserve_history(self):
         url = "https://core.telegram.org/bots/api"
@@ -74,12 +90,12 @@ class KnowledgeTests(unittest.TestCase):
         async def run():
             params = StdioServerParameters(command=sys.executable,
                 args=[str(k.ROOT / "telegram_knowledge.py"), "serve"],
-                env={**os.environ, "TELEGRAM_KNOWLEDGE_DB": str(k.DB)})
+                env={**os.environ, "TELEGRAM_KNOWLEDGE_DB": str(k.DB), "TELEGRAM_DOC_AUTO_SYNC": "0"})
             async with stdio_client(params) as (read, write):
                 async with ClientSession(read, write) as session:
                     await session.initialize()
                     listing = await session.list_tools()
-                    self.assertEqual(len(listing.tools), 4)
+                    self.assertEqual(len(listing.tools), 5)
                     result = await session.call_tool("telegram_corpus_status", {})
                     self.assertFalse(result.isError)
                     payload = result.structuredContent or json.loads(result.content[0].text)

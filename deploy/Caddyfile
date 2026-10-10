@@ -1,0 +1,11 @@
+{$MCP_DOMAIN} {
+	handle_path /.well-known/* {
+		root * /srv/challenges
+		file_server
+	}
+	@mcp path /mcp /mcp/* /healthz
+	handle @mcp {
+		reverse_proxy telegram-dev:8000
+	}
+	respond "Not found" 404
+}

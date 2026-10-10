@@ -1,8 +1,19 @@
 {
   "name": "telegram-dev",
-  "version": "0.2.0",
-  "description": "Official Telegram documentation search and source-verified development workflows",
+  "version": "0.3.0",
+  "displayName": "Telegram Dev",
+  "description": "Source-verified Telegram development across Bot API, Mini Apps, MTProto, TDLib, media and public releases. Independent project by Kay0k1.",
   "author": {
-    "name": "Kay0k1"
-  }
+    "name": "Kay0k1",
+    "url": "https://github.com/Kay0k1"
+  },
+  "homepage": "https://github.com/Kay0k1/telegram-dev",
+  "repository": "https://github.com/Kay0k1/telegram-dev",
+  "license": "MIT",
+  "icon": "./assets/logo.svg",
+  "documentationUrl": "https://github.com/Kay0k1/telegram-dev#readme",
+  "supportUrl": "https://github.com/Kay0k1/telegram-dev/issues",
+  "privacyPolicyUrl": "https://github.com/Kay0k1/telegram-dev/blob/main/docs/privacy.md",
+  "termsOfServiceUrl": "https://github.com/Kay0k1/telegram-dev/blob/main/docs/terms.md",
+  "keywords": ["telegram", "bot-api", "mini-apps", "mtproto", "tdlib", "documentation"]
 }

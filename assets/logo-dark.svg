@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Telegram Dev: documentation and code</title>
+  <rect width="512" height="512" rx="112" fill="#102C44"/>
+  <path d="M80 145h155q21 0 21 22v206q-28-28-63-28H80zm352 0H277q-21 0-21 22v206q28-28 63-28h113z" fill="none" stroke="#58BAFF" stroke-width="22" stroke-linejoin="round"/>
+  <path d="m168 208-38 38 38 38m176-76 38 38-38 38" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

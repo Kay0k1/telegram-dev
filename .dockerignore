@@ -1,0 +1,9 @@
+.git
+.venv
+__pycache__
+*.sqlite3*
+*.zip
+dist
+build
+.source-monitor
+.env

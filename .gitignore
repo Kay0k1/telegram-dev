@@ -10,3 +10,7 @@ data/
 *.zip
 .env
 adapters/
+.source-monitor/
+deploy/.env
+deploy/challenges/*
+!deploy/challenges/.gitkeep

@@ -1,18 +1,53 @@
 {
   "name": "telegram-dev",
-  "version": "0.2.0",
-  "description": "Telegram development skill; run the project installer to connect documentation MCP",
+  "version": "0.3.0",
+  "description": "Source-verified Telegram development across Bot API, Mini Apps, MTProto, TDLib and public release history",
   "author": {
-    "name": "Kay0k1"
+    "name": "Kay0k1",
+    "url": "https://github.com/Kay0k1"
   },
+  "homepage": "https://github.com/Kay0k1/telegram-dev",
+  "repository": "https://github.com/Kay0k1/telegram-dev",
+  "license": "MIT",
+  "keywords": ["telegram", "bot-api", "mini-apps", "mtproto", "tdlib", "documentation"],
   "skills": "./skills/",
+  "mcpServers": {
+    "telegram-knowledge": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--frozen", "telegram_knowledge.py", "serve"],
+      "cwd": "./"
+    }
+  },
   "interface": {
     "displayName": "Telegram Dev",
-    "shortDescription": "Telegram development with official sources",
-    "longDescription": "Search a local, refreshable Telegram documentation corpus and use API-aware development skills.",
+    "shortDescription": "Telegram development knowledge",
+    "longDescription": "Develop Telegram bots, Mini Apps, clients and integrations using public official documentation. Telegram Dev helps identify the API surface, verify feature eligibility, inspect release changes and read current documentation before implementation. The bundled local MCP maintains a documentation cache; uv is required. This independent community project is maintained by Kay0k1 and is not affiliated with Telegram. It does not connect to Telegram accounts or operate on private chats.",
     "developerName": "Kay0k1",
-    "category": "Productivity",
-    "capabilities": [],
-    "defaultPrompt": "Use Telegram Dev to implement and verify the requested Telegram feature."
+    "category": "Developer Tools",
+    "capabilities": ["Search Telegram documentation", "Read official sources", "Check documentation freshness"],
+    "websiteURL": "https://github.com/Kay0k1/telegram-dev",
+    "supportURL": "https://github.com/Kay0k1/telegram-dev/issues",
+    "privacyPolicyURL": "https://github.com/Kay0k1/telegram-dev/blob/main/docs/privacy.md",
+    "termsOfServiceURL": "https://github.com/Kay0k1/telegram-dev/blob/main/docs/terms.md",
+    "defaultPrompt": ["Implement a Telegram feature using the current official API documentation.", "Verify how colored Telegram buttons and custom emoji work.", "Check Telegram release changes that affect this project."],
+    "brandColor": "#1678C8",
+    "brandColorDark": "#58BAFF",
+    "composerIcon": "./assets/icon.svg",
+    "composerIconDark": "./assets/icon-dark.svg",
+    "logo": "./assets/logo.svg",
+    "logoDark": "./assets/logo-dark.svg"
+  },
+  "extensions": {
+    "com.openai": {
+      "publication": {
+        "translations": {
+          "ru-RU": {
+            "subtitle": "Знания для разработки Telegram",
+            "description": "Разрабатывайте ботов, Mini Apps, клиенты и интеграции Telegram по официальной публичной документации. Telegram Dev помогает выбрать API, проверить ограничения функции и изучить изменения релизов. Независимый проект Kay0k1; не связан с Telegram. Локальный MCP хранит кэш документации и требует uv. Доступа к аккаунтам и личным чатам Telegram нет."
+          }
+        }
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
 # Colored buttons and premium/custom emoji
 
-These cases come from the user's reported failures. The examples below were checked against the official Bot API on 2026-09-24. Recheck the live specification when implementing; this date is not a release date.
+These cases come from the user's reported failures. The examples below were checked against the official Bot API on 2026-10-10. Recheck the live specification when implementing; this date is not a release date.
 
 ## “Сделай красную кнопку”
 
@@ -30,6 +30,7 @@ Resolve where the custom emoji should appear. Text, button icon, reaction, statu
 
 - Message text: inspect `MessageEntity` with type `custom_emoji`, or the documented HTML `tg-emoji` markup. Use a real custom emoji identifier and a valid fallback emoji. With explicit entities, verify UTF-16 span offsets.
 - Keyboard icon: inspect `icon_custom_emoji_id` on the specific button type. Do not put HTML into a plain button label and expect it to render as an emoji entity.
+- Rich-message button: inspect `RichMessageButton` and its supported `RichText` representation separately; regular keyboard-label rules do not define rich-message markup.
 - Reaction, profile status or other use: inspect that surface's dedicated methods and eligibility rules; do not transfer text-message permissions automatically.
 
 At the verification date, Bot API documents custom emoji eligibility for bots that purchased additional usernames on Fragment, or for messages directly sent to private/group/supergroup chats when the bot owner has Telegram Premium. Read the current exact conditions for the actual field and destination. Do not reduce this to “bots cannot use Premium emoji”, “Premium always suffices”, or a guessed purchase requirement. Channels, inline results and other contexts must be checked separately.
