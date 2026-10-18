@@ -1,8 +1,8 @@
 # Telegram Dev — состояние официальных источников / source status
 
-Проверено / Checked: `2026-10-17T10:54:59.638756+00:00`
+Проверено / Checked: `2026-10-18T11:21:06.495293+00:00`
 
-Источников / Sources: **52** · Новых / New: **0** · Изменившихся / Changed: **1** · Без изменений / Unchanged: **51** · Ошибок / Failures: **0**
+Источников / Sources: **52** · Новых / New: **0** · Изменившихся / Changed: **0** · Без изменений / Unchanged: **52** · Ошибок / Failures: **0**
 
 Проверяется извлечённый текст официальных страниц. Хэш показывает изменение текста, но не описывает его смысл. Ошибка загрузки не считается обновлением или удалением документа.
 
@@ -59,7 +59,7 @@ Hashes compare extracted official source text; this report does not infer what a
 | [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | unchanged |
 | [Telegram Applications](https://telegram.org/apps) | telegram-api | unchanged |
 | [Telegram Blog](https://telegram.org/blog) | product-releases | unchanged |
-| [The Evolution of Telegram](https://telegram.org/evolution) | product-releases | changed |
+| [The Evolution of Telegram](https://telegram.org/evolution) | product-releases | unchanged |
 | [Telegram FAQ](https://telegram.org/faq) | telegram-api | unchanged |
 | [Telegram Bot Platform Developer Terms of Service](https://telegram.org/tos/bot-developers) | bot-api | unchanged |
 
