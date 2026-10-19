@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-18T11:21:06.495293+00:00",
+  "checked_at": "2026-10-19T13:35:06.049523+00:00",
   "healthy": true,
   "counts": {
     "new": 0,
-    "changed": 0,
-    "unchanged": 52,
+    "changed": 1,
+    "unchanged": 51,
     "failed": 0,
     "attempted": 52
   },
@@ -18,7 +18,7 @@
       "title": "Telegram APIs",
       "family": "telegram-api",
       "sha256": "5904eb19494b269fa9aa1f93116a127a07cffa8063ddda3fd06f63e7c8246764",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -29,7 +29,7 @@
       "title": "Telegram APIs",
       "family": "telegram-api",
       "sha256": "828bc5fb39ba58054d64b371790669e2edbc35bb423bc28d431f0f66b63b77d4",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -40,7 +40,7 @@
       "title": "User Authorization",
       "family": "telegram-api",
       "sha256": "614f7241938ed45091839ca01b468d20c038a3c5a7a89ec7ea417671ec90374a",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -51,7 +51,7 @@
       "title": "Connected business bots",
       "family": "telegram-api",
       "sha256": "efcb98538167be60a95f3986b805ed649c30bf1ac8f2e81cd43941058d84ae42",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -62,7 +62,7 @@
       "title": "Telegram Business",
       "family": "telegram-api",
       "sha256": "85ba6e62457f33496c4c06e42e09d950319ff307a9f04077806982aba4d277f1",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -73,7 +73,7 @@
       "title": "Phone calls",
       "family": "telegram-api",
       "sha256": "631eb1305833458237f51b0bc755c2cb07e61e96b86e59e5533578daed3f6378",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -84,7 +84,7 @@
       "title": "Custom emojis",
       "family": "telegram-api",
       "sha256": "08e5d7d5491bcf2850d3612de195820ad0222bc1cfe0ef507eb032de80157e52",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -95,7 +95,7 @@
       "title": "End-to-End Encryption, Secret Chats",
       "family": "telegram-api",
       "sha256": "ffb8e4b70d05aefec67c0460452bc8613a53221a5ddae7e005c0af615f1d13d2",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -106,7 +106,7 @@
       "title": "Styled text with message entities",
       "family": "telegram-api",
       "sha256": "2c9275a812adfeb8bede0e3467964e7b49919df8c32501bac18342308e34c7c8",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -117,7 +117,7 @@
       "title": "File references",
       "family": "telegram-api",
       "sha256": "2f62131a4baaa2b44e17b4a7a334aa1e2957facee96bb9c1869ccb49eedfcfab",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -128,7 +128,7 @@
       "title": "Uploading and Downloading Files",
       "family": "telegram-api",
       "sha256": "51ecb6987c3f42e6e24672852830a53bc022fe107e2d8dcac9e79c32dbf2754a",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -139,7 +139,7 @@
       "title": "Forum topics",
       "family": "telegram-api",
       "sha256": "287e1a92b0a7545d0b730b16e2468d264cd323396cc09f253c8d721522e21f9a",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -150,7 +150,7 @@
       "title": "Telegram Gifts",
       "family": "telegram-api",
       "sha256": "02c18a782c7c48d8562331cc26bbb595adfda154257dd177924f87aaf629b435",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -161,7 +161,7 @@
       "title": "Group calls",
       "family": "telegram-api",
       "sha256": "d79bf43995ed83217a094af3f155effa87d5a8d5d6a69de4b91548d58aa7aa1d",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -172,7 +172,7 @@
       "title": "Layer changelog",
       "family": "releases",
       "sha256": "cca96fa739cb813b32f9104251732f81085dde98e93b86059bf85699e5aa109f",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -183,7 +183,7 @@
       "title": "Deep links",
       "family": "telegram-api",
       "sha256": "f34a541ff7a6c55258ce8e2e0306a2dfc58ebf89cabb65581694ecd57aed914d",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -194,7 +194,7 @@
       "title": "Direct messages to channels",
       "family": "telegram-api",
       "sha256": "0e0a02a124c9589f03517773f3bda6c34c3bb94a2f5d4f542eb63897fd81c721",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -205,7 +205,7 @@
       "title": "Paid media",
       "family": "telegram-api",
       "sha256": "333160186d62cb859fd037ef93b2833ff11166889c1bbfc57476de7a04374427",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -216,7 +216,7 @@
       "title": "Admin, banned, default rights",
       "family": "telegram-api",
       "sha256": "ec01963a86ff02598f3329aae14ddcc0132601c9564e3013913a120ce085f9d3",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -227,7 +227,7 @@
       "title": "Telegram Stars",
       "family": "telegram-api",
       "sha256": "ee103ff707961d8dbc0118022a13467ed795baa1849484fb7930b48470a1c724",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -238,7 +238,7 @@
       "title": "Stickers and masks",
       "family": "telegram-api",
       "sha256": "a210e80005091123828acc396d923383e3e42d277a0c87e2c521c130cda6ddd8",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -249,7 +249,7 @@
       "title": "Telegram Stories",
       "family": "telegram-api",
       "sha256": "0e57e794209f1331831abafa4367fd0d91ce1c741dd86ec8b95a2ad80ae63935",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -260,7 +260,7 @@
       "title": "Star subscriptions",
       "family": "telegram-api",
       "sha256": "2a50fc137c28b9161bb3c587087dde570dcdc81d3cdf76106d12476f3fd22f6c",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -271,7 +271,7 @@
       "title": "Suggested posts",
       "family": "telegram-api",
       "sha256": "ae43dd0155c1e8c2093dc402b06542fd7fad27c9e060fe20b909202a1df63c9c",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -282,7 +282,7 @@
       "title": "Telegram themes",
       "family": "telegram-api",
       "sha256": "1a62d8e68eb73e521ce28fde381864ab3a2aff320e885d5d6a5586c400a35484",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -293,7 +293,7 @@
       "title": "Working with Updates",
       "family": "telegram-api",
       "sha256": "931c638419568a9a36df326c8e44773b83f9b69c24cd7322d3d9433bcfdabdfe",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -304,7 +304,7 @@
       "title": "Telegram Bot API",
       "family": "bot-api",
       "sha256": "93ae231cae66ba56f9ed629bf92b5be09409bf1267dfc20a3c8110de5287282b",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -315,7 +315,7 @@
       "title": "Bot API changelog",
       "family": "releases",
       "sha256": "6f825e4ceb19292e2943d142d7ba0aa3d1958b8bc8762c34ea7c4a7d453f1fc4",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -326,7 +326,7 @@
       "title": "Bots FAQ",
       "family": "bot-api",
       "sha256": "9c288bef3acb9d948e2c6c4ca87a6dc05ba6ffa95697c7edeff8338a89f8958d",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -337,7 +337,7 @@
       "title": "Telegram Bot Features",
       "family": "bot-api",
       "sha256": "bb167edff7aea4ab82dcb1d9b6277d2e2ac016b2f1718381216722b06c3df5e1",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -348,7 +348,7 @@
       "title": "Bot Payments API",
       "family": "bot-api",
       "sha256": "9e1e84eaf16e8cf4acf6ec24fce79bc0dbf5f68e0950567c51198cf7bcdf381e",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -359,7 +359,7 @@
       "title": "Bot Payments API for Digital Goods and Services",
       "family": "bot-api",
       "sha256": "b7159da7446c1ef0df3d42e66909913edcf6935bb55282a81959b4cc16a21ae5",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -370,7 +370,7 @@
       "title": "Log In With Telegram",
       "family": "web-integrations",
       "sha256": "b365fefe358b212df54ecd8aaa3588005ef5fe2bacf51eb38c02f84c0bd08fe4",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -381,7 +381,7 @@
       "title": "Telegram Mini Apps",
       "family": "mini-apps",
       "sha256": "bf3a4da2b392fe69dab1a6bb119e5187d92ab7245ee49ca4ac9e3b0cec61cea3",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -392,7 +392,7 @@
       "title": "Telegram Gateway – Fast, Affordable, and Secure User Verification",
       "family": "gateway",
       "sha256": "6cd70c6ca2e817c5135ef4f2add8f7181d74a24c1e17e08b6e9c4e893827fabb",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -403,7 +403,7 @@
       "title": "﻿MTProto Mobile Protocol",
       "family": "telegram-api",
       "sha256": "aa0053f551c018c5847187fd5265c4c9458a6e1007608793563c454f9cdfab69",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -414,7 +414,7 @@
       "title": "Telegram Passport Manual",
       "family": "web-integrations",
       "sha256": "0dc6389600170326710ebd20cba990af700950c7aad1a80b527259e3d26e103a",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -425,7 +425,7 @@
       "title": "Schema",
       "family": "telegram-api",
       "sha256": "ddd4e5289ce4a33a7e602f64712d1af70bbfda48ee57e8380e802630dbd5b96c",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -436,7 +436,7 @@
       "title": "Telegram Stickers",
       "family": "media-design",
       "sha256": "7602241934366b5d610415be2fc4dd1899106977815464343897490c0f63948b",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -447,7 +447,7 @@
       "title": "Telegram Database Library",
       "family": "tdlib",
       "sha256": "cfaa515c1eacf7260de51ed1151593daaf85b94d16a634ebcfc28ab473cb295c",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -458,7 +458,7 @@
       "title": "TDLib: TDLib",
       "family": "tdlib",
       "sha256": "d9fd0cb3c6984893cc9e201f5546d3ad452817a334d8290a5a03cb1390b8c5a8",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -469,7 +469,7 @@
       "title": "Telegram Widgets",
       "family": "web-integrations",
       "sha256": "813f7aee01efefdc4433892bf59b7721b3f9e1294ead7d58661bf15abbfa38ea",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -480,7 +480,7 @@
       "title": "Instant View",
       "family": "web-integrations",
       "sha256": "a3cbe7d787727d2c5d3b211ae7bb3a1566a37137a8eca4f5f443f154ff89767e",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -491,7 +491,7 @@
       "title": "Instant View Manual",
       "family": "web-integrations",
       "sha256": "6dbabf6034b63af0731adbbd0416d47bb854ae42f685558e1aac436bdf34be27",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -502,19 +502,19 @@
       "title": "CHANGELOG.md",
       "family": "releases",
       "sha256": "4c06f9dafcd3b4bb89f555d5c896c4fe6297d89c7e0e4a03d48d1fca5b11091a",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
       "requested_url": "https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl",
-      "status": "unchanged",
+      "status": "changed",
       "previous_sha256": "44b836e640f081fa92ba50d302d412accd1e0186e8c13568ba8e348cc206be97",
       "url": "https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl",
       "title": "td_api.tl",
       "family": "tdlib",
-      "sha256": "44b836e640f081fa92ba50d302d412accd1e0186e8c13568ba8e348cc206be97",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
-      "changed_at": "2026-10-14T12:05:03.496560+00:00"
+      "sha256": "cd6c92f61d12ae3edf62ff71b73b3ea4f1788e5b9932484743617fea99ddde55",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
+      "changed_at": "2026-10-19T13:35:06.049523+00:00"
     },
     {
       "requested_url": "https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt",
@@ -524,7 +524,7 @@
       "title": "changelog.txt",
       "family": "releases",
       "sha256": "8fd3ae20d24c5c129d828064af8e36475b9593dab4d893a7f2d2e7ba1636a854",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -535,7 +535,7 @@
       "title": "Telegram Applications",
       "family": "telegram-api",
       "sha256": "2b004a14a3a5c60424c2dc174fdd7b885c23a42f52b64f19e04000e63372a3a8",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-16T11:35:25.581047+00:00"
     },
     {
@@ -546,7 +546,7 @@
       "title": "Telegram Blog",
       "family": "product-releases",
       "sha256": "5156d45fe7900836aba7bb0291d6165c718d479e5619c73c97e6634747262636",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -557,7 +557,7 @@
       "title": "The Evolution of Telegram",
       "family": "product-releases",
       "sha256": "155c36b3f8495087b1e24b2e5b742e770ed8cd54dfd835165a28aed8f777d692",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-17T10:54:59.638756+00:00"
     },
     {
@@ -568,7 +568,7 @@
       "title": "Telegram FAQ",
       "family": "telegram-api",
       "sha256": "14bbe13affefa6f5a121cd449eab5ba240f0abf7c144be3c95130397d1d7dc41",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     },
     {
@@ -579,7 +579,7 @@
       "title": "Telegram Bot Platform Developer Terms of Service",
       "family": "bot-api",
       "sha256": "3a9de71bced949c941cd6641b89e8c2d7af062da444b094a3d7eb6db1d7f3443",
-      "checked_at": "2026-10-18T11:21:06.495293+00:00",
+      "checked_at": "2026-10-19T13:35:06.049523+00:00",
       "changed_at": "2026-10-10T19:56:49.833567+00:00"
     }
   ],
