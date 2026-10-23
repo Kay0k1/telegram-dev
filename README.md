@@ -1,8 +1,8 @@
 # Telegram Dev — состояние официальных источников / source status
 
-Проверено / Checked: `2026-10-22T12:04:24.891737+00:00`
+Проверено / Checked: `2026-10-23T11:49:21.824080+00:00`
 
-Источников / Sources: **52** · Новых / New: **0** · Изменившихся / Changed: **1** · Без изменений / Unchanged: **51** · Ошибок / Failures: **0**
+Источников / Sources: **52** · Новых / New: **0** · Изменившихся / Changed: **0** · Без изменений / Unchanged: **52** · Ошибок / Failures: **0**
 
 Проверяется извлечённый текст официальных страниц. Хэш показывает изменение текста, но не описывает его смысл. Ошибка загрузки не считается обновлением или удалением документа.
 
@@ -56,7 +56,7 @@ Hashes compare extracted official source text; this report does not infer what a
 | [Instant View Manual](https://instantview.telegram.org/docs) | web-integrations | unchanged |
 | [CHANGELOG.md](https://raw.githubusercontent.com/tdlib/td/master/CHANGELOG.md) | releases | unchanged |
 | [td_api.tl](https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl) | tdlib | unchanged |
-| [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | changed |
+| [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | unchanged |
 | [Telegram Applications](https://telegram.org/apps) | telegram-api | unchanged |
 | [Telegram Blog](https://telegram.org/blog) | product-releases | unchanged |
 | [The Evolution of Telegram](https://telegram.org/evolution) | product-releases | unchanged |
