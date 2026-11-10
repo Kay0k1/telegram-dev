@@ -2,6 +2,15 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-11-10
+
+### Added
+
+- TON documentation: every page listed in the docs.ton.org `llms.txt` index (TON Connect, payments, APIs, smart contracts, Tolk, TVM, blockchain foundations), the TEP standards, the TON node and Tolk changelogs, and Telegram's Blockchain Guidelines for Mini Apps. Pages are read as Markdown and cited by their docs.ton.org URLs.
+- Search areas `ton` and `ton-releases`; Russian aliases for wallets, contracts, jettons and NFTs.
+- Skill guide `ton-and-blockchain.md`: Telegram's rules first (TON and TON Connect only, Stars for digital goods), then TON Connect and `ton_proof`, payment confirmation, standards, testnet and key safety.
+- The daily source monitor covers the new TON sources (57 in total).
+
 ## [0.4.0] - 2026-11-10
 
 ### Added
@@ -35,6 +44,7 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 - First public release: documentation MCP server with an on-demand local cache, agent skill, project installer for Codex, Claude Code and Cursor, and a Claude Code plugin catalog.
 
+[0.5.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Kay0k1/telegram-dev/releases/tag/v0.2.0

@@ -1,6 +1,6 @@
 # Telegram Dev — notes for coding agents
 
-MCP server + agent skill that give Claude Code, Codex and Cursor current official Telegram documentation. `CLAUDE.md` is a symlink to this file.
+MCP server + agent skill that give Claude Code, Codex and Cursor current official Telegram and TON documentation. TON pages are crawled from the Markdown twins listed in `https://docs.ton.org/llms.txt` and cited by their human URLs (`fetch_location()` maps between them). `CLAUDE.md` is a symlink to this file.
 
 ## Layout
 

@@ -49,13 +49,13 @@ uv run --frozen python scripts/package_openai.py --skill-only
 1. Войдите своим аккаунтом в [OpenAI Plugins](https://platform.openai.com/plugins), выберите организацию и проект. Нужны права владельца или Apps Management Write. Завершите individual verification в [Organization settings](https://platform.openai.com/settings/organization/general); проверка личности выполняется издателем в кабинете.
 2. Сначала проверьте существующие drafts. Для новой заявки выберите **Upload new or existing plugin** / **Create plugin**, затем **Skills only**, свою проверенную Developer identity и файл `telegram-dev-skill-openai.zip`.
 3. В **Metadata & Skills** проверьте импортированные значения и дождитесь scans. Required safety/security scans каждого скилла должны пройти; они могут занять до двух часов. Для исправления package-managed полей загрузите исправленный ZIP.
-4. Выберите draft → **Submit for review**, заполните требуемые policy attestations. Сохраните URL/ID заявки, версию `0.4.0`, дату и подтверждённый Review status. После одобрения отдельно выберите **Publish plugin**.
+4. Выберите draft → **Submit for review**, заполните требуемые policy attestations. Сохраните URL/ID заявки, версию `0.5.0`, дату и подтверждённый Review status. После одобрения отдельно выберите **Publish plugin**.
 
 | Поле skills-only пакета | Подготовленное значение |
 | --- | --- |
 | Package name | `telegram-dev-skill` |
 | Display name | `Telegram Dev Skill` |
-| Version | `0.4.0` |
+| Version | `0.5.0` |
 | Category | `Developer Tools` |
 | Subtitle | `Telegram development knowledge` |
 | Русский subtitle | `Знания для разработки Telegram` |

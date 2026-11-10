@@ -19,6 +19,7 @@
 | Passport | https://core.telegram.org/passport | Separate identity-document integration. |
 | Instant View | https://instantview.telegram.org/docs | Article templates; not Mini Apps. |
 | Themes | https://core.telegram.org/api/themes | Client themes; distinct from Mini App theme parameters. |
+| Blockchain in Mini Apps, wallets, crypto payments, tokens, smart contracts | https://core.telegram.org/bots/blockchain-guidelines ; https://docs.ton.org/llms.txt | Telegram's rules (TON only, TON Connect, Stars for digital goods) come before TON implementation docs. Read `ton-and-blockchain.md`. |
 
 ## Feature-family entrypoints
 

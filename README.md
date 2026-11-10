@@ -5,9 +5,9 @@
 [![Docs monitor](https://github.com/Kay0k1/telegram-dev/actions/workflows/documentation.yml/badge.svg)](https://github.com/Kay0k1/telegram-dev/tree/docs-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**Current official Telegram documentation for Claude Code, Codex and Cursor.**
+**Current official Telegram and TON documentation for Claude Code, Codex and Cursor.**
 
-Telegram Dev is an MCP server plus an agent skill. The server fetches, indexes and searches the official docs (Bot API, Mini Apps, MTProto, TDLib, changelogs) and keeps them fresh. The skill teaches the agent to pick the right API, check eligibility and library support, and cite what it read.
+Telegram Dev is an MCP server plus an agent skill. The server fetches, indexes and searches the official docs and keeps them fresh: Bot API, Mini Apps, MTProto, TDLib, and on the TON side docs.ton.org (TON Connect, Tolk, TVM, APIs), the TEP standards and the changelogs. The skill teaches the agent to pick the right API, follow Telegram's rules, check library support, and cite what it read.
 
 [Русская версия](README.ru.md)
 
@@ -16,6 +16,8 @@ Telegram Dev is an MCP server plus an agent skill. The server fetches, indexes a
 ## Why
 
 Telegram ships a new Bot API version every month or two. A model's knowledge of it stops at its training cutoff, so agents confidently write code against fields that changed or never existed. They also mix up the Bot API, MTProto and TDLib, which have very different capabilities.
+
+TON moves just as fast. The current TON docs call the coin Gram, describe Telegram Money, the wallet built into Telegram, and treat Tolk as the main contract language with FunC as legacy. On top of that, Telegram has its own rules: blockchain features in Mini Apps must use TON and TON Connect, and digital goods are sold for Stars.
 
 With Telegram Dev the agent reads the current page before it writes code. A real Codex CLI run in a fresh project after `uvx telegram-dev install --agent codex` (tool calls trimmed):
 
@@ -43,6 +45,26 @@ unstyled. Source: https://core.telegram.org/bots/api#inlinekeyboardbutton
 {"chat_id": 123456789, "text": "Choose an action:",
  "reply_markup": {"inline_keyboard": [[{"text": "Delete", "callback_data": "delete:42",
    "style": "danger", "icon_custom_emoji_id": "YOUR_CUSTOM_EMOJI_ID"}]]}}
+```
+
+The skill also knows when *not* to reach for a blockchain. Another real Codex run:
+
+```text
+> Use the telegram-dev skill. Our Telegram Mini App sells a premium in-game skin
+  for 2 TON. I want a Buy button that connects the user's wallet and charges them.
+
+  get_telegram_document {"url": "https://core.telegram.org/bots/payments-stars", "refresh": true}
+  search_telegram_docs {"query": "createInvoiceLink answerPreCheckoutQuery successful_payment XTR", "area": "bot-api"}
+  get_telegram_document {"url": "https://docs.ton.org/applications/ton-connect/overview", "refresh": true}
+  get_telegram_document {"url": "https://core.telegram.org/bots/webapps", "offset": 40310}
+
+Use Telegram Stars (XTR) through the Bot API. The skin is a digital good, so
+Telegram requires Stars and prohibits cryptocurrency payment for this purchase.
+For permitted wallet features, use the TON Connect SDK.
+1. Validate initData on the backend and bind the order to the user.
+2. createInvoiceLink with currency "XTR", open it with Telegram.WebApp.openInvoice.
+3. Answer pre_checkout_query, grant the skin once on successful_payment,
+   store telegram_payment_charge_id for refunds.
 ```
 
 ## Install
@@ -104,11 +126,11 @@ The tools work without the skill, but the skill is what makes an agent use them 
 
 | Tool | What it does |
 | --- | --- |
-| `search_telegram_docs` | Full-text search over indexed sections, optionally limited to one area: `bot-api`, `mini-apps`, `telegram-api`, `tdlib`, `releases` and others |
+| `search_telegram_docs` | Full-text search over indexed sections, optionally limited to one area: `bot-api`, `mini-apps`, `telegram-api`, `tdlib`, `ton`, `releases`, `ton-releases` and others |
 | `get_telegram_document` | Reads an official page in pages of up to 40,000 characters; fetches it if it is missing or older than 6 hours |
 | `telegram_corpus_status` | What is indexed, how fresh it is and which sources failed |
 | `telegram_document_history` | Revisions of a page captured by this installation |
-| `telegram_sources` | The 52 official entry points, grouped by API area |
+| `telegram_sources` | The 57 official entry points, grouped by API area |
 
 The cache starts empty. Pages are fetched the first time the agent reads them and indexed right away. To pre-fetch everything reachable from the configured sources:
 
@@ -129,7 +151,8 @@ uvx telegram-dev status
 | MTProto and TDLib | User vs bot authorization, schema and layers, TDLib versions |
 | Business and payments | Business connections, Stars, subscriptions, gifts, paid media |
 | Groups and channels | Admin rights, forums and topics, moderation |
-| Releases | Bot API changelog, API layers, TDLib changelog, official announcements |
+| TON | Telegram's blockchain rules for Mini Apps, Stars vs crypto, TON Connect and `ton_proof`, payment processing, jettons and NFTs (TEPs), Tolk contracts, testnet first, key safety |
+| Releases | Bot API changelog, API layers, TDLib changelog, TON node and Tolk changelogs, official announcements |
 
 The skill lives in [skills/telegram-dev](skills/telegram-dev/SKILL.md), with one reference file per area.
 
@@ -138,7 +161,7 @@ The skill lives in [skills/telegram-dev](skills/telegram-dev/SKILL.md), with one
 - Reading a page older than 6 hours re-fetches it. Search re-fetches up to six stale matching pages.
 - While the server runs, a background cycle checks up to 120 pages every 6 hours: entry points, newly found links, oldest pages.
 - If Telegram's site is unreachable, the cached text is kept and marked stale with the error, so the agent knows it is reading an old copy.
-- A daily GitHub Action checks all 52 official sources and publishes hashes and errors on the [`docs-status`](https://github.com/Kay0k1/telegram-dev/tree/docs-status) branch.
+- A daily GitHub Action checks all 57 official sources and publishes hashes and errors on the [`docs-status`](https://github.com/Kay0k1/telegram-dev/tree/docs-status) branch.
 
 Settings such as the cache path (`TELEGRAM_KNOWLEDGE_DB`) and refresh intervals are in [docs/runtime.md](docs/runtime.md).
 
@@ -153,8 +176,8 @@ uvx telegram-dev serve --transport streamable-http --port 8000
 ## Limits
 
 - Search is local full-text search (SQLite FTS5), not semantic search. Exact method names and English terms work best. A small set of Russian aliases is built in.
-- Coverage is what can be reached from the 52 official entry points. Page history starts when your installation first fetched the page.
-- The server does not log in to Telegram, send messages or touch chats. It only reads public pages.
+- Coverage is what can be reached from the 57 official entry points. TON pages come from the `llms.txt` index that docs.ton.org publishes for agents, so new TON pages are picked up automatically. Page history starts when your installation first fetched the page.
+- The server does not log in to Telegram, send messages, touch chats or hold wallet keys. It only reads public pages.
 - The skill improves how agents work. It does not guarantee a correct answer: check the code against Telegram before shipping.
 
 ## Development
@@ -170,4 +193,4 @@ CI runs the tests on Linux, macOS and Windows and checks the Docker image. [docs
 
 ## License
 
-[MIT](LICENSE) for the code and the skill. Fetched Telegram documentation remains Telegram's; the package does not bundle it ([NOTICE](NOTICE)). This is an independent project, not affiliated with Telegram.
+[MIT](LICENSE) for the code and the skill. Fetched Telegram and TON documentation remains with its owners; the package does not bundle it ([NOTICE](NOTICE)). This is an independent project, not affiliated with Telegram or the TON Foundation.

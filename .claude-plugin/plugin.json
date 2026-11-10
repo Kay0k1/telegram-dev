@@ -1,8 +1,8 @@
 {
   "name": "telegram-dev",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "displayName": "Telegram Dev",
-  "description": "Source-verified Telegram development across Bot API, Mini Apps, MTProto, TDLib, media and public releases. Independent project by Kay0k1.",
+  "description": "Source-verified Telegram and TON development across Bot API, Mini Apps, MTProto, TDLib, TON Connect, Tolk and public releases. Independent project by Kay0k1.",
   "author": {
     "name": "Kay0k1",
     "url": "https://github.com/Kay0k1"
@@ -15,5 +15,5 @@
   "supportUrl": "https://github.com/Kay0k1/telegram-dev/issues",
   "privacyPolicyUrl": "https://github.com/Kay0k1/telegram-dev/blob/main/docs/privacy.md",
   "termsOfServiceUrl": "https://github.com/Kay0k1/telegram-dev/blob/main/docs/terms.md",
-  "keywords": ["telegram", "bot-api", "mini-apps", "mtproto", "tdlib", "documentation"]
+  "keywords": ["telegram", "bot-api", "mini-apps", "mtproto", "tdlib", "ton", "ton-connect", "documentation"]
 }

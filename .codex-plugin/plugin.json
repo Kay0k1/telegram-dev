@@ -1,7 +1,7 @@
 {
   "name": "telegram-dev",
-  "version": "0.4.0",
-  "description": "Source-verified Telegram development across Bot API, Mini Apps, MTProto, TDLib and public release history",
+  "version": "0.5.0",
+  "description": "Source-verified Telegram and TON development across Bot API, Mini Apps, MTProto, TDLib, TON Connect, Tolk and public release history",
   "author": {
     "name": "Kay0k1",
     "url": "https://github.com/Kay0k1"
@@ -9,7 +9,7 @@
   "homepage": "https://github.com/Kay0k1/telegram-dev",
   "repository": "https://github.com/Kay0k1/telegram-dev",
   "license": "MIT",
-  "keywords": ["telegram", "bot-api", "mini-apps", "mtproto", "tdlib", "documentation"],
+  "keywords": ["telegram", "bot-api", "mini-apps", "mtproto", "tdlib", "ton", "ton-connect", "documentation"],
   "skills": "./skills/",
   "mcpServers": {
     "telegram-knowledge": {
@@ -22,7 +22,7 @@
   "interface": {
     "displayName": "Telegram Dev",
     "shortDescription": "Telegram development knowledge",
-    "longDescription": "Develop Telegram bots, Mini Apps, clients and integrations using public official documentation. Telegram Dev helps identify the API surface, verify feature eligibility, inspect release changes and read current documentation before implementation. The bundled local MCP maintains a documentation cache; uv is required. This independent community project is maintained by Kay0k1 and is not affiliated with Telegram. It does not connect to Telegram accounts or operate on private chats.",
+    "longDescription": "Develop Telegram bots, Mini Apps, clients, integrations and TON features using public official Telegram and TON documentation. Telegram Dev helps identify the API surface, verify feature eligibility, inspect release changes and read current documentation before implementation. The bundled local MCP maintains a documentation cache; uv is required. This independent community project is maintained by Kay0k1 and is not affiliated with Telegram. It does not connect to Telegram accounts or operate on private chats.",
     "developerName": "Kay0k1",
     "category": "Developer Tools",
     "capabilities": ["Search Telegram documentation", "Read official sources", "Check documentation freshness"],

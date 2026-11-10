@@ -1,6 +1,6 @@
 ---
 name: telegram-dev
-description: Build, debug, migrate, and explain Telegram integrations using current official documentation and release history. Use for bots, Mini Apps, TDLib/MTProto clients, messaging and media, community administration, business, payments, account features, and Telegram web integrations. Does not itself access accounts or execute Telegram actions.
+description: Build, debug, migrate, and explain Telegram and TON integrations using current official documentation and release history. Use for bots, Mini Apps, TDLib/MTProto clients, messaging and media, community administration, business, payments, account features, Telegram web integrations, and TON wallets, TON Connect, jettons, NFTs and smart contracts. Does not itself access accounts or execute Telegram actions.
 ---
 
 # Telegram development
@@ -32,6 +32,7 @@ Read only the guide relevant to the requested behavior:
 | Business connections, Stars, invoices, subscriptions, gifts, stories | [Business and commerce](references/business-and-commerce.md) |
 | Mini Apps, website/mobile login, links, Gateway, Passport | [Mini Apps and web authentication](references/mini-apps-and-web.md) |
 | TDLib/MTProto clients, account auth, calls, secret chats, updates, export | [Client development](references/client-development.md) |
+| TON: wallets, TON Connect, crypto payments, jettons, NFTs, smart contracts (Tolk), blockchain features in Mini Apps | [TON and blockchain](references/ton-and-blockchain.md) |
 
 For an unfamiliar feature, browse the current API index and follow its related article, method, constructors and changelog. The routing table is intentionally open-ended: newly added features need evidence, not a new handwritten skill release before the agent can use them.
 

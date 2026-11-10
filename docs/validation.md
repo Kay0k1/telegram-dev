@@ -1,5 +1,15 @@
 # Проверки / Validation
 
+## 0.5.0 — 2026-11-10 (Linux)
+
+| Check | Result |
+| --- | --- |
+| Repository tests | **55 passed**, including TON URL boundaries, Markdown fetching via the `llms.txt` twins, TEP link resolution and the `ton` / `ton-releases` areas |
+| TON crawl | Starting from the TON sources, 463 TON pages and 3 TON release pages were indexed. Three TON links failed because docs.ton.org itself returns 404 (`/languages/fift`, `/tvm`) or redirects off-site (`/contracts/acton`) |
+| TON search | Exact hits for TON Connect transactions, jetton transfers, Gram, Tolk structs, `ton_proof`, WalletTg and the Russian query «кошелек»; Telegram's Blockchain Guidelines rank next to TON Connect |
+| Source monitor | `scripts/check_sources.py` fetched all five new TON sources |
+| Real agent run | Codex CLI 0.167.0 with the 0.5.0 wheel installed: asked to sell a Mini App skin for 2 TON, it read the Stars and TON Connect pages over MCP and answered that digital goods must use Stars (`XTR`), with TON Connect only for permitted wallet features. This run is the second README example |
+
 ## 0.4.0 — 2026-11-10 (Linux)
 
 | Check | Result |

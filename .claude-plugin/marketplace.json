@@ -1,17 +1,17 @@
 {
   "name": "telegram-dev-tools",
   "owner": {"name": "Kay0k1"},
-  "metadata": {"description": "Independent Telegram development tools with official documentation", "version": "0.4.0"},
+  "metadata": {"description": "Independent Telegram development tools with official documentation", "version": "0.5.0"},
   "plugins": [
     {
       "name": "telegram-dev",
       "source": "./",
-      "description": "Source-verified Telegram development with official documentation search",
-      "version": "0.4.0",
+      "description": "Source-verified Telegram and TON development with official documentation search",
+      "version": "0.5.0",
       "homepage": "https://github.com/Kay0k1/telegram-dev",
       "repository": "https://github.com/Kay0k1/telegram-dev",
       "license": "MIT",
-      "keywords": ["telegram", "documentation", "bot-api", "mini-apps", "mtproto", "tdlib"]
+      "keywords": ["telegram", "documentation", "bot-api", "mini-apps", "mtproto", "tdlib", "ton", "ton-connect"]
     }
   ]
 }
