@@ -2,6 +2,13 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.6.1] - 2026-11-10
+
+### Changed
+
+- MCP tool definitions: every tool has a short title and a description of when to use it and what it returns; every parameter has a description, examples and limits (`limit` 1–20, `length` 100–40000, `offset` ≥ 0); `area` is a list of allowed values instead of free text.
+- `glama.json` pins the Glama build spec (Python 3.14 until dependencies support 3.15).
+
 ## [0.6.0] - 2026-11-10
 
 ### Added
@@ -62,6 +69,7 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 - First public release: documentation MCP server with an on-demand local cache, agent skill, project installer for Codex, Claude Code and Cursor, and a Claude Code plugin catalog.
 
+[0.6.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.4.0...v0.5.0

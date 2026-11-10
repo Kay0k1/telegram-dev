@@ -14,12 +14,14 @@ import sys
 import threading
 import time
 from datetime import datetime, timezone
+from typing import Annotated, Literal
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
 import httpx
 from bs4 import BeautifulSoup
 from markdownify import markdownify
 from platformdirs import user_cache_path
+from pydantic import Field
 
 ROOT = Path(__file__).resolve().parent
 DB = Path(os.environ.get("TELEGRAM_KNOWLEDGE_DB", str(user_cache_path("telegram-dev") / "corpus.sqlite3")))
@@ -794,6 +796,10 @@ def document(url, offset=0, length=16000, refresh=False):
     return result
 
 
+Area = Literal["", "bot-api", "mini-apps", "telegram-api", "tdlib", "releases", "product-releases", "gateway",
+               "web-integrations", "media-design", "ton", "ton-releases", "aiogram", "python-telegram-bot", "grammy"]
+
+
 def create_server(transport="stdio", host="127.0.0.1", port=8000):
     from mcp.server.fastmcp import FastMCP
     from mcp.server.transport_security import TransportSecuritySettings
@@ -832,27 +838,53 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
         return JSONResponse({"status": "ok", "pages": status["pages"],
                              "stale_pages": status["stale_pages"], "source_errors": len(status["errors"])})
 
-    @server.tool(annotations=annotations)
-    def search_telegram_docs(query: str, area: str = "", limit: int = 6) -> dict:
-        """Search public Telegram docs, preferring exact English API symbols. Areas: bot-api, mini-apps, telegram-api, tdlib, releases, product-releases, gateway, web-integrations, media-design, ton (docs.ton.org, TON Connect, Tolk, TVM, TEPs), ton-releases, aiogram, python-telegram-bot (docs and wiki), grammy. Core Telegram docs rank first unless the query names a library (aiogram, PTB/python-telegram-bot/telegram.ext, grammY). Russian feature aliases supported for common media topics."""
+    @server.tool(title="Search Telegram and TON docs", annotations=annotations)
+    def search_telegram_docs(
+        query: Annotated[str, Field(min_length=1, description=(
+            "Exact API names or short English keywords work best, e.g. 'InlineKeyboardButton style', "
+            "'sendVideoNote', 'ton_proof', 'jetton transfer', 'aiogram Router callback_query'. "
+            "Common Russian feature words (кнопка, кружок, кошелек) are expanded automatically."))],
+        area: Annotated[Area, Field(description=(
+            "Limit results to one documentation area; empty searches all areas. Core Telegram docs rank above "
+            "library docs unless the query names a library."))] = "",
+        limit: Annotated[int, Field(ge=1, le=20, description="Maximum number of matching sections to return.")] = 6,
+    ) -> dict:
+        """Find the official documentation sections that answer a Telegram or TON development question.
+
+        Use it before writing or reviewing code that calls the Bot API, Mini Apps JS, Telegram API/MTProto, TDLib, TON Connect, Tolk contracts or the aiogram, python-telegram-bot and grammY libraries. Returns up to `limit` sections with page URL, heading, excerpt, `document_offset` and freshness. Excerpts are partial: open the page with `get_telegram_document` at `document_offset` before relying on details. Stale matching pages are re-fetched first. An empty result is not proof that a feature does not exist; if the cache is empty, the response suggests pages to fetch."""
         result = search(query, area, limit, refresh_results=True)
         if not result['results'] and coverage()['pages'] == 0:
             result['note'] = 'The cache is empty. Fetch a relevant official URL with get_telegram_document first, then search again. Suggested starts: https://core.telegram.org/bots/api ; https://core.telegram.org/api ; https://core.telegram.org/bots/webapps ; TON: https://docs.ton.org/llms.txt (index of all TON pages) ; libraries: https://docs.aiogram.dev/en/latest/ ; https://docs.python-telegram-bot.org/en/stable/ ; https://grammy.dev/sitemap.xml.'
         return result
 
-    @server.tool(annotations=annotations)
-    def get_telegram_document(url: str, offset: int = 0, length: int = 16000, refresh: bool = False) -> dict:
-        """Read paginated official documentation. Missing/stale pages refresh automatically; refresh=True forces a live check. Failures preserve cached content with freshness.stale and refresh_error. Includes hash and observation date, not release date. URL fragments do not change pagination."""
+    @server.tool(title="Read an official documentation page", annotations=annotations)
+    def get_telegram_document(
+        url: Annotated[str, Field(description=(
+            "Official page URL from search results or telegram_sources, e.g. https://core.telegram.org/bots/api "
+            "or https://docs.ton.org/applications/ton-connect/overview. Pages outside the official sources are rejected."))],
+        offset: Annotated[int, Field(ge=0, description="Character offset to start from; use a search result's document_offset or the previous next_offset.")] = 0,
+        length: Annotated[int, Field(ge=100, le=40000, description="Number of characters to return.")] = 16000,
+        refresh: Annotated[bool, Field(description="Force a live check of the source even if the cached copy is fresh.")] = False,
+    ) -> dict:
+        """Read the text of an official Telegram, TON or bot-library documentation page, one window at a time.
+
+        Use it to read requirements, parameters and limits in full after search, or to load an entry page into an empty cache. Pages missing from the cache or older than the freshness limit (6 hours by default) are fetched first. Returns title, URL, Markdown `body` for the requested window, `next_offset` (null at the end), `total_characters`, content hash and freshness. If the live source fails, the cached text is returned with `freshness.stale` and `refresh_error` set. The observation date is when this installation read the page, not when Telegram changed it."""
         return document(url, offset, length, refresh)
 
-    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    @server.tool(title="Cache coverage and freshness", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
     def telegram_corpus_status() -> dict:
-        """Report indexed scope, coverage gaps, source errors, and last successful check. Never equate indexed pages with all Telegram knowledge."""
+        """Report what the local documentation cache contains and how current it is.
+
+        Use it at the start of a task or when results look incomplete. Returns page counts per area, crawl queue state, stale page count, last and oldest successful checks, refresh policy and the latest source errors. Indexed pages are not all of Telegram's knowledge: absence from the cache is not evidence that a feature does not exist."""
         return coverage()
 
-    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
-    def telegram_document_history(url: str) -> dict:
-        """List locally observed revisions of a source. Does not reconstruct versions predating this corpus."""
+    @server.tool(title="Observed revisions of a page", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    def telegram_document_history(
+        url: Annotated[str, Field(description="Official page URL, the same form accepted by get_telegram_document.")],
+    ) -> dict:
+        """List the versions of a documentation page that this installation has observed, newest first.
+
+        Use it to see whether a page changed since an earlier read. Returns content hash, capture time and length for each revision. It does not reconstruct history before the page was first fetched here; for Telegram release history read the official changelogs (area `releases` or `ton-releases`)."""
         with connect() as conn:
             base = canonical(url)
             if base is None:
@@ -860,9 +892,11 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
             target = conn.execute("SELECT target FROM aliases WHERE url=?", (base,)).fetchone()
             return {"revisions": [dict(r) for r in conn.execute("SELECT sha,captured_at,length(body) AS characters FROM revisions WHERE url=? ORDER BY captured_at DESC", (target[0] if target else base,))]}
 
-    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    @server.tool(title="Official documentation entry points", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
     def telegram_sources() -> dict:
-        """List configured official entrypoints by API family; use the relevant index to discover current feature pages. This is source configuration, not proof of complete cached coverage."""
+        """List the official entry points this server crawls, each with its documentation area.
+
+        Use it to find where to start reading for an unfamiliar area (for example the Bot API index, docs.ton.org/llms.txt or a library's docs) and pass the URL to get_telegram_document. This is the source configuration, not proof that every page below it is already cached."""
         return {"sources": [{"url": url, "area": family(url)} for url in SEEDS],
                 "scope": "Entry points for discovery. Follow each official API index and schema for additional features."}
 

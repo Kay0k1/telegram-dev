@@ -121,3 +121,21 @@ class CliTests(unittest.TestCase):
         with patch("builtins.print") as printed:
             k.main(["--version"])
         self.assertRegex(printed.call_args.args[0], r"^\d+\.\d+\.\d+")
+
+
+class ToolDefinitionTests(unittest.TestCase):
+    def test_every_tool_has_a_title_and_documented_parameters(self):
+        async def tools():
+            return await k.create_server().list_tools()
+        with patch.dict(os.environ, {"TELEGRAM_DOC_AUTO_SYNC": "0"}):
+            listing = asyncio.run(tools())
+        self.assertEqual(len(listing), 5)
+        for tool in listing:
+            with self.subTest(tool=tool.name):
+                self.assertTrue(tool.title)
+                self.assertGreater(len(tool.description), 150)
+                for name, schema in tool.inputSchema.get("properties", {}).items():
+                    self.assertTrue(schema.get("description"), name)
+        search = next(tool for tool in listing if tool.name == "search_telegram_docs")
+        areas = set(search.inputSchema["properties"]["area"]["enum"])
+        self.assertEqual(areas - {""}, {k.family(url) for url in k.SEEDS} | {"media-design", "gateway"})
