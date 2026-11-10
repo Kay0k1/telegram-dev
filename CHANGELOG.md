@@ -2,7 +2,7 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.6.0] - 2026-11-10
 
 ### Added
 
@@ -62,6 +62,7 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 - First public release: documentation MCP server with an on-demand local cache, agent skill, project installer for Codex, Claude Code and Cursor, and a Claude Code plugin catalog.
 
+[0.6.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.3.0...v0.4.0

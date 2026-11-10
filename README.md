@@ -7,7 +7,7 @@
 
 **Current official Telegram and TON documentation for Claude Code, Codex and Cursor.**
 
-Telegram Dev is an MCP server plus an agent skill. The server fetches, indexes and searches the official docs and keeps them fresh: Bot API, Mini Apps, MTProto, TDLib, and on the TON side docs.ton.org (TON Connect, Tolk, TVM, APIs), the TEP standards and the changelogs. The skill teaches the agent to pick the right API, follow Telegram's rules, check library support, and cite what it read.
+Telegram Dev is an MCP server plus an agent skill. The server fetches, indexes and searches the official docs and keeps them fresh: Bot API, Mini Apps, MTProto, TDLib, on the TON side docs.ton.org (TON Connect, Tolk, TVM, APIs), the TEP standards and the changelogs, and the docs of the bot libraries aiogram, python-telegram-bot and grammY. The skill teaches the agent to pick the right API, follow Telegram's rules, check library support, and cite what it read.
 
 **Measured (Codex CLI, 11 tasks, [evals](evals/README.md)):** with Codex's own web access the plugin made no difference (45/47 rubric facts either way); with web access off, Telegram Dev kept answers current at 45/47 against 38/47 without it — Bot API 10.4 and the renamed TON coin and wallet were the gap.
 
