@@ -1,0 +1,25 @@
+{
+  "task": "bot-api-latest",
+  "config": "baseline-noweb",
+  "run": 1,
+  "exit": 0,
+  "seconds": 85.2,
+  "project": "/tmp/tgdev-evals-o3ka4tkp/baseline-noweb-bot-api-latest-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-o3ka4tkp/baseline-noweb-bot-api-latest-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-o3ka4tkp/baseline-noweb-bot-api-latest-1\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}

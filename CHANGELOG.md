@@ -2,6 +2,12 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `evals/`: 11 Telegram and TON tasks with rubrics checked against the official pages, a Codex CLI runner (`run_codex.py`) for runs with and without Telegram Dev and with and without web access, a grader (`grade.py`), and the first results with transcripts. With Codex's web access the plugin made no difference (45/47 rubric facts both ways); without web access it did (45/47 against 38/47), on the Bot API 10.4 release and the current TON coin and wallet names.
+
 ## [0.5.1] - 2026-11-10
 
 ### Fixed

@@ -1,0 +1,25 @@
+{
+  "task": "ton-telegram-wallet-naming",
+  "config": "plugin-noweb",
+  "run": 2,
+  "exit": 0,
+  "seconds": 95.6,
+  "project": "/tmp/tgdev-evals-lo10qwtn/plugin-noweb-ton-telegram-wallet-naming-2",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-lo10qwtn/plugin-noweb-ton-telegram-wallet-naming-2",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-lo10qwtn/plugin-noweb-ton-telegram-wallet-naming-2\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}

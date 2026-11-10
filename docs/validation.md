@@ -1,5 +1,21 @@
 # Проверки / Validation
 
+## Agent evals — 2026-11-10 (Linux)
+
+Does the plugin change what an agent answers? 11 Telegram and TON tasks with rubrics checked against the official pages, run with Codex CLI 0.167.0 (`gpt-6.1-sol`, effort `ultra`) and telegram-dev 0.5.0 from PyPI, each in a fresh project, in four configurations. Details, per-task results, transcripts and limitations: [evals/README.md](../evals/README.md).
+
+| Configuration | Rubric facts | Tasks fully correct | Wrong claims |
+| --- | --- | --- | --- |
+| Telegram Dev + Codex web access | 45/47 | 9/11 | 0 |
+| Codex web access only | 45/47 | 9/11 | 0 |
+| Telegram Dev, web access off | 45/47 | 9/11 | 0 |
+| Neither | 38/47 | 8/11 | 1 |
+
+- With web access, Codex read core.telegram.org and docs.ton.org itself and matched the plugin on every task.
+- With web access off, only the plugin runs knew Bot API 10.4 (HTML widgets) and the current TON names (Gram, Telegram Money, WalletTg); a second run of these tasks gave the same split. The run without the plugin named the old ones (Toncoin, Wallet in Telegram, Wallet V5).
+- On the Tolk task the plugin runs scored one fact lower: they did not mention FunC, which the run without the plugin called Tolk's predecessor.
+- Not measured: Claude Code (headless login expired on the test machine), Cursor, other models, executing the generated code.
+
 ## 0.5.0 — 2026-11-10 (Linux)
 
 | Check | Result |

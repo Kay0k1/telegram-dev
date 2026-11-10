@@ -1,0 +1,25 @@
+{
+  "task": "bot-api-latest",
+  "config": "plugin-noweb",
+  "run": 2,
+  "exit": 0,
+  "seconds": 92.7,
+  "project": "/tmp/tgdev-evals-lo10qwtn/plugin-noweb-bot-api-latest-2",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-lo10qwtn/plugin-noweb-bot-api-latest-2",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-lo10qwtn/plugin-noweb-bot-api-latest-2\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}
