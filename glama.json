@@ -1,4 +1,8 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
-  "maintainers": ["Kay0k1"]
+  "maintainers": ["Kay0k1"],
+  "transport": "stdio",
+  "buildSteps": ["uv sync --frozen --python 3.14"],
+  "cmdArguments": ["mcp-proxy", "--", "uv", "run", "--frozen", "telegram-dev", "serve"],
+  "placeholderArguments": {}
 }
