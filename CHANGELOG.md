@@ -7,6 +7,11 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 ### Added
 
 - `evals/`: 11 Telegram and TON tasks with rubrics checked against the official pages, a Codex CLI runner (`run_codex.py`) for runs with and without Telegram Dev and with and without web access, a grader (`grade.py`), and the first results with transcripts. With Codex's web access the plugin made no difference (45/47 rubric facts both ways); without web access it did (45/47 against 38/47), on the Bot API 10.4 release and the current TON coin and wallet names.
+- Bot library documentation: aiogram 3 (`docs.aiogram.dev/en/latest/`: dispatcher, routers, filters, FSM and scenes, middlewares, utils, client session, changelog, migration guide), python-telegram-bot (`docs.python-telegram-bot.org/en/stable/`: `telegram.ext`, `Bot`, `Message`/`Update`/`CallbackQuery`, examples, changelog; and the official wiki) and grammY (`grammy.dev`: guide, advanced, plugins, hosting, read from the site's Markdown sources). About 250 pages; generated per-type pages that mirror the Bot API, grammY's `/ref/` and translations are left out.
+- Search areas `aiogram`, `python-telegram-bot` and `grammy`. Core Telegram docs rank first unless the query names a library (`aiogram`, `PTB`, `python-telegram-bot`, `telegram.ext`, `grammY`, with an optional version); the name is not required in the matched text.
+- Released aiogram and python-telegram-bot docs (`/en/vX.Y.Z/`) can be read on demand to match the installed version; they are not crawled.
+- Skill guide `bot-libraries.md`: find the installed version, read the matching library docs, compare with the Bot API page and changelog, and say when the indexed docs describe another version.
+- The daily source monitor covers the four library entry points (61 sources in total).
 
 ## [0.5.1] - 2026-11-10
 

@@ -128,11 +128,11 @@ The tools work without the skill, but the skill is what makes an agent use them 
 
 | Tool | What it does |
 | --- | --- |
-| `search_telegram_docs` | Full-text search over indexed sections, optionally limited to one area: `bot-api`, `mini-apps`, `telegram-api`, `tdlib`, `ton`, `releases`, `ton-releases` and others |
+| `search_telegram_docs` | Full-text search over indexed sections, optionally limited to one area: `bot-api`, `mini-apps`, `telegram-api`, `tdlib`, `ton`, `releases`, `ton-releases`, `aiogram`, `python-telegram-bot`, `grammy` and others. Core Telegram docs rank first unless the query names a library |
 | `get_telegram_document` | Reads an official page in pages of up to 40,000 characters; fetches it if it is missing or older than 6 hours |
 | `telegram_corpus_status` | What is indexed, how fresh it is and which sources failed |
 | `telegram_document_history` | Revisions of a page captured by this installation |
-| `telegram_sources` | The 57 official entry points, grouped by API area |
+| `telegram_sources` | The 61 official entry points, grouped by API area |
 
 The cache starts empty. Pages are fetched the first time the agent reads them and indexed right away. To pre-fetch everything reachable from the configured sources:
 
@@ -154,6 +154,7 @@ uvx telegram-dev status
 | Business and payments | Business connections, Stars, subscriptions, gifts, paid media |
 | Groups and channels | Admin rights, forums and topics, moderation |
 | TON | Telegram's blockchain rules for Mini Apps, Stars vs crypto, TON Connect and `ton_proof`, payment processing, jettons and NFTs (TEPs), Tolk contracts, testnet first, key safety |
+| Bot libraries | aiogram, python-telegram-bot and grammY: the library docs that match the installed version, compared with the Bot API page; says when the indexed docs describe another version |
 | Releases | Bot API changelog, API layers, TDLib changelog, TON node and Tolk changelogs, official announcements |
 
 The skill lives in [skills/telegram-dev](skills/telegram-dev/SKILL.md), with one reference file per area.
@@ -163,7 +164,7 @@ The skill lives in [skills/telegram-dev](skills/telegram-dev/SKILL.md), with one
 - Reading a page older than 6 hours re-fetches it. Search re-fetches up to six stale matching pages.
 - While the server runs, a background cycle checks up to 120 pages every 6 hours: entry points, newly found links, oldest pages.
 - If Telegram's site is unreachable, the cached text is kept and marked stale with the error, so the agent knows it is reading an old copy.
-- A daily GitHub Action checks all 57 official sources and publishes hashes and errors on the [`docs-status`](https://github.com/Kay0k1/telegram-dev/tree/docs-status) branch.
+- A daily GitHub Action checks all 61 official sources and publishes hashes and errors on the [`docs-status`](https://github.com/Kay0k1/telegram-dev/tree/docs-status) branch.
 
 Settings such as the cache path (`TELEGRAM_KNOWLEDGE_DB`) and refresh intervals are in [docs/runtime.md](docs/runtime.md).
 
@@ -178,7 +179,8 @@ uvx telegram-dev serve --transport streamable-http --port 8000
 ## Limits
 
 - Search is local full-text search (SQLite FTS5), not semantic search. Exact method names and English terms work best. A small set of Russian aliases is built in.
-- Coverage is what can be reached from the 57 official entry points. TON pages come from the `llms.txt` index that docs.ton.org publishes for agents, so new TON pages are picked up automatically. Page history starts when your installation first fetched the page.
+- Coverage is what can be reached from the 61 official entry points. TON pages come from the `llms.txt` index that docs.ton.org publishes for agents, so new TON pages are picked up automatically.
+- Bot libraries: guides and bot-facing references of aiogram (`latest`, built from its main branch), python-telegram-bot (`stable` docs and the official wiki) and grammY (English guides and plugins), about 250 pages. Generated per-type pages that mirror the Bot API, grammY's `/ref/` and translations are not indexed; released aiogram and PTB versions (`/en/vX.Y.Z/`) can be read on demand. Telegraf, Telethon and Pyrogram are not indexed. Page history starts when your installation first fetched the page.
 - The server does not log in to Telegram, send messages, touch chats or hold wallet keys. It only reads public pages.
 - The skill improves how agents work. It does not guarantee a correct answer: check the code against Telegram before shipping.
 

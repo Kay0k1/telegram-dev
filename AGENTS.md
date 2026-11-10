@@ -1,6 +1,6 @@
 # Telegram Dev — notes for coding agents
 
-MCP server + agent skill that give Claude Code, Codex and Cursor current official Telegram and TON documentation. TON pages are crawled from the Markdown twins listed in `https://docs.ton.org/llms.txt` and cited by their human URLs (`fetch_location()` maps between them). `CLAUDE.md` is a symlink to this file.
+MCP server + agent skill that give Claude Code, Codex and Cursor current official Telegram and TON documentation. TON pages are crawled from the Markdown twins listed in `https://docs.ton.org/llms.txt` and cited by their human URLs (`fetch_location()` maps between them). Bot library docs (aiogram, python-telegram-bot docs and wiki, grammY) use the same pattern where Markdown exists (grammY site sources, PTB wiki); `library_path()` holds each library's boundary, `LIBRARY_AREAS` the search areas, `INDEX_ONLY` the discovery-only indexes (grammY sitemap, PTB wiki sidebar). `CLAUDE.md` is a symlink to this file.
 
 ## Layout
 
@@ -16,5 +16,6 @@ MCP server + agent skill that give Claude Code, Codex and Cursor current officia
 - Run `uv run --frozen python -m unittest discover -s tests -v` before committing. Add a regression test for logic changes.
 - A release bumps the version in `pyproject.toml`, all plugin manifests, `server.json` and `CHANGELOG.md` together (`VersionTests` enforces it), then `uv lock`. Tag `vX.Y.Z` triggers `.github/workflows/release.yml`.
 - `README.md` is English, `README.ru.md` Russian; keep them in sync. Keep the `mcp-name:` comment in `README.md`.
+- Library docs stay bounded: guides and bot-facing references only. Do not add generated per-type pages that mirror the Bot API (aiogram `api/types`, `api/methods`; PTB `telegram.<Type>`; grammY `/ref/`); core.telegram.org covers them. Pinned versions (`/en/vX.Y.Z/`) are read on demand and never added to the frontier.
 - The server only reads public documentation. Never add Telegram account access, message sending or bundled copies of Telegram docs.
 - Conventional commits.
