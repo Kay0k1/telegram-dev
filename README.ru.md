@@ -1,227 +1,167 @@
 # Telegram Dev
 
 [![Tests](https://github.com/Kay0k1/telegram-dev/actions/workflows/tests.yml/badge.svg)](https://github.com/Kay0k1/telegram-dev/actions/workflows/tests.yml)
-[![Release](https://img.shields.io/github/v/release/Kay0k1/telegram-dev?include_prereleases)](https://github.com/Kay0k1/telegram-dev/releases)
-[![Official documentation](https://github.com/Kay0k1/telegram-dev/actions/workflows/documentation.yml/badge.svg)](https://github.com/Kay0k1/telegram-dev/actions/workflows/documentation.yml)
+[![PyPI](https://img.shields.io/pypi/v/telegram-dev)](https://pypi.org/project/telegram-dev/)
+[![Docs monitor](https://github.com/Kay0k1/telegram-dev/actions/workflows/documentation.yml/badge.svg)](https://github.com/Kay0k1/telegram-dev/tree/docs-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[Главная / Русский](README.md#russian) · [English](README.md#english)
+**Актуальная официальная документация Telegram для Claude Code, Codex и Cursor.**
 
-<a id="russian"></a>
-## Русский
+Telegram Dev — это MCP-сервер и скилл для агента. Сервер загружает, индексирует и ищет официальную документацию (Bot API, Mini Apps, MTProto, TDLib, списки изменений) и следит, чтобы она не устаревала. Скилл учит агента выбирать нужный API, проверять, кому доступна функция и поддерживает ли её библиотека, и указывать, откуда взяты сведения.
 
-**Дайте своему AI-агенту документацию Telegram и правила, как по ней разрабатывать.**
+[English](README.md)
 
-Telegram Dev — открытый скилл и MCP-сервер для **Codex, Claude Code и Cursor**. Он помогает агенту выбрать подходящий API, проверить актуальные возможности Telegram и реализовать именно то поведение, которое вы попросили.
+## Зачем
 
-«Сделай красную кнопку», «добавь premium emoji», «отправляй видео кружком» — такие задачи требуют проверки конкретного API, формата и ограничений. Telegram Dev задаёт агенту этот порядок работы и даёт инструменты для поиска официальных источников.
+Bot API выходит раз в месяц-два. Модель знает его только на дату своего обучения, поэтому агент уверенно пишет код с полями, которые уже изменились или которых никогда не было. Ещё агенты путают Bot API, MTProto и TDLib, а возможности у них сильно разные.
 
-[Скачать релиз](https://github.com/Kay0k1/telegram-dev/releases) · [Сообщить об ошибке](https://github.com/Kay0k1/telegram-dev/issues) · [Инструкции скилла](skills/telegram-dev/SKILL.md)
+С Telegram Dev агент сначала читает актуальную страницу, потом пишет код. Настоящий прогон Codex CLI в новом проекте после `uvx telegram-dev install --agent codex` (вызовы сокращены):
 
-> **Статус: public preview.** Независимый проект сообщества. Документация загружается по запросу; качество ответа зависит и от агента. Проект не связан с Telegram и не является его официальным продуктом.
+```text
+> Use the telegram-dev skill. In a python-telegram-bot project, I want the inline
+  'Delete' button to be red and show a custom emoji. Which Bot API fields do this,
+  what are the requirements, and what does the request JSON look like?
 
-**Навигация:** [Установка](#ru-install) · [Примеры](#ru-examples) · [Возможности](#ru-scope) · [Как работает](#ru-how) · [Обновление](#ru-updates) · [Проблемы](#ru-help) · [Разработка](#ru-dev)
+  telegram_corpus_status {}
+  search_telegram_docs {"query": "style icon_custom_emoji_id", "area": "releases"}
+  search_telegram_docs {"query": "InlineKeyboardButton icon_custom_emoji_id style", "area": "bot-api"}
+  get_telegram_document {"url": "https://core.telegram.org/bots/api", "offset": 167594, "length": 10500}
+  get_telegram_document {"url": "https://core.telegram.org/bots/api-changelog", "offset": 39089, "length": 6000}
 
-<a id="ru-install"></a>
-### Быстрый старт
+Use these InlineKeyboardButton fields:
+- style: "danger" makes the button red.
+- icon_custom_emoji_id is a custom emoji ID shown before "Delete".
+- callback_data is your action identifier, 1-64 bytes.
 
-Понадобятся [uv](https://docs.astral.sh/uv/getting-started/installation/) и папка проекта, в котором вы работаете с агентом. Для получения публичной документации **не нужны токен бота, Telegram-аккаунт или платный сервис поиска**. Для первой загрузки страниц нужен интернет.
-
-**1. Скачайте Telegram Dev.** Клонируйте репозиторий или распакуйте ZIP со [страницы релизов](https://github.com/Kay0k1/telegram-dev/releases).
-
-```sh
-git clone https://github.com/Kay0k1/telegram-dev.git
-cd telegram-dev
+The custom emoji requires either a bot that bought additional usernames on Fragment,
+or a Premium bot owner with the message sent by the bot to a private chat, group or
+supergroup. PTB 22.7+ supports both fields. Older Telegram clients show the button
+unstyled. Source: https://core.telegram.org/bots/api#inlinekeyboardbutton
 ```
 
-**2. Выполните одну команду для своего агента.** Замените путь в кавычках на полный путь к существующему рабочему проекту. Команду запускайте из папки Telegram Dev.
+## Установка
 
-| Агент | Значение `--agent` | Что устанавливается в рабочий проект |
+Нужен [uv](https://docs.astral.sh/uv/getting-started/installation/). Токен бота, аккаунт Telegram и ключи API не нужны: сервер читает только публичную документацию.
+
+### MCP-сервер и скилл одной командой
+
+Выполните в папке своего проекта:
+
+```sh
+uvx telegram-dev install --agent claude    # или codex, cursor
+```
+
+| `--agent` | Куда добавляется MCP-сервер | Куда копируется скилл |
 | --- | --- | --- |
-| Codex | `codex` | MCP в `.codex/config.toml`, скилл в `.agents/skills/telegram-dev` |
-| Claude Code | `claude` | MCP в `.mcp.json`, скилл в `.claude/skills/telegram-dev` |
-| Cursor | `cursor` | MCP в `.cursor/mcp.json`, скилл в `.cursor/skills/telegram-dev` |
+| `claude` | `.mcp.json` | `.claude/skills/telegram-dev` |
+| `codex` | `.codex/config.toml` | `.agents/skills/telegram-dev` |
+| `cursor` | `.cursor/mcp.json` | `.cursor/skills/telegram-dev` |
 
-```sh
-# Codex
-uv run --frozen python scripts/install.py --agent codex --project "/absolute/path/to/your-project"
+Установщик сохраняет остальные настройки, делает копии изменённых файлов и не перезаписывает уже установленный Telegram Dev. Сервер закреплён за установленной версией, поэтому кроме кэша uv на диске ничего держать не нужно. После установки откройте новую сессию агента и разрешите проектный MCP-сервер, если агент спросит. Codex читает настройки проекта, только когда папка проекта отмечена как доверенная.
 
-# Claude Code
-uv run --frozen python scripts/install.py --agent claude --project "/absolute/path/to/your-project"
+Обновить: `uvx telegram-dev@latest install --agent claude --update`.
 
-# Cursor
-uv run --frozen python scripts/install.py --agent cursor --project "/absolute/path/to/your-project"
-```
-
-На Windows путь выглядит, например, так: `--project "C:\Users\you\Projects\my-bot"`.
-
-Установщик подключает MCP и копирует скилл. Посторонние настройки сохраняются, для существующего файла конфигурации создаётся резервная копия. Повторная установка поверх существующего подключения или скилла останавливается с объяснением.
-
-**3. Откройте новую сессию агента.** Разрешите подключение проектного MCP, если приложение запросит это. В Codex проект должен быть доверенным. Оставьте папку Telegram Dev и её `.venv` на месте: подключение использует абсолютные пути к ним. На другой машине установщик нужно запустить заново.
-
-**4. Дайте первое задание.** Например:
-
-> Используй telegram-dev. Проверь состояние базы, загрузи актуальную документацию Bot API и найди, как сделать красную inline-кнопку с custom emoji. Прочитай требования и покажи ссылки на источники. Пока ничего не отправляй в Telegram.
-
-При первом запуске база пустая — это ожидаемо. Агент должен проверить `telegram_corpus_status`, получить страницу через `get_telegram_document` и найти нужные разделы через `search_telegram_docs`.
-
-#### Альтернатива: каталог Claude Code
-
-Если `uv` доступен приложению, выполните внутри Claude Code:
+### Плагин Claude Code
 
 ```text
 /plugin marketplace add Kay0k1/telegram-dev
 /plugin install telegram-dev@telegram-dev-tools
 ```
 
-Затем выполните предложенную приложением перезагрузку или откройте новую сессию. Имя скилла в плагине — `/telegram-dev:telegram-dev`.
+Плагин подключает скилл и MCP-сервер сразу для всех проектов. Выберите плагин или установщик, но не оба.
 
-Это собственный каталог проекта на GitHub. Выберите каталог **или** установщик выше, чтобы не создавать два подключения.
-
-#### Альтернатива: каталог Codex
-
-В Codex CLI с поддержкой плагинов:
+### Только MCP-сервер
 
 ```sh
-codex plugin marketplace add Kay0k1/telegram-dev
-codex plugin add telegram-dev@telegram-dev-tools
+claude mcp add --scope user telegram-knowledge -- uvx telegram-dev serve
 ```
 
-Этот каталог проекта устанавливает скилл и локальный MCP; нужен `uv`. Он ещё не входит в официальную выдачу Codex. Для официальной подачи отдельно подготовлен **Telegram Dev Skill**: инструкции и справочники, которые используют уже доступные агенту инструменты проверки источников. Сервер ему не нужен. [Пакет и порядок подачи](docs/catalog-submissions.md#отдельный-вариант-без-сервера).
+```sh
+codex mcp add telegram-knowledge -- uvx telegram-dev serve
+```
 
-<a id="ru-examples"></a>
-### Что попросить у агента
+Cursor: [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=telegram-knowledge&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJ0ZWxlZ3JhbS1kZXYiLCJzZXJ2ZSJdfQ%3D%3D)
 
-Примеры можно копировать и адаптировать к своему проекту.
+Другие MCP-клиенты:
 
-**Кнопки и custom emoji**
+```json
+{
+  "mcpServers": {
+    "telegram-knowledge": { "command": "uvx", "args": ["telegram-dev", "serve"] }
+  }
+}
+```
 
-> Используй telegram-dev. В существующем боте сделай кнопку «Удалить» красной и добавь custom emoji. Проверь текущий Bot API, ограничения для этого бота и поддержку полей нашей библиотекой. Внеси изменения в код и укажи, что проверено локально, а что нужно проверить в Telegram.
+Инструменты работают и без скилла, но именно скилл заставляет агента пользоваться ими каждый раз.
 
-**Голосовые и кружки**
+## Инструменты
 
-> Используй telegram-dev. Этот ролик должен отправляться как кружок. Проверь метод API и требования к файлу, доработай подготовку и отправку. Сохрани существующий стек проекта.
-
-**Mini Apps**
-
-> Используй telegram-dev. Проверь авторизацию нашей Mini App: как сервер проверяет initData, срок его действия и ошибки. Исправь найденные проблемы по официальной документации.
-
-**Обновления Telegram**
-
-> Используй telegram-dev. Найди официальные изменения Bot API, которые затрагивают клавиатуры и эмодзи. Сопоставь их с установленной версией нашей библиотеки и объясни, какие изменения нужны в проекте. Приведи источники и версии.
-
-<a id="ru-scope"></a>
-### Какие темы охватывает
-
-Скилл содержит карту официальных источников и проверки для разных направлений разработки:
-
-| Направление | Что агент должен учитывать |
+| Инструмент | Что делает |
 | --- | --- |
-| **Боты и Bot API** | Сообщения, клавиатуры, обновления, файлы, права и контекст чата |
-| **Форматирование и эмодзи** | Entities, экранирование, UTF-16 offsets, custom emoji и условия использования |
-| **Стикеры и медиа** | Форматы ресурсов, наборы стикеров, голосовые, видео и кружки |
-| **Mini Apps** | JS bridge, контекст запуска, тема, серверная проверка авторизации |
-| **Telegram API / MTProto / TDLib** | Разработка клиентов, методы и типы, различия авторизации бота и пользователя |
-| **Другие интеграции** | Deep links, widgets, Gateway, Passport, Instant View и темы |
-| **Business и коммерция** | Подключённые бизнес-боты, Stars, платежи, подписки, подарки, платные медиа и истории |
-| **Группы и каналы** | Модерация, админские права, форумы, приватные темы и обновления состояния |
-| **Релизы** | Bot API changelog, API layers, TDLib changelog и официальные анонсы |
+| `search_telegram_docs` | Полнотекстовый поиск по разделам, можно ограничить областью: `bot-api`, `mini-apps`, `telegram-api`, `tdlib`, `releases` и другими |
+| `get_telegram_document` | Читает официальную страницу частями до 40 000 символов; загружает её, если страницы нет или она старше 6 часов |
+| `telegram_corpus_status` | Что проиндексировано, насколько свежее и какие источники не загрузились |
+| `telegram_document_history` | Версии страницы, которые видела эта установка |
+| `telegram_sources` | 52 официальные точки входа по областям API |
 
-Полная карта: [API и источники](skills/telegram-dev/references/surface-map.md). Практические проверки: [по функциям](skills/telegram-dev/references/feature-checks.md) и [по кнопкам и эмодзи](skills/telegram-dev/references/buttons-and-custom-emoji.md).
+Кэш сначала пустой. Страница загружается, когда агент впервые её читает, и сразу индексируется. Загрузить заранее всё, что достижимо из настроенных источников:
 
-<a id="ru-how"></a>
-### Как это работает
-
-```text
-Ваше задание → скилл выбирает API и порядок проверки
-            → MCP получает и ищет официальную документацию
-            → агент вносит изменения в ваш проект и проверяет результат
+```sh
+uvx telegram-dev sync --max-pages 0
+uvx telegram-dev search "sendVideoNote"
+uvx telegram-dev status
 ```
 
-**Скилл** объясняет агенту, как уточнять ожидаемое поведение, выбирать API, учитывать версии библиотек и проверять результат. **MCP-сервер** предоставляет доступ к документам. **Локальный кеш** сохраняет полученные страницы для повторного поиска.
+## Что охватывает скилл
 
-| MCP-инструмент | Назначение |
+| Область | Что проверяет агент |
 | --- | --- |
-| `telegram_corpus_status` | Проверить объём базы, свежесть и пробелы |
-| `get_telegram_document` | Загрузить или прочитать документ по частям; `refresh=true` обновляет страницу |
-| `search_telegram_docs` | Найти разделы документации с фильтром по области API |
-| `telegram_document_history` | Посмотреть версии страницы, сохранённые этой установкой |
-| `telegram_sources` | Найти официальные точки входа по семействам API |
+| Bot API | Сообщения, клавиатуры, обновления, вебхуки, файлы, права |
+| Форматирование и эмодзи | Entities, смещения UTF-16, custom emoji и кому они доступны |
+| Медиа и стикеры | Голосовые, кружки, стикерпаки, ограничения файлов |
+| Mini Apps | JS-мост, параметры запуска, темы, проверка `initData` на сервере |
+| MTProto и TDLib | Авторизация пользователя и бота, схема и слои, версии TDLib |
+| Бизнес и платежи | Бизнес-подключения, Stars, подписки, подарки, платный контент |
+| Группы и каналы | Права администраторов, форумы и темы, модерация |
+| Релизы | Changelog Bot API, слои API, changelog TDLib, официальные анонсы |
 
-Публичный пакет содержит код и скилл; готовая копия всей документации в него не включена. Нужные страницы загружаются по запросу и сразу индексируются. Кеш хранится в пользовательском каталоге кеша вашей ОС, отдельно от папки плагина. Свой путь к базе можно задать через `TELEGRAM_KNOWLEDGE_DB`.
+Скилл лежит в [skills/telegram-dev](skills/telegram-dev/SKILL.md), по справочному файлу на каждую область.
 
-Для предварительного сбора всех обнаруженных страниц и последующего обновления выполните из папки Telegram Dev:
+## Насколько свежая документация
+
+- Страница старше 6 часов при чтении загружается заново. Поиск обновляет до шести устаревших совпадений.
+- Пока сервер работает, раз в 6 часов фоновый цикл проверяет до 120 страниц: точки входа, новые ссылки, самые старые страницы.
+- Если сайт Telegram недоступен, сохраняется прежний текст с пометкой об устаревании и ошибкой, и агент видит, что читает старую копию.
+- GitHub Action раз в сутки проверяет все 52 официальных источника и публикует хеши и ошибки в ветке [`docs-status`](https://github.com/Kay0k1/telegram-dev/tree/docs-status).
+
+Путь к кэшу (`TELEGRAM_KNOWLEDGE_DB`) и интервалы обновления — в [docs/runtime.md](docs/runtime.md).
+
+## Свой сервер
+
+Сервер работает и по Streamable HTTP, чтобы команда пользовалась одним кэшем. В репозитории есть Dockerfile и настройка Caddy с HTTPS: [docs/deployment.md](docs/deployment.md).
 
 ```sh
-# Собрать доступные страницы в пределах настроенных официальных источников
-uv run --frozen telegram-dev sync --max-pages 0
-
-# Проверить состояние базы
-uv run --frozen telegram-dev status
-
-# Обновить документы
-uv run --frozen telegram-dev sync --refresh --max-pages 0
+uvx telegram-dev serve --transport streamable-http --port 8000
 ```
 
-Полный обход может занять время. Он сообщает о недоступных страницах; предварительно запускать его для обычной задачи не требуется.
+## Ограничения
 
-#### Границы возможностей
+- Поиск локальный полнотекстовый (SQLite FTS5), не семантический. Лучше всего работают точные имена методов и английские термины. Есть небольшая таблица русских синонимов.
+- Охват — то, что достижимо из 52 официальных точек входа. История страницы начинается с её первой загрузки в вашей установке.
+- Сервер не входит в Telegram, не отправляет сообщения и не трогает чаты. Он читает только публичные страницы.
+- Скилл улучшает работу агента, но не гарантирует правильный ответ: проверяйте код в Telegram перед выкаткой.
 
-- Поиск — локальный полнотекстовый, с небольшим набором русских поисковых соответствий. Точные имена методов и английские термины обычно полезнее свободного пересказа.
-- История документа — версии, которые успела сохранить ваша установка. Историю релизов агент проверяет отдельно по официальным changelog и анонсам.
-- MCP работает с публичными документами. Доступ к чатам и аккаунту, отправка сообщений и выполнение действий в Telegram требуют отдельных инструментов и разрешений.
-- Проект не содержит закрытых знаний Telegram, всех исходников клиентов или гарантированно полной истории платформы. Скилл помогает проверять факты, но не гарантирует безошибочную работу модели.
-
-<a id="ru-updates"></a>
-### Документация обновляется автоматически
-
-В версии **0.3.0** страницы старше 6 часов проверяются при чтении, а поиск обновляет устаревшие найденные источники. Пока MCP работает, каждые 6 часов фоновая задача обрабатывает до 120 страниц: проверяет точки входа, открывает новые ссылки и обновляет старые документы. Ошибки сети остаются видимыми, ранее загруженный текст сохраняется с отметкой об устаревании.
-
-В репозитории отдельно работает ежедневный монитор всех 52 настроенных официальных источников. Его отчёт содержит даты, хэши изменений и ошибки: [состояние источников](https://github.com/Kay0k1/telegram-dev/tree/docs-status). Это проверка источников проекта; пользовательский кеш обновляется собственным MCP.
-
-Обновить код и установленную копию скилла:
+## Разработка
 
 ```sh
-git pull --ff-only
-uv run --frozen python scripts/install.py --agent codex --project "/absolute/path/to/your-project" --update
-```
-
-Выберите своего агента. Установщик сохраняет настройки и делает резервные копии; при локальных правках скилла останавливается для их сохранения. Для версии 0.2.0 предусмотрена однократная миграция. [Настройки обновления и миграция](docs/runtime.md) · [Ежедневный монитор](docs/maintenance.md).
-
-Для постоянного общего сервера есть **Streamable HTTP, Docker и HTTPS через Caddy**. [Развёртывание MCP](docs/deployment.md) · [Требования официальных каталогов](docs/catalog-submissions.md). Заявка и одобрение подтверждаются кабинетом площадки; готовая упаковка сама по себе их не означает.
-
-<a id="ru-help"></a>
-### Если что-то не работает
-
-| Симптом | Что проверить |
-| --- | --- |
-| Агент не видит инструменты | Откройте новую сессию, проверьте включение MCP и доверие к проекту; папка Telegram Dev и `.venv` должны оставаться на месте |
-| Поиск ничего не находит | Сначала загрузите нужную страницу через `get_telegram_document`, затем ищите по имени метода или английскому термину |
-| Агент ссылается на старые ограничения | Попросите обновить источник с `refresh=true` и проверить версию установленной библиотеки |
-| Установщик сообщает `already configured` или `Skill already exists` | Проверьте существующее подключение и скилл: установщик намеренно не перезаписывает их |
-| Нужно обновить скопированный скилл | Обновите репозиторий и выполните установщик с `--update`; локальные правки защищены. Для установки 0.2.0 нужна [однократная миграция](docs/runtime.md) |
-
-Если проблема осталась, [создайте issue](https://github.com/Kay0k1/telegram-dev/issues): укажите агент, ОС, версии библиотек, исходное задание, ожидаемый результат и фактическое поведение. Не прикладывайте токены, файлы сессий и личную переписку.
-
-<a id="ru-dev"></a>
-### Разработка и вклад в проект
-
-```sh
+git clone https://github.com/Kay0k1/telegram-dev && cd telegram-dev
 uv sync --frozen
 uv run --frozen python -m unittest discover -s tests -v
-uv build
+uv run --frozen telegram-dev install --agent claude --project /path/to/test-project
 ```
 
-Тесты проверяют поиск, разделение API, версии документов, чтение по частям, обновление кэша, вызовы MCP, упаковку и установщик. [CI](https://github.com/Kay0k1/telegram-dev/actions/workflows/tests.yml) запускает проверки и сборку на Linux, macOS и Windows. [Проведённые проверки и их границы](docs/validation.md).
+CI запускает тесты на Linux, macOS и Windows и проверяет Docker-образ. В [docs/validation.md](docs/validation.md) — что проверено вручную и что нет. Issues и pull requests приветствуются; в [tests/behavioral-cases.json](tests/behavioral-cases.json) — сценарии для агентов, которые ещё нужно прогнать в каждом клиенте.
 
-В [tests/behavioral-cases.json](tests/behavioral-cases.json) лежат сценарии для проверки поведения агента. Это заготовки для таких проверок, а не заявление, что все агенты успешно их прошли. Включение плагина в интерфейсе каждого приложения также требует проверки после установки.
+## Лицензия
 
-Полезный вклад: воспроизводимые ошибки, новые сценарии, улучшения карты источников, проверок и установки. Откройте issue или pull request; для изменения логики добавьте целевой регрессионный тест.
-
-### Распространение и лицензия
-
-Исходники и ZIP доступны на GitHub. Для Codex и Claude Code есть собственные каталоги. Для первой официальной подачи в Codex подготовлен отдельный пакет `telegram-dev-skill-openai.zip`. Заявки в официальные каталоги пока не поданы. Наличие манифестов и готового ZIP не означает публикацию в этих магазинах.
-
-Нативные манифесты Codex, Cursor и Claude подключают скилл и MCP. Установщик выше — общий способ подключения в отдельный проект. Python wheel содержит MCP/CLI; установщик и ресурсы скилла берите из репозитория или ZIP релиза. Другие агенты могут подключать сервер при поддержке MCP через stdio, но готовых установщиков для них пока нет.
-
-[MIT](LICENSE) распространяется на оригинальный код и инструкции проекта. Загруженная документация сохраняет права и условия её владельцев — см. [NOTICE](NOTICE).
+[MIT](LICENSE) для кода и скилла. Загруженная документация Telegram остаётся собственностью Telegram, пакет её не содержит ([NOTICE](NOTICE)). Независимый проект, не связан с Telegram.

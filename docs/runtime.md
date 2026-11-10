@@ -31,14 +31,20 @@ uv run --frozen telegram-dev maintain --max-pages 120
 
 ### Обновление самого скилла
 
-Документация и программные релизы обновляются раздельно. Для установки через проектный установщик:
+Документация и программные релизы обновляются раздельно. Если скилл ставился командой `uvx telegram-dev install`:
+
+```sh
+uvx telegram-dev@latest install --agent codex --project "/path/to/your-project" --update
+```
+
+Если скилл ставился из клона репозитория:
 
 ```sh
 git pull --ff-only
-uv run --frozen python scripts/install.py --agent codex --project "/absolute/path/to/your-project" --update
+uv run --frozen telegram-dev install --agent codex --project "/path/to/your-project" --update
 ```
 
-Выберите свой `--agent`. Обновление переносит новый скилл и проверяет подключение MCP, сохраняя остальные настройки и резервные копии. При локальных изменениях скилла или чужом подключении оно останавливается. Установки 0.2.0 не имеют ownership manifest: перед миграцией сохраните свою папку скилла и конфигурацию, удалите старые записи Telegram Dev и установите заново. Новая версия поддерживает последующие обновления через `--update`.
+Выберите свой `--agent`. Обновление переносит новый скилл и проверяет подключение MCP, сохраняя остальные настройки и резервные копии. При локальных изменениях скилла обновление останавливается и ничего не перезаписывает. Установку из клона можно перевести на пакет той же командой `uvx telegram-dev@latest install … --update`: подключение MCP переключится на `uvx`, и клон больше не понадобится.
 
 В каталогах используйте механизм обновления самой площадки. Для скиллов и метаданных OpenAI требуется новый проверенный пакет; обновление источников в удалённом MCP не требует нового скилла на каждую страницу. [Подача и обновления каталогов](catalog-submissions.md), [ежедневный монитор](maintenance.md).
 
@@ -52,4 +58,4 @@ While the MCP process runs, a background cycle every 6 hours checks up to **120 
 
 The environment settings in the table above control the database, age threshold, background enablement, interval, page budget and retry backoff. Run `uv run --frozen telegram-dev maintain --max-pages 120` for one bounded cycle. Background work requires a running server; a permanently hosted MCP continues refreshing between user sessions.
 
-Code and skill releases are separate from documentation checks. For project installs, update the checkout with `git pull --ff-only`, then rerun `scripts/install.py` with your original agent/project and `--update`. It preserves unrelated configuration, creates backups and refuses to overwrite local skill edits or an unmanaged connection. Version 0.2.0 installs have no ownership marker: back up and remove the old Telegram Dev skill and MCP entry before reinstalling once. Marketplace installs use their platform's update mechanism. OpenAI skill/metadata changes require a new reviewed package; remote documentation cache updates do not.
+Code and skill releases are separate from documentation checks. For an install made with `uvx telegram-dev install`, run `uvx telegram-dev@latest install --agent <agent> --project <path> --update`. For an install made from a checkout, run `git pull --ff-only` and `uv run --frozen telegram-dev install --agent <agent> --project <path> --update`; running the `uvx` command instead moves the project to the package and the checkout is no longer needed. Updates preserve unrelated configuration, create backups and refuse to overwrite local skill edits.

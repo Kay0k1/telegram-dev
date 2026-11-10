@@ -4,6 +4,17 @@
 
 **Заявки пока не отправлены.** Здесь нет receipt, идентификатора заявки или подтверждения приёма. Публикация репозитория и собственного каталога Claude Code не означает размещение в официальных каталогах. Перед новой подачей проверьте существующие заявки в соответствующем кабинете.
 
+## PyPI и официальный MCP Registry
+
+Пакет `telegram-dev` на PyPI нужен для команды `uvx telegram-dev …` из README и для [MCP Registry](https://registry.modelcontextprotocol.io). Обе публикации делает workflow [release.yml](../.github/workflows/release.yml) при пуше тега `vX.Y.Z`, но только после разовой настройки владельцем:
+
+1. PyPI → Account settings → Publishing → **Add a pending publisher**: project `telegram-dev`, owner `Kay0k1`, repository `telegram-dev`, workflow `release.yml`, environment `pypi`. До первой загрузки имя не резервируется.
+2. GitHub → Settings → Environments → создать `pypi` (по желанию — с обязательным подтверждением перед запуском).
+3. GitHub → Settings → Variables → Actions: `PUBLISH_PYPI=true`; для реестра дополнительно `PUBLISH_MCP_REGISTRY=true`.
+4. Обновить версию в `pyproject.toml`, манифестах, `server.json` и `CHANGELOG.md` (тест `VersionTests` проверяет совпадение), затем `git tag vX.Y.Z && git push origin vX.Y.Z`.
+
+Реестр проверяет владение пакетом по строке `mcp-name: io.github.Kay0k1/telegram-dev` в README пакета на PyPI (она есть в `README.md` как HTML-комментарий) и авторизуется через GitHub OIDC внутри workflow. Вручную то же самое: `mcp-publisher login github`, затем `mcp-publisher publish` в корне репозитория. Реестр находится в preview; перед публикацией сверьте схему `server.json` с актуальной.
+
 ## Codex / OpenAI
 
 Подача полного плагина проходит через [OpenAI Plugins dashboard](https://platform.openai.com/plugins). Нужны проверенная личность издателя и права владельца организации либо Apps Management Write. Для MCP требуется доступный удалённый HTTPS endpoint и подтверждение владения доменом. После проверок следует review, затем публикация. Изменения скилла и метаданных требуют нового ZIP. В уже созданный skills-only plugin нельзя добавить MCP. [Официальный процесс](https://developers.openai.com/plugins/deploy/submission), [упаковка и поддержка MCP](https://developers.openai.com/plugins/build/plugins).
@@ -38,13 +49,13 @@ uv run --frozen python scripts/package_openai.py --skill-only
 1. Войдите своим аккаунтом в [OpenAI Plugins](https://platform.openai.com/plugins), выберите организацию и проект. Нужны права владельца или Apps Management Write. Завершите individual verification в [Organization settings](https://platform.openai.com/settings/organization/general); проверка личности выполняется издателем в кабинете.
 2. Сначала проверьте существующие drafts. Для новой заявки выберите **Upload new or existing plugin** / **Create plugin**, затем **Skills only**, свою проверенную Developer identity и файл `telegram-dev-skill-openai.zip`.
 3. В **Metadata & Skills** проверьте импортированные значения и дождитесь scans. Required safety/security scans каждого скилла должны пройти; они могут занять до двух часов. Для исправления package-managed полей загрузите исправленный ZIP.
-4. Выберите draft → **Submit for review**, заполните требуемые policy attestations. Сохраните URL/ID заявки, версию `0.3.0`, дату и подтверждённый Review status. После одобрения отдельно выберите **Publish plugin**.
+4. Выберите draft → **Submit for review**, заполните требуемые policy attestations. Сохраните URL/ID заявки, версию `0.4.0`, дату и подтверждённый Review status. После одобрения отдельно выберите **Publish plugin**.
 
 | Поле skills-only пакета | Подготовленное значение |
 | --- | --- |
 | Package name | `telegram-dev-skill` |
 | Display name | `Telegram Dev Skill` |
-| Version | `0.3.0` |
+| Version | `0.4.0` |
 | Category | `Developer Tools` |
 | Subtitle | `Telegram development knowledge` |
 | Русский subtitle | `Знания для разработки Telegram` |

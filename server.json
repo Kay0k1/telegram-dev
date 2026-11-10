@@ -1,0 +1,43 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.Kay0k1/telegram-dev",
+  "title": "Telegram Dev",
+  "description": "Search current official Telegram docs: Bot API, Mini Apps, MTProto, TDLib and changelogs",
+  "repository": {
+    "url": "https://github.com/Kay0k1/telegram-dev",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/Kay0k1/telegram-dev",
+  "version": "0.4.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "telegram-dev",
+      "version": "0.4.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "serve"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "TELEGRAM_KNOWLEDGE_DB",
+          "description": "Path to the SQLite documentation cache (default: the user cache directory)",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "TELEGRAM_DOC_AUTO_SYNC",
+          "description": "Set to 0 to disable the background refresh cycle",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

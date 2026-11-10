@@ -149,3 +149,19 @@ class PackageTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class VersionTests(unittest.TestCase):
+    def test_manifests_match_project_version(self):
+        version = re.search(r'^version = "([^"]+)"', (ROOT / 'pyproject.toml').read_text(encoding='utf-8'), re.M).group(1)
+        for name in ('.claude-plugin/plugin.json', '.codex-plugin/plugin.json', '.cursor-plugin/plugin.json'):
+            with self.subTest(manifest=name):
+                self.assertEqual(json.loads((ROOT / name).read_text(encoding='utf-8'))['version'], version)
+        catalog = json.loads((ROOT / '.claude-plugin/marketplace.json').read_text(encoding='utf-8'))
+        self.assertEqual(catalog['metadata']['version'], version)
+        self.assertEqual({plugin['version'] for plugin in catalog['plugins']}, {version})
+        server = json.loads((ROOT / 'server.json').read_text(encoding='utf-8'))
+        self.assertEqual(server['version'], version)
+        self.assertEqual({package['version'] for package in server['packages']}, {version})
+        readme = (ROOT / 'README.md').read_text(encoding='utf-8')
+        self.assertIn(f'mcp-name: {server["name"]}', readme)

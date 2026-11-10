@@ -1,6 +1,6 @@
 {
   "name": "telegram-dev",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Source-verified Telegram development across Bot API, Mini Apps, MTProto, TDLib and public release history",
   "author": {
     "name": "Kay0k1",

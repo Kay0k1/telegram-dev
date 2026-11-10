@@ -1,0 +1,131 @@
+name: Release
+
+# Pushing a tag vX.Y.Z builds, tests and publishes a GitHub release.
+# PyPI and the MCP Registry are published only when the repository variables
+# PUBLISH_PYPI and PUBLISH_MCP_REGISTRY are set to 'true'.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: python -m pip install uv
+      - run: uv sync --frozen
+
+      - name: Check that the tag matches the project version
+        shell: bash
+        run: |
+          version="$(uv run --frozen python -c 'import tomlkit; print(tomlkit.parse(open("pyproject.toml").read())["project"]["version"])')"
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME does not match version $version"; exit 1; }
+          grep -q "^## \[$version\]" CHANGELOG.md || { echo "CHANGELOG.md has no section for $version"; exit 1; }
+
+      - run: uv run --frozen python -m unittest discover -s tests -v
+      - run: uv build
+
+      - name: Source and skill archives
+        shell: bash
+        run: |
+          git archive --format=zip --prefix="telegram-dev-$GITHUB_REF_NAME/" -o "dist/telegram-dev-$GITHUB_REF_NAME.zip" HEAD
+          uv run --frozen python scripts/package_openai.py --skill-only
+          cd dist && sha256sum * > SHA256SUMS
+
+      - name: Install the built wheel into a fresh project
+        shell: bash
+        run: |
+          project="$(mktemp -d)"
+          uvx --from dist/*.whl telegram-dev install --agent claude --project "$project"
+          test -f "$project/.claude/skills/telegram-dev/SKILL.md"
+          grep -q '"uvx"' "$project/.mcp.json"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Create the release from CHANGELOG.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '$0 ~ "^## \\[" v "\\]" {on=1; next} /^## \[/ {on=0} on' CHANGELOG.md > notes.md
+          gh release create "$GITHUB_REF_NAME" dist/* --title "Telegram Dev $GITHUB_REF_NAME" --notes-file notes.md --verify-tag
+
+  pypi:
+    needs: build
+    if: vars.PUBLISH_PYPI == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/telegram-dev/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Keep only Python distributions
+        run: find dist -type f ! -name '*.whl' ! -name '*.tar.gz' -delete
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  mcp-registry:
+    needs: pypi
+    if: vars.PUBLISH_MCP_REGISTRY == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.9
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+      - name: Download and verify mcp-publisher
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="mcp-publisher_linux_amd64.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+      - name: Wait for PyPI to serve the new version
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          for _ in $(seq 30); do
+            curl --fail --silent "https://pypi.org/pypi/telegram-dev/$version/json" >/dev/null && exit 0
+            sleep 10
+          done
+          echo "PyPI does not list telegram-dev $version yet"; exit 1
+      - run: ./mcp-publisher login github-oidc
+      - run: ./mcp-publisher publish

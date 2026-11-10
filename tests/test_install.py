@@ -9,7 +9,7 @@ from unittest.mock import patch
 import tomlkit
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('installer', ROOT / 'scripts/install.py')
+spec = importlib.util.spec_from_file_location('installer', ROOT / 'telegram_dev_install.py')
 installer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(installer)
 
@@ -187,3 +187,54 @@ class InstallTests(unittest.TestCase):
             self.assertEqual(config.read_bytes(), before_config)
             self.assertFalse(list(skill.parent.glob('.telegram-dev-stage-*')))
             self.assertFalse(list(config.parent.glob(config.name + '.telegram-dev-*')))
+
+
+class PackagedInstallTests(unittest.TestCase):
+    """Installs from the published package rather than from a checkout."""
+
+    def packaged(self, folder, direct_url=None):
+        site = Path(folder) / 'site-packages'
+        shutil.copytree(ROOT / 'skills/telegram-dev', site / 'telegram_dev_skill')
+        spec = importlib.util.spec_from_loader('telegram_dev_skill', loader=None, is_package=True)
+        spec.submodule_search_locations = [str(site / 'telegram_dev_skill')]
+
+        class Distribution:
+            def read_text(self, name):
+                return json.dumps(direct_url) if name == 'direct_url.json' and direct_url else None
+
+        return [patch.object(installer, 'ROOT', site),
+                patch.object(installer.importlib.util, 'find_spec', lambda name: spec),
+                patch.object(installer.importlib.metadata, 'version', lambda name: '9.9.9'),
+                patch.object(installer.importlib.metadata, 'distribution', lambda name: Distribution())]
+
+    def run_install(self, direct_url=None, agent='claude', source=None):
+        with tempfile.TemporaryDirectory() as folder:
+            project = Path(folder) / 'project'
+            project.mkdir()
+            patches = self.packaged(folder, direct_url)
+            for item in patches:
+                item.start()
+            try:
+                result = installer.install(agent, project, source=source)
+                config = Path(result['config'])
+                data = tomlkit.parse(config.read_text(encoding='utf-8')) if agent == 'codex' else json.loads(config.read_text(encoding='utf-8'))
+                server = data['mcp_servers' if agent == 'codex' else 'mcpServers']['telegram-knowledge']
+                skill = Path(result['skill'])
+                self.assertTrue((skill / 'references/surface-map.md').is_file())
+                self.assertEqual(result['version'], '9.9.9')
+                return {'command': server['command'], 'args': list(server['args'])}
+            finally:
+                for item in reversed(patches):
+                    item.stop()
+
+    def test_index_install_pins_published_version(self):
+        self.assertEqual(self.run_install(), {'command': 'uvx', 'args': ['--from', 'telegram-dev==9.9.9', 'telegram-dev', 'serve']})
+
+    def test_git_install_pins_requested_revision(self):
+        direct = {'url': 'https://github.com/Kay0k1/telegram-dev', 'vcs_info': {'vcs': 'git', 'commit_id': 'abc123', 'requested_revision': 'v9.9.9'}}
+        self.assertEqual(self.run_install(direct)['args'][1], 'git+https://github.com/Kay0k1/telegram-dev@v9.9.9')
+        del direct['vcs_info']['requested_revision']
+        self.assertEqual(self.run_install(direct, agent='codex')['args'][1], 'git+https://github.com/Kay0k1/telegram-dev@abc123')
+
+    def test_explicit_source_overrides_detection(self):
+        self.assertEqual(self.run_install(source='telegram-dev')['args'][:2], ['--from', 'telegram-dev'])

@@ -107,3 +107,17 @@ class KnowledgeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CliTests(unittest.TestCase):
+    def test_install_subcommand_delegates_to_installer(self):
+        import telegram_dev_install
+        with patch.object(telegram_dev_install, "install", return_value={"ok": True}) as install, \
+                patch("builtins.print"):
+            k.main(["install", "--agent", "cursor", "--project", "/tmp/project", "--from", "spec"])
+        install.assert_called_once_with("cursor", "/tmp/project", update=False, source="spec")
+
+    def test_version_flag(self):
+        with patch("builtins.print") as printed:
+            k.main(["--version"])
+        self.assertRegex(printed.call_args.args[0], r"^\d+\.\d+\.\d+")
