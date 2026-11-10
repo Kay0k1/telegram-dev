@@ -1,0 +1,25 @@
+{
+  "task": "miniapp-sell-for-ton",
+  "config": "plugin-noweb",
+  "run": 1,
+  "exit": 0,
+  "seconds": 147.7,
+  "project": "/tmp/tgdev-evals-o3ka4tkp/plugin-noweb-miniapp-sell-for-ton-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-o3ka4tkp/plugin-noweb-miniapp-sell-for-ton-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-o3ka4tkp/plugin-noweb-miniapp-sell-for-ton-1\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "task": "bot-vs-mtproto-history",
+  "config": "plugin-noweb",
+  "run": 1,
+  "exit": 0,
+  "seconds": 70.7,
+  "project": "/tmp/tgdev-evals-o3ka4tkp/plugin-noweb-bot-vs-mtproto-history-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-o3ka4tkp/plugin-noweb-bot-vs-mtproto-history-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-o3ka4tkp/plugin-noweb-bot-vs-mtproto-history-1\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}

@@ -1,10 +1,26 @@
 # Проверки / Validation
 
+## Agent evals — 2026-11-10 (Linux)
+
+Does the plugin change what an agent answers? 11 Telegram and TON tasks with rubrics checked against the official pages, run with Codex CLI 0.167.0 (`gpt-6.1-sol`, effort `ultra`) and telegram-dev 0.5.0 from PyPI, each in a fresh project, in four configurations. Details, per-task results, transcripts and limitations: [evals/README.md](../evals/README.md).
+
+| Configuration | Rubric facts | Tasks fully correct | Wrong claims |
+| --- | --- | --- | --- |
+| Telegram Dev + Codex web access | 45/47 | 9/11 | 0 |
+| Codex web access only | 45/47 | 9/11 | 0 |
+| Telegram Dev, web access off | 45/47 | 9/11 | 0 |
+| Neither | 38/47 | 8/11 | 1 |
+
+- With web access, Codex read core.telegram.org and docs.ton.org itself and matched the plugin on every task.
+- With web access off, only the plugin runs knew Bot API 10.4 (HTML widgets) and the current TON names (Gram, Telegram Money, WalletTg); a second run of these tasks gave the same split. The run without the plugin named the old ones (Toncoin, Wallet in Telegram, Wallet V5).
+- On the Tolk task the plugin runs scored one fact lower: they did not mention FunC, which the run without the plugin called Tolk's predecessor.
+- Not measured: Claude Code (headless login expired on the test machine), Cursor, other models, executing the generated code.
+
 ## Unreleased: bot library docs — 2026-11-10 (Linux)
 
 | Check | Result |
 | --- | --- |
-| Repository tests | **70 passed**, including 15 new library tests: URL boundaries per host (no query strings, assets, `_modules`/`_static`, generated type and method pages, `/ref/`, translations, other repositories), the `telegram.ext.` prefix not matching `telegram.externalreplyinfo`, Markdown twins for grammY and the PTB wiki, the grammY sitemap and PTB wiki sidebar feeding discovery without search chunks, pinned versions read but never queued, Sphinx anchor and `[source]` cleanup, and ranking |
+| Repository tests | **72 passed** with the evals from main, including 15 new library tests: URL boundaries per host (no query strings, assets, `_modules`/`_static`, generated type and method pages, `/ref/`, translations, other repositories), the `telegram.ext.` prefix not matching `telegram.externalreplyinfo`, Markdown twins for grammY and the PTB wiki, the grammY sitemap and PTB wiki sidebar feeding discovery without search chunks, pinned versions read but never queued, Sphinx anchor and `[source]` cleanup, and ranking |
 | Library crawl | Real crawl into a temporary `TELEGRAM_KNOWLEDGE_DB` from the four library entry points plus seven core bot pages, following library links only: 58 s, **aiogram 55 pages** (3.31.0, `latest`; 0.71 M characters), **python-telegram-bot 128** (85 pages of v22.8 `stable` docs and 43 wiki pages; 3.90 M characters, of which the `Bot` class page is 1.6 M), **grammY 69** (68 pages and the sitemap index; 0.65 M characters). 2,838 search chunks in total; no pinned-version pages entered the crawl. Compared with each Sphinx site's `searchindex.js`, every in-scope aiogram (55/55) and PTB (85/85) page was reached |
 | Library errors | Three PTB wiki links return 404 on GitHub itself (`Bot-API-Backward-Compatibility`, `Types-Of-Handlers` — the page is `Types-of-Handlers`, `location_keyboard,-contact_keyboard`) |
 | Source monitor | `scripts/check_sources.py` fetched the four new entry points: aiogram, PTB, the PTB wiki sidebar and the grammY sitemap (61 sources in total) |

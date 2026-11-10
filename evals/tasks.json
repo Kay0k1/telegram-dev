@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "checked_on": "2026-11-10",
+  "prompt_suffix": "\n\nОтветь в чате: код и короткое объяснение. Файлы не создавай и не меняй.",
+  "notes": "Rubric facts were checked against the official pages listed in `sources` on the date above. A `must` fact counts when any of its patterns matches the final answer (case-insensitive); `manual` facts and every `must_not` are decided by reading the answer, with the decision written to grades.json. Patterns only help the reader: grades.json overrides them.",
+  "tasks": [
+    {
+      "id": "bot-red-button-emoji",
+      "area": "Bot API",
+      "from_case": "Сделай кнопку под сообщением бота красной; callback должен остаться прежним. / Вставь premium emoji перед текстом этой кнопки бота.",
+      "prompt": "Сделай inline-кнопку под сообщением моего бота красной и с premium (custom) emoji перед текстом. callback_data должен остаться `buy:42`. Покажи reply_markup для Bot API и скажи, есть ли ограничения.",
+      "sources": ["https://core.telegram.org/bots/api#inlinekeyboardbutton"],
+      "must": [
+        {"id": "style-danger", "fact": "Red is `style: \"danger\"` on InlineKeyboardButton", "patterns": ["style[\"'\\s:=]+danger"]},
+        {"id": "icon-field", "fact": "Custom emoji goes into `icon_custom_emoji_id`", "patterns": ["icon_custom_emoji_id"]},
+        {"id": "callback-kept", "fact": "Keeps `callback_data: \"buy:42\"`", "patterns": ["callback_data[\"'\\s:=]+buy:42"]},
+        {"id": "eligibility", "fact": "Names the eligibility rule: bot with a purchased Fragment username, or messages sent directly by the bot to private/group/supergroup chats when the bot owner has Premium", "patterns": ["fragment", "premium[^\\n]{0,80}(owner|владел)|(owner|владел)[^\\n]{0,80}premium"]}
+      ],
+      "must_not": [
+        {"id": "colors-unsupported", "fact": "Claims button colors or button custom emoji are not supported by the Bot API"},
+        {"id": "emoji-in-label", "fact": "Puts the custom emoji into the label as `<tg-emoji>` HTML or replaces it with a sticker"}
+      ]
+    },
+    {
+      "id": "bot-video-note",
+      "area": "Bot API",
+      "from_case": "Бот должен отправлять загруженное видео кружком.",
+      "prompt": "Бот на Python (aiogram 3) должен отправлять видео, которое загрузил пользователь, кружком (video note). Как это сделать правильно и какие требования к видео?",
+      "sources": ["https://core.telegram.org/bots/api#sendvideonote"],
+      "must": [
+        {"id": "method", "fact": "Uses sendVideoNote / `send_video_note`", "patterns": ["send_?video_?note"]},
+        {"id": "square", "fact": "Video must be square (width = height; `length` is the diameter)", "patterns": ["квадрат", "square"]},
+        {"id": "one-minute", "fact": "Up to 1 minute long", "patterns": ["(1|одн\\w*)\\s*(мин|minute)", "60\\s*(с\\b|сек|s\\b|second)"]},
+        {"id": "no-url", "fact": "Sending a video note by URL is not supported: upload the file (multipart) or pass a file_id", "manual": true, "patterns": ["(url|ссылк)[^.\\n]{0,80}(не поддерж|unsupported|not supported|нельзя)", "(не поддерж|unsupported|not supported|нельзя)[^.\\n]{0,80}(url|ссылк)"]}
+      ],
+      "must_not": [
+        {"id": "send-video", "fact": "Recommends sendVideo as the way to get a round video"}
+      ]
+    },
+    {
+      "id": "miniapp-initdata",
+      "area": "Mini Apps",
+      "from_case": "Сделай вход в Mini App через Telegram. / Партнер должен проверять initData нашего Mini App, но токен бота ему давать нельзя.",
+      "prompt": "В нашем Telegram Mini App бэкенд на Python должен проверять пользователя по initData. Кроме того, сервис партнёра должен проверять те же данные, но токен бота мы ему дать не можем. Напиши обе проверки.",
+      "sources": ["https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app", "https://core.telegram.org/bots/webapps#validating-data-for-third-party-use"],
+      "must": [
+        {"id": "webappdata-key", "fact": "Secret key = HMAC-SHA256 of the bot token with the key `WebAppData`", "patterns": ["WebAppData"]},
+        {"id": "check-string", "fact": "Data-check-string: all fields except `hash`, sorted alphabetically, `key=value` joined by `\\n`", "patterns": ["sort"]},
+        {"id": "auth-date", "fact": "Checks `auth_date` freshness", "patterns": ["auth_date"]},
+        {"id": "ed25519", "fact": "Third party verifies the `signature` field with Ed25519, without the bot token", "patterns": ["ed25519"]},
+        {"id": "bot-id-prefix", "fact": "Third-party check string starts with `<bot_id>:WebAppData` and excludes both `hash` and `signature`", "patterns": [":WebAppData"]},
+        {"id": "public-key", "fact": "Uses Telegram's published production key `e7bf03a2…242d` (or points to the official page for it) and does not invent a key", "patterns": ["e7bf03a2fa4602af4580703d88dda5bb59f32ed8b02a56c187fe7d34caed242d", "validating-data-for-third-party-use"]}
+      ],
+      "must_not": [
+        {"id": "trust-unsafe", "fact": "Trusts `initDataUnsafe` on the server"},
+        {"id": "share-token", "fact": "Asks to share the bot token (or a token-derived secret) with the partner"},
+        {"id": "wrong-key", "fact": "Presents a made-up hex string as Telegram's production public key"}
+      ]
+    },
+    {
+      "id": "bot-api-latest",
+      "area": "Bot API releases",
+      "from_case": "Эта функция появилась в новом релизе Telegram, добавь её в существующий проект.",
+      "prompt": "Какая сейчас последняя версия Bot API и что в ней главного нового? Хочу использовать главную новинку в своём боте на aiogram 3 — покажи как.",
+      "sources": ["https://core.telegram.org/bots/api-changelog", "https://core.telegram.org/bots/api#sendwidget"],
+      "must": [
+        {"id": "version", "fact": "Latest is Bot API 10.4 (November 9, 2026)", "patterns": ["10\\.4"]},
+        {"id": "widgets", "fact": "Names HTML widgets / `sendWidget` as the headline change", "patterns": ["sendWidget", "send_widget", "виджет", "widget"]},
+        {"id": "private-only", "fact": "In production, widgets can be sent only to private chats (and are protected content)", "manual": true, "patterns": ["(только|only)[^.\\n]{0,60}(личн|private)"]},
+        {"id": "sdk-gap", "fact": "Says aiogram may not support the new method yet and shows a raw API call or a version check", "manual": true}
+      ],
+      "must_not": [
+        {"id": "old-version", "fact": "Names an earlier version as the latest one"},
+        {"id": "invented-api", "fact": "Invents method or field names that are not in Bot API 10.4"}
+      ]
+    },
+    {
+      "id": "bot-vs-mtproto-history",
+      "area": "Actor limits",
+      "from_case": "Сделай такую же функцию в клиенте Telegram на TDLib. (actor limits)",
+      "prompt": "Хочу, чтобы мой бот выгрузил все посты публичного канала за последний год (я не админ этого канала) и сохранил тексты в базу. Какими методами Bot API это сделать?",
+      "sources": ["https://core.telegram.org/bots/api", "https://core.telegram.org/method/messages.getHistory", "https://core.telegram.org/api/obtaining_api_id"],
+      "must": [
+        {"id": "no-bot-history", "fact": "Bot API has no method to read a channel's past messages; a bot only gets new updates where it is a member/admin", "manual": true},
+        {"id": "user-client", "fact": "Points to a user-account MTProto client (Telethon, Pyrogram, TDLib, …)", "patterns": ["mtproto", "telethon", "pyrogram", "tdlib", "gramjs", "юзербот", "userbot"]},
+        {"id": "history-method", "fact": "Names the actual history call (`messages.getHistory`, Telethon `iter_messages`, TDLib `getChatHistory`, …)", "patterns": ["messages\\.getHistory", "iter_messages", "get_messages", "get_chat_history", "getChatHistory"]},
+        {"id": "api-id", "fact": "Needs `api_id`/`api_hash` from my.telegram.org", "patterns": ["api_id", "my\\.telegram\\.org"]}
+      ],
+      "must_not": [
+        {"id": "invented-bot-method", "fact": "Presents a non-existent Bot API method (e.g. getChatHistory, getMessages) as the way to do it"}
+      ]
+    },
+    {
+      "id": "miniapp-sell-for-ton",
+      "area": "Payments / TON rules",
+      "from_case": "В Mini App продаем цифровой доступ к курсу. Добавь оплату и автоматическую выдачу доступа.",
+      "prompt": "В нашем Telegram Mini App (игра) хотим продавать премиум-скин за 2 TON. Напиши, как принять оплату: фронтенд и проверку на бэкенде.",
+      "sources": ["https://core.telegram.org/bots/payments-stars", "https://telegram.org/tos/bot-developers#6-2-digital-goods-and-services", "https://core.telegram.org/bots/blockchain-guidelines"],
+      "must": [
+        {"id": "stars-rule", "fact": "Digital goods in Mini Apps must be paid exclusively in Telegram Stars", "patterns": ["(stars|звёзд|звезд)[^\\n]{0,200}(digital|цифров)|(digital|цифров)[^\\n]{0,200}(stars|звёзд|звезд)"]},
+        {"id": "xtr", "fact": "Invoice currency `XTR`", "patterns": ["XTR"]},
+        {"id": "invoice-flow", "fact": "Uses `createInvoiceLink` + `Telegram.WebApp.openInvoice` (or sendInvoice) and grants the item on `successful_payment`", "patterns": ["createInvoiceLink", "create_invoice_link", "openInvoice"]},
+        {"id": "ton-connect-scope", "fact": "Keeps TON Connect only for permitted on-chain interactions, not as the payment rail for the digital skin", "manual": true}
+      ],
+      "must_not": [
+        {"id": "ton-payment", "fact": "Implements a TON Connect payment for the skin as the recommended solution"}
+      ]
+    },
+    {
+      "id": "ton-proof-login",
+      "area": "TON Connect",
+      "from_case": "new (TON)",
+      "prompt": "Сделай вход в наше веб-приложение через TON-кошелёк: фронтенд на @tonconnect/ui-react, бэкенд на Node.js. Бэкенд должен быть уверен, что пользователь действительно владеет адресом.",
+      "sources": ["https://docs.ton.org/applications/ton-connect/how-to/ton-proof"],
+      "must": [
+        {"id": "ton-proof", "fact": "Uses `ton_proof` requested via `setConnectRequestParameters`", "patterns": ["ton_proof", "tonProof"]},
+        {"id": "payload", "fact": "Backend issues a random, single-use, short-lived payload and consumes it once", "manual": true, "patterns": ["(одноразов|single[- ]use|one[- ]time|nonce)"]},
+        {"id": "message-format", "fact": "Rebuilds the signed message `ton-proof-item-v2/` + address + domain + timestamp + payload", "patterns": ["ton-proof-item-v2"]},
+        {"id": "digest", "fact": "Verifies Ed25519 over `sha256(0xffff ++ \"ton-connect\" ++ sha256(message))`", "patterns": ["ffff[^\\n]{0,80}ton-connect|ton-connect[^\\n]{0,80}ffff"]},
+        {"id": "domain-time", "fact": "Checks domain and timestamp window", "patterns": ["domain[^\\n]*\\n?[^\\n]*timestamp|timestamp[^\\n]*\\n?[^\\n]*domain"]},
+        {"id": "state-init", "fact": "Gets the public key from `walletStateInit` (or a validated `get_public_key`) and checks the address derived from it equals the connected address", "patterns": ["walletStateInit", "state_?init"]}
+      ],
+      "must_not": [
+        {"id": "client-only", "fact": "Trusts the connected address on the frontend without backend proof verification"},
+        {"id": "trust-sdk-pubkey", "fact": "Trusts `account.publicKey` from the client without tying it to the address"}
+      ]
+    },
+    {
+      "id": "ton-jetton-transfer",
+      "area": "TON contracts",
+      "from_case": "new (TON)",
+      "prompt": "Нужно отправить 25 USDT (жетон в сети TON) с нашего горячего кошелька на адрес пользователя. Напиши код на TypeScript с @ton/ton.",
+      "sources": ["https://docs.ton.org/contracts/standard/tokens/jettons/transfer", "https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md"],
+      "must": [
+        {"id": "own-jetton-wallet", "fact": "Sends to the sender's own jetton wallet found via `get_wallet_address` on the jetton master", "patterns": ["get_wallet_address", "getWalletAddress"]},
+        {"id": "opcode", "fact": "Transfer opcode `0x0f8a7ea5`", "patterns": ["0x0?f8a7ea5"]},
+        {"id": "decimals", "fact": "USDT has 6 decimals: 25 USDT = 25 000 000 base units", "patterns": ["25_?000_?000", "10\\s*\\*\\*\\s*6", "\\b1e6\\b", "10n\\s*\\*\\*\\s*6n", "decimals[^\\n]{0,30}\\b6\\b", "\\b6\\b[^\\n]{0,20}(decimals|знак)"]},
+        {"id": "forward", "fact": "Sets `forward_ton_amount` and attaches Gram/TON for gas to the jetton wallet message", "patterns": ["forward_?ton_?amount", "forwardTonAmount", "forward amount"]}
+      ],
+      "must_not": [
+        {"id": "to-master", "fact": "Sends the transfer to the jetton master or to the recipient's jetton wallet"},
+        {"id": "nano-amount", "fact": "Encodes 25 USDT with `toNano(25)` (9 decimals)", "patterns": ["storeCoins\\(\\s*toNano\\(\\s*[\"'`]?25[\"'`]?\\s*\\)"]}
+      ]
+    },
+    {
+      "id": "ton-tolk-contract",
+      "area": "TON contracts",
+      "from_case": "new (TON)",
+      "prompt": "Напиши простой смарт-контракт счётчика для TON: хранит число, увеличивает его по сообщению от любого пользователя, сбрасывает только владелец, есть get-метод. На каком языке сейчас правильно писать?",
+      "sources": ["https://docs.ton.org/tolk/overview", "https://docs.ton.org/tolk/from-func/tolk-vs-func"],
+      "must": [
+        {"id": "tolk", "fact": "Recommends Tolk as the current language", "patterns": ["tolk"]},
+        {"id": "func-legacy", "fact": "Treats FunC as the previous language (migration/legacy), not the default", "manual": true},
+        {"id": "entrypoint", "fact": "Uses the current entrypoint `fun onInternalMessage(in: InMessage)`", "patterns": ["onInternalMessage\\(\\s*in\\s*:\\s*InMessage"]},
+        {"id": "getter", "fact": "Declares a getter with `get fun`", "patterns": ["get fun"]}
+      ],
+      "must_not": [
+        {"id": "func-main", "fact": "Gives the main contract in FunC"}
+      ]
+    },
+    {
+      "id": "ton-telegram-wallet-naming",
+      "area": "TON naming",
+      "from_case": "new (TON)",
+      "prompt": "Наш сервис принимает платежи в TON. Пользователи пишут, что платят из кошелька, встроенного в Telegram. Как сейчас официально называются монета, этот кошелёк и его смарт-контракт? Что нам учесть, если мы проверяем владение адресом через ton_proof?",
+      "sources": ["https://docs.ton.org/onboarding/wallet-apps/telegram", "https://docs.ton.org/contracts/standard/wallets/telegram/overview", "https://docs.ton.org/applications/ton-connect/how-to/ton-proof"],
+      "must": [
+        {"id": "gram", "fact": "The coin is called Gram", "patterns": ["\\bgrams?\\b", "грам"]},
+        {"id": "telegram-money", "fact": "The built-in wallet is Telegram Money", "patterns": ["telegram money"]},
+        {"id": "wallettg", "fact": "Its contract is WalletTg", "patterns": ["wallettg", "tg-wallet", "tgwallet"]},
+        {"id": "key-rotation", "fact": "WalletTg can rotate its signing key without changing the address, so the key must come from a validated on-chain `get_public_key`, not only from stateInit", "patterns": ["get_public_key"]}
+      ],
+      "must_not": [
+        {"id": "old-wallet", "fact": "Says the built-in wallet is a standard v4/W5 wallet or presents `@wallet` custodial Wallet as the current native wallet"}
+      ]
+    },
+    {
+      "id": "bot-utf16-entities",
+      "area": "Bot API (control)",
+      "from_case": "Сделай слово после emoji жирным через entities. Проект на Python.",
+      "prompt": "Python, Bot API без библиотек: отправь текст '🔥 Скидка сегодня' и сделай слово «Скидка» жирным через entities (без parse_mode). Покажи точные offset и length.",
+      "sources": ["https://core.telegram.org/bots/api#messageentity"],
+      "must": [
+        {"id": "offset", "fact": "offset = 3 (🔥 is two UTF-16 code units plus a space)", "patterns": ["offset[\"'\\s:=]+3\\b"]},
+        {"id": "length", "fact": "length = 6", "patterns": ["length[\"'\\s:=]+6\\b"]},
+        {"id": "utf16", "fact": "Explains offsets are in UTF-16 code units", "patterns": ["utf-?16"]}
+      ],
+      "must_not": [
+        {"id": "python-offset", "fact": "Uses the Python code-point offset 2", "patterns": ["offset[\"'\\s:=]+2\\b"]}
+      ]
+    }
+  ]
+}

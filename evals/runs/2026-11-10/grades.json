@@ -1,0 +1,436 @@
+{
+  "bot-red-button-emoji.plugin.1": {
+    "must_not": {
+      "colors-unsupported": false,
+      "emoji-in-label": false
+    },
+    "note": "Correct JSON; eligibility rule quoted from InlineKeyboardButton, adds that Premium alone is not enough for channels and inline results."
+  },
+  "bot-red-button-emoji.baseline.1": {
+    "must_not": {
+      "colors-unsupported": false,
+      "emoji-in-label": false
+    },
+    "note": "Same answer as with the plugin; the agent opened the Bot API page through web search."
+  },
+  "bot-video-note.plugin.1": {
+    "must": {
+      "no-url": true
+    },
+    "must_not": {
+      "send-video": false
+    },
+    "note": "answer_video_note with an ffmpeg crop to a square, 60 s, re-upload because file_id cannot change the media type; 20/50 MB limits; URL unsupported."
+  },
+  "bot-video-note.baseline.1": {
+    "must": {
+      "no-url": true
+    },
+    "must_not": {
+      "send-video": false
+    },
+    "note": "Same content as with the plugin."
+  },
+  "miniapp-initdata.plugin.1": {
+    "must_not": {
+      "trust-unsafe": false,
+      "share-token": false,
+      "wrong-key": false
+    },
+    "note": "Both checks correct: HMAC excludes only hash, Ed25519 excludes hash and signature with the bot_id:WebAppData prefix; production and test keys match the page."
+  },
+  "miniapp-initdata.baseline.1": {
+    "must_not": {
+      "trust-unsafe": false,
+      "share-token": false,
+      "wrong-key": false
+    },
+    "note": "Same as with the plugin, including both published keys."
+  },
+  "bot-api-latest.plugin.1": {
+    "must": {
+      "private-only": true,
+      "sdk-gap": true
+    },
+    "must_not": {
+      "old-version": false,
+      "invented-api": false
+    },
+    "note": "10.4 / Nov 9, widgets, private chats only, no forwarding, 32 KB / 4 KB limits; aiogram 3.31.0 supports 10.3 (true on PyPI today), so sendWidget through a custom TelegramMethod. Parameters html and caption exist; TelegramWidget.copyText exists."
+  },
+  "bot-api-latest.baseline.1": {
+    "must": {
+      "private-only": true,
+      "sdk-gap": true
+    },
+    "must_not": {
+      "old-version": false,
+      "invented-api": false
+    },
+    "note": "Same facts as with the plugin; html and height parameters, TelegramWidget.ready()/request() and answerWidgetQuery all exist."
+  },
+  "bot-vs-mtproto-history.plugin.1": {
+    "must": {
+      "no-bot-history": true
+    },
+    "must_not": {
+      "invented-bot-method": false
+    },
+    "note": "No Bot API method, 24 h update queue; messages.getHistory is user-only; Telethon iter_messages with api_id from my.telegram.org."
+  },
+  "bot-vs-mtproto-history.baseline.1": {
+    "must": {
+      "no-bot-history": true
+    },
+    "must_not": {
+      "invented-bot-method": false
+    },
+    "note": "Same as with the plugin."
+  },
+  "miniapp-sell-for-ton.plugin.1": {
+    "must": {
+      "ton-connect-scope": false
+    },
+    "must_not": {
+      "ton-payment": false
+    },
+    "note": "Stars/XTR with createInvoiceLink + openInvoice, grant on successful_payment with charge-id dedup, refundStarPayment and /paysupport. Says TON is not allowed for the skin but does not say what TON Connect is still allowed for (rubric fact missing)."
+  },
+  "miniapp-sell-for-ton.baseline.1": {
+    "must": {
+      "ton-connect-scope": false
+    },
+    "must_not": {
+      "ton-payment": false
+    },
+    "note": "Same flow as with the plugin. Says 2 TON via TON Connect is not allowed but not what TON Connect remains for (rubric fact missing)."
+  },
+  "ton-jetton-transfer.plugin.1": {
+    "must": {
+      "forward": true
+    },
+    "must_not": {
+      "to-master": false,
+      "nano-amount": false
+    },
+    "note": "Pattern missed it: forward_ton_amount is set with storeCoins(1n) and 0.1 TON is attached. Sends to the sender's jetton wallet from getWalletAddress, 25_000_000n with 6 decimals."
+  },
+  "ton-jetton-transfer.baseline.1": {
+    "must": {
+      "forward": true
+    },
+    "must_not": {
+      "to-master": false,
+      "nano-amount": false
+    },
+    "note": "Same code as with the plugin (forward amount 1 nanoton, 0.1 TON attached)."
+  },
+  "ton-proof-login.plugin.1": {
+    "must": {
+      "payload": true,
+      "digest": true
+    },
+    "must_not": {
+      "client-only": false,
+      "trust-sdk-pubkey": false
+    },
+    "note": "Pattern missed the digest written as Buffer.from([0xff, 0xff]) + 'ton-connect'. Redis single-use challenge consumed by a Lua script. Also handles WalletTg: matches the trampoline hash (same as docs.ton.org) and reads the live get_public_key, as the current page requires."
+  },
+  "ton-proof-login.baseline.1": {
+    "must": {
+      "payload": true,
+      "digest": true,
+      "domain-time": true
+    },
+    "must_not": {
+      "client-only": false,
+      "trust-sdk-pubkey": false
+    },
+    "note": "Patterns missed the digest and the domain/timestamp checks, which are present (domain literal + lengthBytes, 300 s window). Supports V3/V4/V5 from stateInit and says WalletTg needs a separate handler with the live key, without code for it."
+  },
+  "ton-tolk-contract.plugin.1": {
+    "must": {
+      "func-legacy": false
+    },
+    "must_not": {
+      "func-main": false
+    },
+    "note": "Current Tolk: contract declaration, struct opcodes, lazy match, onInternalMessage(in: InMessage), get fun. FunC is not mentioned at all, so the 'FunC is legacy' fact is missing."
+  },
+  "ton-tolk-contract.baseline.1": {
+    "must": {
+      "func-legacy": false
+    },
+    "must_not": {
+      "func-main": false
+    },
+    "note": "Same structure as with the plugin; FunC not mentioned."
+  },
+  "ton-telegram-wallet-naming.plugin.1": {
+    "must_not": {
+      "old-wallet": false
+    },
+    "note": "Gram (formerly Toncoin), Telegram Money, WalletTg; key rotation without address change, so the live get_public_key with the trampoline hash check."
+  },
+  "ton-telegram-wallet-naming.baseline.1": {
+    "must_not": {
+      "old-wallet": false
+    },
+    "note": "Same facts as with the plugin and the same code; calls the wallet 'Telegram Money / Gram Wallet'."
+  },
+  "bot-utf16-entities.plugin.1": {
+    "must_not": {
+      "python-offset": false
+    },
+    "note": "offset 3, length 6, UTF-16 explained."
+  },
+  "bot-utf16-entities.baseline.1": {
+    "must_not": {
+      "python-offset": false
+    },
+    "note": "Same as with the plugin."
+  },
+  "bot-red-button-emoji.plugin-noweb.1": {
+    "must_not": {
+      "colors-unsupported": false,
+      "emoji-in-label": false
+    },
+    "note": "Correct, read from the Bot API page over MCP; adds that both fields arrived in Bot API 9.4."
+  },
+  "bot-red-button-emoji.baseline-noweb.1": {
+    "must_not": {
+      "colors-unsupported": false,
+      "emoji-in-label": false
+    },
+    "note": "Correct from model knowledge; says documentation could not be checked online."
+  },
+  "bot-video-note.plugin-noweb.1": {
+    "must": {
+      "no-url": true
+    },
+    "must_not": {
+      "send-video": false
+    },
+    "note": "answer_video_note, square, 60 s, URL unsupported, 20/50 MB."
+  },
+  "bot-video-note.baseline-noweb.1": {
+    "must": {
+      "method": true,
+      "no-url": true
+    },
+    "must_not": {
+      "send-video": false
+    },
+    "note": "Pattern missed the method: it uses aiogram's answer_video_note (sendVideoNote). Same facts as with the plugin."
+  },
+  "miniapp-initdata.plugin-noweb.1": {
+    "must_not": {
+      "trust-unsafe": false,
+      "share-token": false,
+      "wrong-key": false
+    },
+    "note": "Both checks correct, both published keys."
+  },
+  "miniapp-initdata.baseline-noweb.1": {
+    "must_not": {
+      "trust-unsafe": false,
+      "share-token": false,
+      "wrong-key": false
+    },
+    "note": "Both checks correct from model knowledge, including the production key."
+  },
+  "bot-api-latest.plugin-noweb.1": {
+    "must": {
+      "sdk-gap": true,
+      "private-only": true
+    },
+    "must_not": {
+      "old-version": false,
+      "invented-api": false
+    },
+    "note": "10.4 / Nov 9, widgets, private chats only, size limits, TelegramWidget.copyText and request() -> widget_query -> answerWidgetQuery; custom TelegramMethod 'even if your aiogram version has no wrapper yet'. All from MCP."
+  },
+  "bot-api-latest.baseline-noweb.1": {
+    "must": {
+      "private-only": false,
+      "sdk-gap": false
+    },
+    "must_not": {
+      "old-version": false,
+      "invented-api": false
+    },
+    "note": "Says it cannot confirm the latest version without web access and shows Bot API 9.1 checklists as a labelled historical example. Honest, but none of the required facts."
+  },
+  "bot-vs-mtproto-history.plugin-noweb.1": {
+    "must": {
+      "no-bot-history": true
+    },
+    "must_not": {
+      "invented-bot-method": false
+    },
+    "note": "Same as the web runs."
+  },
+  "bot-vs-mtproto-history.baseline-noweb.1": {
+    "must": {
+      "no-bot-history": true
+    },
+    "must_not": {
+      "invented-bot-method": false
+    },
+    "note": "Same as the web runs, from model knowledge."
+  },
+  "miniapp-sell-for-ton.plugin-noweb.1": {
+    "must": {
+      "ton-connect-scope": false
+    },
+    "must_not": {
+      "ton-payment": false
+    },
+    "note": "Stars/XTR flow; does not say what TON Connect is still allowed for."
+  },
+  "miniapp-sell-for-ton.baseline-noweb.1": {
+    "must": {
+      "ton-connect-scope": false
+    },
+    "must_not": {
+      "ton-payment": false
+    },
+    "note": "Stars/XTR flow from model knowledge; says TON Connect payment breaks Telegram's rules, not what it is still allowed for."
+  },
+  "ton-jetton-transfer.plugin-noweb.1": {
+    "must": {
+      "forward": true
+    },
+    "must_not": {
+      "to-master": false,
+      "nano-amount": false
+    },
+    "note": "Pattern missed forward_ton_amount = 1 nanoton; 0.1 TON attached."
+  },
+  "ton-jetton-transfer.baseline-noweb.1": {
+    "must": {
+      "forward": true
+    },
+    "must_not": {
+      "to-master": false,
+      "nano-amount": false
+    },
+    "note": "Same code shape; master address taken from an environment variable."
+  },
+  "ton-proof-login.plugin-noweb.1": {
+    "must": {
+      "payload": true,
+      "digest": true
+    },
+    "must_not": {
+      "client-only": false,
+      "trust-sdk-pubkey": false
+    },
+    "note": "Pattern missed the [0xff, 0xff] digest. Supports V4R2, V5R1 and WalletTg (trampoline hash + live get_public_key)."
+  },
+  "ton-proof-login.baseline-noweb.1": {
+    "must": {
+      "payload": true,
+      "digest": true
+    },
+    "must_not": {
+      "client-only": false,
+      "trust-sdk-pubkey": false
+    },
+    "note": "Correct verifier for V4R2/V5R1; does not know WalletTg, so Telegram Money users would be rejected (not a rubric fact)."
+  },
+  "ton-tolk-contract.plugin-noweb.1": {
+    "must": {
+      "func-legacy": false
+    },
+    "must_not": {
+      "func-main": false
+    },
+    "note": "Current Tolk with contract/struct/lazy match; FunC not mentioned."
+  },
+  "ton-tolk-contract.baseline-noweb.1": {
+    "must": {
+      "func-legacy": true
+    },
+    "must_not": {
+      "func-main": false
+    },
+    "note": "Tolk 1.0 code with onInternalMessage(in: InMessage) and onBouncedMessage from model knowledge; calls Tolk 'the modern successor of FunC'."
+  },
+  "ton-telegram-wallet-naming.plugin-noweb.1": {
+    "must_not": {
+      "old-wallet": false
+    },
+    "note": "Gram (formerly Toncoin), Telegram Money, WalletTg, live get_public_key with the trampoline hash."
+  },
+  "ton-telegram-wallet-naming.baseline-noweb.1": {
+    "must_not": {
+      "old-wallet": true
+    },
+    "note": "Says it cannot confirm current names without web access, then answers Toncoin, 'Wallet in Telegram' (custodial Crypto Wallet + TON Wallet) and Wallet V5 — the pre-rename picture. Counted as one wrong claim even though it is hedged."
+  },
+  "bot-utf16-entities.plugin-noweb.1": {
+    "must_not": {
+      "python-offset": false
+    },
+    "note": "offset 3, length 6."
+  },
+  "bot-utf16-entities.baseline-noweb.1": {
+    "must_not": {
+      "python-offset": false
+    },
+    "note": "offset 3, length 6."
+  },
+  "bot-api-latest.plugin-noweb.2": {
+    "must": {
+      "private-only": true,
+      "sdk-gap": true
+    },
+    "must_not": {
+      "old-version": false,
+      "invented-api": false
+    },
+    "note": "Repeat: same result as run 1 (10.4, widgets, private chats only, custom TelegramMethod independent of aiogram support)."
+  },
+  "bot-api-latest.baseline-noweb.2": {
+    "must": {
+      "private-only": false,
+      "sdk-gap": false
+    },
+    "must_not": {
+      "old-version": false,
+      "invented-api": false
+    },
+    "note": "Repeat: declines to name the latest version without documentation and asks for the changelog text."
+  },
+  "ton-telegram-wallet-naming.plugin-noweb.2": {
+    "must_not": {
+      "old-wallet": false
+    },
+    "note": "Repeat: same as run 1."
+  },
+  "ton-telegram-wallet-naming.baseline-noweb.2": {
+    "must_not": {
+      "old-wallet": true
+    },
+    "note": "Repeat: Toncoin, Wallet in Telegram, V5/V4R2 — hedged as 'last known branding'."
+  },
+  "ton-tolk-contract.plugin-noweb.2": {
+    "must": {
+      "func-legacy": false
+    },
+    "must_not": {
+      "func-main": false
+    },
+    "note": "Repeat: Tolk recommended, FunC not mentioned."
+  },
+  "ton-tolk-contract.baseline-noweb.2": {
+    "must": {
+      "func-legacy": true
+    },
+    "must_not": {
+      "func-main": false
+    },
+    "note": "Repeat: Tolk recommended, 'FunC stays useful for maintaining existing contracts'."
+  }
+}

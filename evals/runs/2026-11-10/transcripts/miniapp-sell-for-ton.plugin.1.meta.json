@@ -1,0 +1,21 @@
+{
+  "task": "miniapp-sell-for-ton",
+  "config": "plugin",
+  "run": 1,
+  "exit": 0,
+  "seconds": 129.4,
+  "project": "/tmp/tgdev-evals-0vftjfiq/plugin-miniapp-sell-for-ton-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-0vftjfiq/plugin-miniapp-sell-for-ton-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-0vftjfiq/plugin-miniapp-sell-for-ton-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}
