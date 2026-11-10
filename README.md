@@ -5,68 +5,53 @@
 [![Docs monitor](https://github.com/Kay0k1/telegram-dev/actions/workflows/documentation.yml/badge.svg)](https://github.com/Kay0k1/telegram-dev/tree/docs-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**Current official Telegram and TON documentation for Claude Code, Codex and Cursor.**
+**Keep Telegram bots and AI coding agents on the current Bot API.**
 
-Telegram Dev is an MCP server plus an agent skill. The server fetches, indexes and searches the official docs and keeps them fresh: Bot API, Mini Apps, MTProto, TDLib, on the TON side docs.ton.org (TON Connect, Tolk, TVM, APIs), the TEP standards and the changelogs, and the docs of the bot libraries aiogram, python-telegram-bot and grammY. The skill teaches the agent to pick the right API, follow Telegram's rules, check library support, and cite what it read.
+Telegram changes the Bot API every month or two, and both code and models fall behind. Telegram Dev has three parts:
 
-**Measured (Codex CLI, 11 questions and 10 code tasks, [evals](evals/README.md)):** with Codex's own web access the plugin made no difference to correctness (45/47 rubric facts and 26/26 code checks either way). With web access off, Telegram Dev kept answers current: 45/47 against 38/47 and 26/26 against 23/26 — without it Codex did not know Bot API 10.3–10.4 (ephemeral messages, HTML widgets) or the renamed TON coin and wallet.
+- **`telegram-dev check`** reads a Python bot (aiogram, python-telegram-bot, pyTelegramBotAPI or raw HTTP calls) and lists Bot API calls with retired parameters or invalid values. It runs in a terminal, in CI as a GitHub Action, or as an agent tool.
+- **Bot API tools for agents**: method and type definitions, a request checker and the changelog by version, built from the official pages.
+- **A documentation server and skill** for Claude Code, Codex and Cursor: search over the official Telegram and TON docs (Bot API, Mini Apps, MTProto, TDLib, bot libraries, TON Connect, Tolk), refreshed automatically.
+
+No Telegram account, bot token or API key is needed: everything reads public documentation.
 
 [Русская версия](README.ru.md)
 
 <!-- mcp-name: io.github.Kay0k1/telegram-dev -->
 
-## Why
+## Check a bot project
 
-Telegram ships a new Bot API version every month or two. A model's knowledge of it stops at its training cutoff, so agents confidently write code against fields that changed or never existed. They also mix up the Bot API, MTProto and TDLib, which have very different capabilities.
+`telegram-dev check` checks every Bot API call in a Python bot — aiogram, python-telegram-bot, pyTelegramBotAPI or raw HTTP requests to api.telegram.org — in one run, and prints only the findings:
 
-TON moves just as fast. The current TON docs call the coin Gram, describe Telegram Money, the wallet built into Telegram, and treat Tolk as the main contract language with FunC as legacy. On top of that, Telegram has its own rules: blockchain features in Mini Apps must use TON and TON Connect, and digital goods are sold for Stars.
-
-With Telegram Dev the agent reads the current page before it writes code. A real Codex CLI run in a fresh project after `uvx telegram-dev install --agent codex` (tool calls trimmed):
-
-```text
-> Use the telegram-dev skill. In a python-telegram-bot project, I want the inline
-  'Delete' button to be red and show a custom emoji. Which Bot API fields do this,
-  what are the requirements, and what does the request JSON look like?
-
-  get_telegram_corpus_status {}
-  search_telegram_docs {"query": "style icon_custom_emoji_id", "area": "releases"}
-  search_telegram_docs {"query": "InlineKeyboardButton icon_custom_emoji_id style", "area": "bot-api"}
-  get_telegram_document {"url": "https://core.telegram.org/bots/api", "offset": 167594, "length": 10500}
-  get_telegram_document {"url": "https://core.telegram.org/bots/api-changelog", "offset": 39089, "length": 6000}
-
-Use these InlineKeyboardButton fields:
-- style: "danger" makes the button red.
-- icon_custom_emoji_id is a custom emoji ID shown before "Delete".
-- callback_data is your action identifier, 1-64 bytes.
-
-The custom emoji requires either a bot that bought additional usernames on Fragment,
-or a Premium bot owner with the message sent by the bot to a private chat, group or
-supergroup. PTB 22.7+ supports both fields. Older Telegram clients show the button
-unstyled. Source: https://core.telegram.org/bots/api#inlinekeyboardbutton
-
-{"chat_id": 123456789, "text": "Choose an action:",
- "reply_markup": {"inline_keyboard": [[{"text": "Delete", "callback_data": "delete:42",
-   "style": "danger", "icon_custom_emoji_id": "YOUR_CUSTOM_EMOJI_ID"}]]}}
+```sh
+uvx telegram-dev check ./my-bot
 ```
 
-The skill also knows when *not* to reach for a blockchain. Another real Codex run:
-
 ```text
-> Use the telegram-dev skill. Our Telegram Mini App sells a premium in-game skin
-  for 2 TON. I want a Buy button that connects the user's wallet and charges them.
+$ uvx telegram-dev check ./tutorial        # a popular open-source aiogram 3 tutorial
+code/03_buttons/bot.py:79: warning: types.KeyboardButton: `request_user` was retired in Bot API 7.0: Renamed the field request_user in the class KeyboardButton to request_users. The old name will still work for backward compatibility. ...
+code/08_inline_mode/handlers/inline_mode.py:48: warning: inline_query.answer: `switch_pm_text` was retired in Bot API 6.7: ... replacing the parameters switch_pm_text and switch_pm_parameter of the method answerInlineQuery with the parameter button of type InlineQueryResultsButton. ...
+Bot API 10.4; 95 files with bot code; libraries: aiogram ==3.14.0 ==3.7.0 >=3.24.0 ...; 0 errors, 5 warnings
+```
 
-  get_telegram_document {"url": "https://core.telegram.org/bots/payments-stars", "refresh": true}
-  search_telegram_docs {"query": "createInvoiceLink answerPreCheckoutQuery successful_payment XTR", "area": "bot-api"}
-  get_telegram_document {"url": "https://docs.ton.org/applications/ton-connect/overview", "refresh": true}
-  get_telegram_document {"url": "https://core.telegram.org/bots/webapps", "offset": 40310}
+A wrong value is an error, for example `InlineKeyboardButton(text="Delete", style="red")` gives `style: must be one of danger, success, primary`.
 
-Use Telegram Stars (XTR) through the Bot API. The skin is a digital good, so
-Telegram requires Stars and prohibits cryptocurrency payment for this purchase.
-For permitted wallet features, use the TON Connect SDK.
-1. Validate initData on the backend and bind the order to the user.
-2. createInvoiceLink with currency "XTR", open it with Telegram.WebApp.openInvoice.
-3. Answer pre_checkout_query, grant the skin once on successful_payment,
-   store telegram_payment_charge_id for refunds.
+Errors are values outside the documented list and unknown methods or parameters in raw API requests. Warnings are parameters Telegram retired (with the version and the changelog entry that replaced them), keyword arguments that are neither Bot API parameters nor known library options, and bot methods with no Bot API counterpart. It reads code without running it, so it does not follow variables or check required parameters. Options: `--json`, `--exclude 'tests/*'`, `--strict` (fail on warnings), `--format github`. In an agent session the same check is the `check_telegram_project` tool (local stdio server only, since it reads files).
+
+On a GitHub repository, run it on every pull request; findings appear as annotations on the changed lines:
+
+```yaml
+# .github/workflows/telegram.yml
+on: [pull_request]
+jobs:
+  bot-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Kay0k1/telegram-dev@v0.9.0
+        with:
+          path: .
+          exclude: "tests/*"
 ```
 
 ## Install
@@ -124,6 +109,60 @@ Any other MCP client:
 
 The tools work without the skill, but the skill is what makes an agent use them consistently.
 
+## Current docs for agents
+
+Telegram ships a new Bot API version every month or two. A model's knowledge of it stops at its training cutoff, so agents confidently write code against fields that changed or never existed. They also mix up the Bot API, MTProto and TDLib, which have very different capabilities.
+
+TON moves just as fast. The current TON docs call the coin Gram, describe Telegram Money, the wallet built into Telegram, and treat Tolk as the main contract language with FunC as legacy. On top of that, Telegram has its own rules: blockchain features in Mini Apps must use TON and TON Connect, and digital goods are sold for Stars.
+
+With Telegram Dev the agent reads the current page before it writes code. A real Codex CLI run in a fresh project after `uvx telegram-dev install --agent codex` (tool calls trimmed):
+
+```text
+> Use the telegram-dev skill. In a python-telegram-bot project, I want the inline
+  'Delete' button to be red and show a custom emoji. Which Bot API fields do this,
+  what are the requirements, and what does the request JSON look like?
+
+  get_telegram_corpus_status {}
+  search_telegram_docs {"query": "style icon_custom_emoji_id", "area": "releases"}
+  search_telegram_docs {"query": "InlineKeyboardButton icon_custom_emoji_id style", "area": "bot-api"}
+  get_telegram_document {"url": "https://core.telegram.org/bots/api", "offset": 167594, "length": 10500}
+  get_telegram_document {"url": "https://core.telegram.org/bots/api-changelog", "offset": 39089, "length": 6000}
+
+Use these InlineKeyboardButton fields:
+- style: "danger" makes the button red.
+- icon_custom_emoji_id is a custom emoji ID shown before "Delete".
+- callback_data is your action identifier, 1-64 bytes.
+
+The custom emoji requires either a bot that bought additional usernames on Fragment,
+or a Premium bot owner with the message sent by the bot to a private chat, group or
+supergroup. PTB 22.7+ supports both fields. Older Telegram clients show the button
+unstyled. Source: https://core.telegram.org/bots/api#inlinekeyboardbutton
+
+{"chat_id": 123456789, "text": "Choose an action:",
+ "reply_markup": {"inline_keyboard": [[{"text": "Delete", "callback_data": "delete:42",
+   "style": "danger", "icon_custom_emoji_id": "YOUR_CUSTOM_EMOJI_ID"}]]}}
+```
+
+The skill also knows when *not* to reach for a blockchain. Another real Codex run:
+
+```text
+> Use the telegram-dev skill. Our Telegram Mini App sells a premium in-game skin
+  for 2 TON. I want a Buy button that connects the user's wallet and charges them.
+
+  get_telegram_document {"url": "https://core.telegram.org/bots/payments-stars", "refresh": true}
+  search_telegram_docs {"query": "createInvoiceLink answerPreCheckoutQuery successful_payment XTR", "area": "bot-api"}
+  get_telegram_document {"url": "https://docs.ton.org/applications/ton-connect/overview", "refresh": true}
+  get_telegram_document {"url": "https://core.telegram.org/bots/webapps", "offset": 40310}
+
+Use Telegram Stars (XTR) through the Bot API. The skin is a digital good, so
+Telegram requires Stars and prohibits cryptocurrency payment for this purchase.
+For permitted wallet features, use the TON Connect SDK.
+1. Validate initData on the backend and bind the order to the user.
+2. createInvoiceLink with currency "XTR", open it with Telegram.WebApp.openInvoice.
+3. Answer pre_checkout_query, grant the skin once on successful_payment,
+   store telegram_payment_charge_id for refunds.
+```
+
 ## Tools
 
 | Tool | What it does |
@@ -158,43 +197,6 @@ uvx telegram-dev search "sendVideoNote"
 uvx telegram-dev status
 ```
 
-## Check a bot project
-
-`check_bot_api_call` checks one request. `telegram-dev check` checks every Bot API call in a Python bot — aiogram, python-telegram-bot, pyTelegramBotAPI or raw HTTP requests to api.telegram.org — in one run, and prints only the findings:
-
-```sh
-uvx telegram-dev check ./my-bot
-```
-
-```text
-$ uvx telegram-dev check ./tutorial        # a popular open-source aiogram 3 tutorial
-code/03_buttons/bot.py:79: warning: types.KeyboardButton: `request_user` was retired in Bot API 7.0: Renamed the field request_user in the class KeyboardButton to request_users. The old name will still work for backward compatibility. ...
-code/08_inline_mode/handlers/inline_mode.py:48: warning: inline_query.answer: `switch_pm_text` was retired in Bot API 6.7: ... replacing the parameters switch_pm_text and switch_pm_parameter of the method answerInlineQuery with the parameter button of type InlineQueryResultsButton. ...
-Bot API 10.4; 95 files with bot code; libraries: aiogram ==3.14.0 ==3.7.0 >=3.24.0 ...; 0 errors, 5 warnings
-```
-
-A wrong value is an error, for example `InlineKeyboardButton(text="Delete", style="red")` gives `style: must be one of danger, success, primary`.
-
-Errors are values outside the documented list and unknown methods or parameters in raw API requests. Warnings are parameters Telegram retired (with the version and the changelog entry that replaced them), keyword arguments that are neither Bot API parameters nor known library options, and bot methods with no Bot API counterpart. It reads code without running it, so it does not follow variables or check required parameters. Options: `--json`, `--exclude 'tests/*'`, `--strict` (fail on warnings), `--format github`. In an agent session the same check is the `check_telegram_project` tool (local stdio server only, since it reads files).
-
-On a GitHub repository, run it on every pull request; findings appear as annotations on the changed lines:
-
-```yaml
-# .github/workflows/telegram.yml
-on: [pull_request]
-jobs:
-  bot-api:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: Kay0k1/telegram-dev@v0.9.0
-        with:
-          path: .
-          exclude: "tests/*"
-```
-
-Tried on 24 popular open-source Telegram bots on GitHub (aiogram, python-telegram-bot, pyTelegramBotAPI; November 2026): 12 of them call parameters that Telegram has since retired — 129 findings, mostly `disable_web_page_preview` and `reply_to_message_id` from Bot API 7.0, plus `switch_pm_text`, `thumb_url`, `hide_url`, `correct_option_id` and `request_user` — and one passes `start_parameter` to `createInvoiceLink`, which has no such parameter, so Telegram ignores it. Every finding was read against the source; none was a false positive. Libraries and Telegram still accept many retired names for compatibility, so most are warnings about undocumented behaviour rather than broken bots.
-
 ## What the skill covers
 
 | Area | What the agent checks |
@@ -220,6 +222,15 @@ The skill lives in [skills/telegram-dev](skills/telegram-dev/SKILL.md), with one
 - A daily GitHub Action checks all 61 official sources and publishes hashes and errors on the [`docs-status`](https://github.com/Kay0k1/telegram-dev/tree/docs-status) branch.
 
 Settings such as the cache path (`TELEGRAM_KNOWLEDGE_DB`) and refresh intervals are in [docs/runtime.md](docs/runtime.md).
+
+## How much it helps
+
+Measured with Codex CLI on 11 questions and 10 code-writing tasks ([evals](evals/README.md)):
+
+- With Codex's own web access, answers were equally correct with and without Telegram Dev: the agent found the same official pages itself.
+- Without web access, answers stayed current with Telegram Dev (45/47 rubric facts against 38/47, 26/26 code checks against 23/26); plain Codex did not know the newest Bot API features or TON's current names.
+
+So the documentation server matters most where the agent cannot browse. The project check works on your code rather than on a question, so it is useful either way. Run on open-source bots from GitHub, it mostly finds `disable_web_page_preview` and `reply_to_message_id`, retired in Bot API 7.0, which Telegram and the libraries still accept for compatibility. Details, including the review for false positives: [docs/validation.md](docs/validation.md).
 
 ## Self-hosting
 
