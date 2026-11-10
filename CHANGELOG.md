@@ -12,6 +12,13 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 - Skill guide `bot-libraries.md`: find the installed version, read the matching library docs, compare with the Bot API page and changelog, and say when the indexed docs describe another version.
 - The daily source monitor covers the four library entry points (61 sources in total).
 
+## [0.5.1] - 2026-11-10
+
+### Fixed
+
+- `uv sync --frozen` on a machine without Python failed: uv picked Python 3.15, for which the locked pydantic-core and rpds-py had no wheels, and anyio does not yet start on 3.15. The project now requires Python `>=3.10,<3.15`, so uv installs 3.14, and the lock uses pydantic-core, rpds-py, anyio and MCP SDK dependencies with current wheels. This fixes Glama builds and the Claude Code plugin on such machines.
+- CI also runs the tests on the newest Python the project allows, installed by uv.
+
 ## [0.5.0] - 2026-11-10
 
 ### Added
@@ -54,6 +61,7 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 - First public release: documentation MCP server with an on-demand local cache, agent skill, project installer for Codex, Claude Code and Cursor, and a Claude Code plugin catalog.
 
+[0.5.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.2.0...v0.3.0
