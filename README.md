@@ -1,8 +1,8 @@
 # Telegram Dev — состояние официальных источников / source status
 
-Проверено / Checked: `2026-11-09T16:36:51.811746+00:00`
+Проверено / Checked: `2026-11-10T15:01:39.358450+00:00`
 
-Источников / Sources: **52** · Новых / New: **0** · Изменившихся / Changed: **5** · Без изменений / Unchanged: **47** · Ошибок / Failures: **0**
+Источников / Sources: **52** · Новых / New: **0** · Изменившихся / Changed: **1** · Без изменений / Unchanged: **51** · Ошибок / Failures: **0**
 
 Проверяется извлечённый текст официальных страниц. Хэш показывает изменение текста, но не описывает его смысл. Ошибка загрузки не считается обновлением или удалением документа.
 
@@ -36,14 +36,14 @@ Hashes compare extracted official source text; this report does not infer what a
 | [Suggested posts](https://core.telegram.org/api/suggested-posts) | telegram-api | unchanged |
 | [Telegram themes](https://core.telegram.org/api/themes) | telegram-api | unchanged |
 | [Working with Updates](https://core.telegram.org/api/updates) | telegram-api | unchanged |
-| [Telegram Bot API](https://core.telegram.org/bots/api) | bot-api | changed |
-| [Bot API changelog](https://core.telegram.org/bots/api-changelog) | releases | changed |
+| [Telegram Bot API](https://core.telegram.org/bots/api) | bot-api | unchanged |
+| [Bot API changelog](https://core.telegram.org/bots/api-changelog) | releases | unchanged |
 | [Bots FAQ](https://core.telegram.org/bots/faq) | bot-api | unchanged |
 | [Telegram Bot Features](https://core.telegram.org/bots/features) | bot-api | unchanged |
 | [Bot Payments API](https://core.telegram.org/bots/payments) | bot-api | unchanged |
 | [Bot Payments API for Digital Goods and Services](https://core.telegram.org/bots/payments-stars) | bot-api | unchanged |
 | [Log In With Telegram](https://core.telegram.org/bots/telegram-login) | web-integrations | unchanged |
-| [Telegram Mini Apps](https://core.telegram.org/bots/webapps) | mini-apps | changed |
+| [Telegram Mini Apps](https://core.telegram.org/bots/webapps) | mini-apps | unchanged |
 | [Telegram Gateway – Fast, Affordable, and Secure User Verification](https://core.telegram.org/gateway) | gateway | unchanged |
 | [﻿MTProto Mobile Protocol](https://core.telegram.org/mtproto) | telegram-api | unchanged |
 | [Telegram Passport Manual](https://core.telegram.org/passport) | web-integrations | unchanged |
@@ -55,12 +55,12 @@ Hashes compare extracted official source text; this report does not infer what a
 | [Instant View](https://instantview.telegram.org/) | web-integrations | unchanged |
 | [Instant View Manual](https://instantview.telegram.org/docs) | web-integrations | unchanged |
 | [CHANGELOG.md](https://raw.githubusercontent.com/tdlib/td/master/CHANGELOG.md) | releases | unchanged |
-| [td_api.tl](https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl) | tdlib | changed |
+| [td_api.tl](https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl) | tdlib | unchanged |
 | [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | unchanged |
-| [Telegram Applications](https://telegram.org/apps) | telegram-api | unchanged |
+| [Telegram Applications](https://telegram.org/apps) | telegram-api | changed |
 | [Telegram Blog](https://telegram.org/blog) | product-releases | unchanged |
 | [The Evolution of Telegram](https://telegram.org/evolution) | product-releases | unchanged |
-| [Telegram FAQ](https://telegram.org/faq) | telegram-api | changed |
+| [Telegram FAQ](https://telegram.org/faq) | telegram-api | unchanged |
 | [Telegram Bot Platform Developer Terms of Service](https://telegram.org/tos/bot-developers) | bot-api | unchanged |
 
 Machine-readable: [source-report.json](source-report.json), [source-snapshot.json](source-snapshot.json).
