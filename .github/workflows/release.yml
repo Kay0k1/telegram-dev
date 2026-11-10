@@ -71,7 +71,11 @@ jobs:
         run: |
           version="${GITHUB_REF_NAME#v}"
           awk -v v="$version" '$0 ~ "^## \\[" v "\\]" {on=1; next} /^## \[/ {on=0} on' CHANGELOG.md > notes.md
-          gh release create "$GITHUB_REF_NAME" dist/* --title "Telegram Dev $GITHUB_REF_NAME" --notes-file notes.md --verify-tag
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists; keeping it"
+          else
+            gh release create "$GITHUB_REF_NAME" dist/* --title "Telegram Dev $GITHUB_REF_NAME" --notes-file notes.md --verify-tag
+          fi
 
   pypi:
     needs: build

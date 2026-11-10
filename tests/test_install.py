@@ -232,9 +232,20 @@ class PackagedInstallTests(unittest.TestCase):
 
     def test_git_install_pins_requested_revision(self):
         direct = {'url': 'https://github.com/Kay0k1/telegram-dev', 'vcs_info': {'vcs': 'git', 'commit_id': 'abc123', 'requested_revision': 'v9.9.9'}}
-        self.assertEqual(self.run_install(direct)['args'][1], 'git+https://github.com/Kay0k1/telegram-dev@v9.9.9')
-        del direct['vcs_info']['requested_revision']
-        self.assertEqual(self.run_install(direct, agent='codex')['args'][1], 'git+https://github.com/Kay0k1/telegram-dev@abc123')
+        self.assertEqual(self.run_install(direct)['args'][1], 'git+https://github.com/Kay0k1/telegram-dev@abc123')
+        del direct['vcs_info']['commit_id']
+        self.assertEqual(self.run_install(direct, agent='codex')['args'][1], 'git+https://github.com/Kay0k1/telegram-dev@v9.9.9')
+
+    def test_url_with_credentials_is_refused(self):
+        direct = {'url': 'https://user:token@example.com/telegram-dev.git', 'vcs_info': {'vcs': 'git', 'commit_id': 'abc'}}
+        with self.assertRaisesRegex(ValueError, 'credentials'):
+            self.run_install(direct)
+
+    def test_home_directory_is_refused(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(installer.Path, 'home', lambda: Path(folder)):
+            with self.assertRaisesRegex(ValueError, 'home directory'):
+                installer.install('claude', folder)
+            self.assertFalse(Path(folder, '.mcp.json').exists())
 
     def test_explicit_source_overrides_detection(self):
         self.assertEqual(self.run_install(source='telegram-dev')['args'][:2], ['--from', 'telegram-dev'])

@@ -4,7 +4,7 @@
 
 | Check | Result |
 | --- | --- |
-| Repository tests | **47 passed**: the 41 from 0.3.0 plus package installs (index, git, explicit `--from`), the `install` and `--version` CLI and manifest/`server.json` version consistency |
+| Repository tests | **49 passed**: the 41 from 0.3.0 plus package installs (index, git commit pinning, explicit `--from`, refusal of credential URLs and the home directory), the `install` and `--version` CLI and manifest/`server.json` version consistency |
 | Build | `uv build` produced `telegram_dev-0.4.0` wheel and sdist; the wheel contains `telegram_knowledge`, `telegram_dev_install` and the skill with all references |
 | One-command install | `uvx --from <wheel> telegram-dev install --agent claude` and `--agent codex` in empty projects: skill copied, MCP entry written as a pinned `uvx` launcher |
 | Migration | A checkout install (0.3.0 style, absolute Python path) updated with the package and `--update`: the connection moved to `uvx`, other settings kept |

@@ -664,9 +664,9 @@ def main(argv=None):
         prog=prog,
         description="Telegram Dev: official Telegram documentation for AI agents (MCP server and CLI).",
         epilog="Connect a project: %(prog)s install --agent claude|codex|cursor [--project PATH]")
-    parser.add_argument("command", choices=["serve", "search", "status", "sync", "maintain", "install"],
+    parser.add_argument("command", choices=["serve", "search", "status", "sync", "maintain"],
                         help="serve: run the MCP server (stdio by default); search QUERY; status; "
-                             "sync: pre-fetch documentation; maintain: one refresh cycle; install: connect a project")
+                             "sync: pre-fetch documentation; maintain: one refresh cycle")
     parser.add_argument("query", nargs="?", default="")
     parser.add_argument("--max-pages", type=int, default=300, help="0 exhausts discovered documentation frontier")
     parser.add_argument("--refresh", action="store_true")

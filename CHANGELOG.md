@@ -7,8 +7,8 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 ### Added
 
 - `telegram-dev install --agent claude|codex|cursor` installs the MCP server and the skill into a project with one command: `uvx telegram-dev install --agent claude`. The skill now ships inside the Python package.
-- Installs from the package pin the server to the installed version through `uvx`, so no checkout has to stay on disk. Installs from a checkout keep using the checkout's Python.
-- `--from` overrides the package the server is launched from; `--project` defaults to the current directory.
+- Installs from the package pin the server to the installed version (or exact git commit) through `uvx`, so no checkout has to stay on disk. Installs from a checkout keep using the checkout's Python.
+- `--from` overrides the package the server is launched from; `--project` defaults to the current directory and refuses the home directory.
 - `telegram-dev --version`; the MCP server reports the package version and project URL.
 - `server.json` for the official MCP Registry.
 - Release workflow: a tag builds, tests and publishes the GitHub release with the wheel, sdist, source ZIP, skill-only ZIP and checksums. PyPI and MCP Registry publishing are opt-in through repository variables.

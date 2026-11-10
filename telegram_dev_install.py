@@ -91,9 +91,14 @@ def package_spec(version):
     if direct:
         info = json.loads(direct)
         url = info.get('url', '')
+        if urlsplit(url).password or (urlsplit(url).username and not url.startswith('file:')):
+            raise ValueError('The package was installed from a URL with credentials; pass a public --from requirement instead')
+        if info.get('subdirectory'):
+            url = f"{url}#subdirectory={info['subdirectory']}"
         vcs = info.get('vcs_info')
         if vcs and vcs.get('vcs') == 'git':
-            revision = vcs.get('requested_revision') or vcs.get('commit_id')
+            # Pin the exact commit: a branch name would let the server drift from the copied skill.
+            revision = vcs.get('commit_id') or vcs.get('requested_revision')
             return f'git+{url}@{revision}' if revision else f'git+{url}'
         if url.startswith('file://'):
             path = unquote(urlsplit(url).path)
@@ -112,6 +117,9 @@ def server_connection(version, source=None):
 
 def install(agent, project, update=False, source=None):
     project = Path(project).resolve()
+    if project == Path.home().resolve():
+        raise ValueError('Refusing to install into the home directory, where agents read user-wide settings; '
+                         'run inside a project or pass --project explicitly')
     if not project.is_dir():
         raise ValueError('Project directory must already exist')
     if agent not in LAYOUT:
