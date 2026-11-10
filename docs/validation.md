@@ -1,5 +1,29 @@
 # Проверки / Validation
 
+## Unreleased: bot library docs — 2026-11-10 (Linux)
+
+| Check | Result |
+| --- | --- |
+| Repository tests | **70 passed**, including 15 new library tests: URL boundaries per host (no query strings, assets, `_modules`/`_static`, generated type and method pages, `/ref/`, translations, other repositories), the `telegram.ext.` prefix not matching `telegram.externalreplyinfo`, Markdown twins for grammY and the PTB wiki, the grammY sitemap and PTB wiki sidebar feeding discovery without search chunks, pinned versions read but never queued, Sphinx anchor and `[source]` cleanup, and ranking |
+| Library crawl | Real crawl into a temporary `TELEGRAM_KNOWLEDGE_DB` from the four library entry points plus seven core bot pages, following library links only: 58 s, **aiogram 55 pages** (3.31.0, `latest`; 0.71 M characters), **python-telegram-bot 128** (85 pages of v22.8 `stable` docs and 43 wiki pages; 3.90 M characters, of which the `Bot` class page is 1.6 M), **grammY 69** (68 pages and the sitemap index; 0.65 M characters). 2,838 search chunks in total; no pinned-version pages entered the crawl. Compared with each Sphinx site's `searchindex.js`, every in-scope aiogram (55/55) and PTB (85/85) page was reached |
+| Library errors | Three PTB wiki links return 404 on GitHub itself (`Bot-API-Backward-Compatibility`, `Types-Of-Handlers` — the page is `Types-of-Handlers`, `location_keyboard,-contact_keyboard`) |
+| Source monitor | `scripts/check_sources.py` fetched the four new entry points: aiogram, PTB, the PTB wiki sidebar and the grammY sitemap (61 sources in total) |
+
+Search over that database (top result per query; core pages are the Bot API, features, FAQ, inline, Stars payments, changelog and Mini Apps):
+
+| Query | First results |
+| --- | --- |
+| `aiogram 3 callback query handler` | aiogram `dispatcher/router.html` § Callback query, `utils/callback_answer.html`, `dispatcher/filters/callback_data.html` |
+| `PTB ConversationHandler` | PTB `telegram.ext.conversationhandler.html`, then the wiki's v20 transition guide |
+| `grammY inline keyboard` | grammY `plugins/keyboard` § Sending an Inline Keyboard, § Building an Inline Keyboard, § Responding to Inline Keyboard Clicks |
+| `python-telegram-bot JobQueue run_repeating` | PTB `telegram.ext.jobqueue.html`, wiki `Extensions---JobQueue` |
+| `grammY conversations plugin` | grammY `plugins/conversations` |
+| `inline keyboard` (no library named) | Only Bot API sections (`InlineKeyboardMarkup`, the send methods' `reply_markup`) in the top five |
+| `answerCallbackQuery`, `webhook` | Only Bot API and Bot FAQ pages in the top five |
+| `sendMessage reply_markup` | Bot API `sendMessage` first; library keyboard pages after the core matches |
+
+Not verified: an agent run that uses the library docs on a real project; a full background refresh cycle with the complete core corpus (61 seeds now exceed half of the default 120-page budget, so the default cycle uses the round-robin path that small budgets already used).
+
 ## 0.5.0 — 2026-11-10 (Linux)
 
 | Check | Result |

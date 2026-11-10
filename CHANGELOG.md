@@ -2,6 +2,16 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Bot library documentation: aiogram 3 (`docs.aiogram.dev/en/latest/`: dispatcher, routers, filters, FSM and scenes, middlewares, utils, client session, changelog, migration guide), python-telegram-bot (`docs.python-telegram-bot.org/en/stable/`: `telegram.ext`, `Bot`, `Message`/`Update`/`CallbackQuery`, examples, changelog; and the official wiki) and grammY (`grammy.dev`: guide, advanced, plugins, hosting, read from the site's Markdown sources). About 250 pages; generated per-type pages that mirror the Bot API, grammY's `/ref/` and translations are left out.
+- Search areas `aiogram`, `python-telegram-bot` and `grammy`. Core Telegram docs rank first unless the query names a library (`aiogram`, `PTB`, `python-telegram-bot`, `telegram.ext`, `grammY`, with an optional version); the name is not required in the matched text.
+- Released aiogram and python-telegram-bot docs (`/en/vX.Y.Z/`) can be read on demand to match the installed version; they are not crawled.
+- Skill guide `bot-libraries.md`: find the installed version, read the matching library docs, compare with the Bot API page and changelog, and say when the indexed docs describe another version.
+- The daily source monitor covers the four library entry points (61 sources in total).
+
 ## [0.5.0] - 2026-11-10
 
 ### Added
