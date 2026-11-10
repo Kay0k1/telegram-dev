@@ -671,6 +671,18 @@ def _maintain(stop):
         stop.wait(30)
 
 
+def cached_pages(area="", offset=0, limit=50):
+    offset, limit = max(0, offset), max(1, min(limit, 200))
+    with connect() as conn:
+        total = conn.execute("SELECT count(*) FROM pages WHERE ?='' OR family=?", (area, area)).fetchone()[0]
+        rows = conn.execute("SELECT url,title,family,checked_at,error FROM pages WHERE ?='' OR family=? ORDER BY url LIMIT ? OFFSET ?",
+                            (area, area, limit, offset)).fetchall()
+    pages = [{"url": r["url"], "title": r["title"], "area": r["family"], "checked_at": r["checked_at"],
+              "freshness": freshness(r)} for r in rows]
+    return {"pages": pages, "total": total, "offset": offset,
+            "next_offset": offset + len(pages) if offset + len(pages) < total else None}
+
+
 def coverage():
     with connect() as conn:
         states = dict(conn.execute("SELECT state,count(*) FROM frontier GROUP BY state"))
@@ -860,7 +872,7 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
     @server.tool(title="Read an official documentation page", annotations=annotations)
     def get_telegram_document(
         url: Annotated[str, Field(description=(
-            "Official page URL from search results or telegram_sources, e.g. https://core.telegram.org/bots/api "
+            "Official page URL from search results or list_telegram_sources, e.g. https://core.telegram.org/bots/api "
             "or https://docs.ton.org/applications/ton-connect/overview. Pages outside the official sources are rejected."))],
         offset: Annotated[int, Field(ge=0, description="Character offset to start from; use a search result's document_offset or the previous next_offset.")] = 0,
         length: Annotated[int, Field(ge=100, le=40000, description="Number of characters to return.")] = 16000,
@@ -868,23 +880,23 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
     ) -> dict:
         """Read the text of an official Telegram, TON or bot-library documentation page, one window at a time.
 
-        Use it to read requirements, parameters and limits in full after search, or to load an entry page into an empty cache. Pages missing from the cache or older than the freshness limit (6 hours by default) are fetched first. Returns title, URL, Markdown `body` for the requested window, `next_offset` (null at the end), `total_characters`, content hash and freshness. If the live source fails, the cached text is returned with `freshness.stale` and `refresh_error` set. The observation date is when this installation read the page, not when Telegram changed it."""
+        Use it to read requirements, parameters and limits in full after `search_telegram_docs` found the page, or to load an entry page from `list_telegram_sources` into an empty cache. Do not use it to find which page answers a question: search first. Pages missing from the cache or older than the freshness limit (6 hours by default) are fetched first. Returns title, URL, Markdown `body` for the requested window, `next_offset` (null at the end), `total_characters`, content hash and freshness. If the live source fails, the cached text is returned with `freshness.stale` and `refresh_error` set. The observation date is when this installation read the page, not when Telegram changed it."""
         return document(url, offset, length, refresh)
 
     @server.tool(title="Cache coverage and freshness", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
-    def telegram_corpus_status() -> dict:
-        """Report what the local documentation cache contains and how current it is.
+    def get_telegram_corpus_status() -> dict:
+        """Report how complete and how current the local documentation cache is, as totals.
 
-        Use it at the start of a task or when results look incomplete. Returns page counts per area, crawl queue state, stale page count, last and oldest successful checks, refresh policy and the latest source errors. Indexed pages are not all of Telegram's knowledge: absence from the cache is not evidence that a feature does not exist."""
+        Use it at the start of a task or when search results look incomplete. For the configured entry points use `list_telegram_sources`; for the individual cached pages use `list_telegram_cached_pages`; to answer a question use `search_telegram_docs`. Refreshing is automatic (on read, on search and in a background cycle), so there is no refresh command. Returns page counts per area, crawl queue state, stale page count, last and oldest successful checks, refresh policy and the latest source errors. Indexed pages are not all of Telegram's knowledge: absence from the cache is not evidence that a feature does not exist."""
         return coverage()
 
     @server.tool(title="Observed revisions of a page", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
-    def telegram_document_history(
+    def list_telegram_document_revisions(
         url: Annotated[str, Field(description="Official page URL, the same form accepted by get_telegram_document.")],
     ) -> dict:
-        """List the versions of a documentation page that this installation has observed, newest first.
+        """List the revisions of one documentation page that this installation has observed, newest first.
 
-        Use it to see whether a page changed since an earlier read. Returns content hash, capture time and length for each revision. It does not reconstruct history before the page was first fetched here; for Telegram release history read the official changelogs (area `releases` or `ton-releases`)."""
+        Use it to see whether a page changed since an earlier read. To read the current text use `get_telegram_document`. Returns content hash, capture time and length for each revision. It does not reconstruct history before the page was first fetched here; for Telegram release history read the official changelogs (area `releases` or `ton-releases`)."""
         with connect() as conn:
             base = canonical(url)
             if base is None:
@@ -893,12 +905,23 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
             return {"revisions": [dict(r) for r in conn.execute("SELECT sha,captured_at,length(body) AS characters FROM revisions WHERE url=? ORDER BY captured_at DESC", (target[0] if target else base,))]}
 
     @server.tool(title="Official documentation entry points", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
-    def telegram_sources() -> dict:
+    def list_telegram_sources() -> dict:
         """List the official entry points this server crawls, each with its documentation area.
 
-        Use it to find where to start reading for an unfamiliar area (for example the Bot API index, docs.ton.org/llms.txt or a library's docs) and pass the URL to get_telegram_document. This is the source configuration, not proof that every page below it is already cached."""
+        Use it to find where to start reading for an unfamiliar area (for example the Bot API index, docs.ton.org/llms.txt or a library's docs) and pass the URL to `get_telegram_document`. If you already know the feature or API name, use `search_telegram_docs` instead. This is the source configuration, not the cache: `list_telegram_cached_pages` shows what is already stored."""
         return {"sources": [{"url": url, "area": family(url)} for url in SEEDS],
                 "scope": "Entry points for discovery. Follow each official API index and schema for additional features."}
+
+    @server.tool(title="List cached documentation pages", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    def list_telegram_cached_pages(
+        area: Annotated[Area, Field(description="Only pages from this documentation area; empty lists all areas.")] = "",
+        offset: Annotated[int, Field(ge=0, description="Number of pages to skip, for paging through long lists; use the previous next_offset.")] = 0,
+        limit: Annotated[int, Field(ge=1, le=200, description="Maximum number of pages to return.")] = 50,
+    ) -> dict:
+        """List the documentation pages already stored in the local cache, sorted by URL.
+
+        Use it to see which pages of an area are available offline or to pick a page to open with `get_telegram_document`. Returns URL, title, area, last check time and freshness for each page, the total count and `next_offset` (null at the end). It lists stored pages only; to find content by topic use `search_telegram_docs`, and for totals and errors use `get_telegram_corpus_status`."""
+        return cached_pages(area, offset, limit)
 
     return server
 

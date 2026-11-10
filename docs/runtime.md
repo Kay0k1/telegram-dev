@@ -8,7 +8,7 @@
 
 Пока MCP запущен, фоновая задача каждые 6 часов обрабатывает до **120 страниц**. Она проверяет входные источники, расширяет обнаруженный набор документов и возвращается к старым страницам. Расписание хранится в общей SQLite-базе, поэтому несколько проектов, использующих один кеш, не начинают отдельный обход при каждом запуске. Первое подключение запускает проверку в фоне и не ждёт загрузки всей базы.
 
-Это постепенное заполнение кеша. Для полного первоначального обхода используйте `uv run --frozen telegram-dev sync --max-pages 0`. Его завершение и недоступные источники проверяйте через `telegram-dev status`; количество страниц само по себе не доказывает полноту знаний Telegram. `telegram_sources` перечисляет настроенные точки входа; живые API indexes и schema позволяют находить дополнительные функции.
+Это постепенное заполнение кеша. Для полного первоначального обхода используйте `uv run --frozen telegram-dev sync --max-pages 0`. Его завершение и недоступные источники проверяйте через `telegram-dev status`; количество страниц само по себе не доказывает полноту знаний Telegram. `list_telegram_sources` перечисляет настроенные точки входа; живые API indexes и schema позволяют находить дополнительные функции.
 
 Настройки задаются в окружении MCP-сервера:
 
@@ -54,7 +54,7 @@ From 0.3.0, reading a document automatically refreshes pages older than **6 hour
 
 Source failures preserve previously cached text and explicitly mark it stale; they never advance the successful check date. Automatic retries wait 15 minutes by default; forced refresh bypasses that backoff.
 
-While the MCP process runs, a background cycle every 6 hours checks up to **120 pages**, covering entrypoints, new discovered links and older documents. Its SQLite schedule is shared between projects using the same cache. Startup does not wait for a full corpus. Coverage expands gradually; use `uv run --frozen telegram-dev sync --max-pages 0` for a complete initial crawl of the discovered scope and inspect `telegram-dev status` for gaps. `telegram_sources` lists configured entrypoints; follow the live API indexes and schema for further features.
+While the MCP process runs, a background cycle every 6 hours checks up to **120 pages**, covering entrypoints, new discovered links and older documents. Its SQLite schedule is shared between projects using the same cache. Startup does not wait for a full corpus. Coverage expands gradually; use `uv run --frozen telegram-dev sync --max-pages 0` for a complete initial crawl of the discovered scope and inspect `telegram-dev status` for gaps. `list_telegram_sources` lists configured entrypoints; follow the live API indexes and schema for further features.
 
 The environment settings in the table above control the database, age threshold, background enablement, interval, page budget and retry backoff. Run `uv run --frozen telegram-dev maintain --max-pages 120` for one bounded cycle. Background work requires a running server; a permanently hosted MCP continues refreshing between user sessions.
 

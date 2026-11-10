@@ -28,7 +28,7 @@ With Telegram Dev the agent reads the current page before it writes code. A real
   'Delete' button to be red and show a custom emoji. Which Bot API fields do this,
   what are the requirements, and what does the request JSON look like?
 
-  telegram_corpus_status {}
+  get_telegram_corpus_status {}
   search_telegram_docs {"query": "style icon_custom_emoji_id", "area": "releases"}
   search_telegram_docs {"query": "InlineKeyboardButton icon_custom_emoji_id style", "area": "bot-api"}
   get_telegram_document {"url": "https://core.telegram.org/bots/api", "offset": 167594, "length": 10500}
@@ -130,9 +130,10 @@ The tools work without the skill, but the skill is what makes an agent use them 
 | --- | --- |
 | `search_telegram_docs` | Full-text search over indexed sections, optionally limited to one area: `bot-api`, `mini-apps`, `telegram-api`, `tdlib`, `ton`, `releases`, `ton-releases`, `aiogram`, `python-telegram-bot`, `grammy` and others. Core Telegram docs rank first unless the query names a library |
 | `get_telegram_document` | Reads an official page in pages of up to 40,000 characters; fetches it if it is missing or older than 6 hours |
-| `telegram_corpus_status` | What is indexed, how fresh it is and which sources failed |
-| `telegram_document_history` | Revisions of a page captured by this installation |
-| `telegram_sources` | The 61 official entry points, grouped by API area |
+| `get_telegram_corpus_status` | What is indexed, how fresh it is and which sources failed |
+| `list_telegram_document_revisions` | Revisions of a page captured by this installation |
+| `list_telegram_sources` | The 61 official entry points, grouped by API area |
+| `list_telegram_cached_pages` | Pages already stored in the local cache, by area, with freshness |
 
 The cache starts empty. Pages are fetched the first time the agent reads them and indexed right away. To pre-fetch everything reachable from the configured sources:
 

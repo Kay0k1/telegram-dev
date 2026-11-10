@@ -2,6 +2,17 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] - 2026-11-10
+
+### Changed
+
+- MCP tools follow one verb-noun naming scheme. Renamed: `telegram_corpus_status` → `get_telegram_corpus_status`, `telegram_document_history` → `list_telegram_document_revisions`, `telegram_sources` → `list_telegram_sources`. `search_telegram_docs` and `get_telegram_document` are unchanged. The skill uses the new names; update a project install with `uvx telegram-dev@latest install --agent <agent> --update`.
+- Every tool description names its neighbouring tools and says when to use them instead.
+
+### Added
+
+- `list_telegram_cached_pages`: pages already stored in the local cache, filtered by area, with freshness and paging.
+
 ## [0.6.1] - 2026-11-10
 
 ### Changed
@@ -69,6 +80,7 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 - First public release: documentation MCP server with an on-demand local cache, agent skill, project installer for Codex, Claude Code and Cursor, and a Claude Code plugin catalog.
 
+[0.7.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.0...v0.5.1

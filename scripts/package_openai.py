@@ -83,7 +83,7 @@ def review_cases() -> dict:
              "expected_behavior": "Select the client API/TDLib surface, read the relevant public pages and cite them."},
             {"description": "Check published release history",
              "prompt": "Inspect the Bot API changelog and report the cache freshness before summarizing a documented change.",
-             "tools_triggered": "get_telegram_document, telegram_corpus_status",
+             "tools_triggered": "get_telegram_document, get_telegram_corpus_status",
              "expected_behavior": "Read the changelog and separate source observation timestamps from Telegram release dates."},
         ],
         "negative": [

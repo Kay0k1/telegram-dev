@@ -26,7 +26,7 @@ TON меняется так же быстро. В текущей докумен�
   'Delete' button to be red and show a custom emoji. Which Bot API fields do this,
   what are the requirements, and what does the request JSON look like?
 
-  telegram_corpus_status {}
+  get_telegram_corpus_status {}
   search_telegram_docs {"query": "style icon_custom_emoji_id", "area": "releases"}
   search_telegram_docs {"query": "InlineKeyboardButton icon_custom_emoji_id style", "area": "bot-api"}
   get_telegram_document {"url": "https://core.telegram.org/bots/api", "offset": 167594, "length": 10500}
@@ -124,9 +124,10 @@ Cursor: [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](htt
 | --- | --- |
 | `search_telegram_docs` | Полнотекстовый поиск по разделам, можно ограничить областью: `bot-api`, `mini-apps`, `telegram-api`, `tdlib`, `ton`, `releases`, `ton-releases`, `aiogram`, `python-telegram-bot`, `grammy` и другими. Документация Telegram идёт первой, если в запросе не названа библиотека |
 | `get_telegram_document` | Читает официальную страницу частями до 40 000 символов; загружает её, если страницы нет или она старше 6 часов |
-| `telegram_corpus_status` | Что проиндексировано, насколько свежее и какие источники не загрузились |
-| `telegram_document_history` | Версии страницы, которые видела эта установка |
-| `telegram_sources` | 61 официальная точка входа по областям API |
+| `get_telegram_corpus_status` | Что проиндексировано, насколько свежее и какие источники не загрузились |
+| `list_telegram_document_revisions` | Версии страницы, которые видела эта установка |
+| `list_telegram_sources` | 61 официальная точка входа по областям API |
+| `list_telegram_cached_pages` | Страницы, которые уже лежат в локальном кэше, по областям, со свежестью |
 
 Кэш сначала пустой. Страница загружается, когда агент впервые её читает, и сразу индексируется. Загрузить заранее всё, что достижимо из настроенных источников:
 

@@ -95,8 +95,8 @@ class KnowledgeTests(unittest.TestCase):
                 async with ClientSession(read, write) as session:
                     await session.initialize()
                     listing = await session.list_tools()
-                    self.assertEqual(len(listing.tools), 5)
-                    result = await session.call_tool("telegram_corpus_status", {})
+                    self.assertEqual(len(listing.tools), 6)
+                    result = await session.call_tool("get_telegram_corpus_status", {})
                     self.assertFalse(result.isError)
                     payload = result.structuredContent or json.loads(result.content[0].text)
                     self.assertEqual(payload["pages"], 0)
@@ -129,13 +129,38 @@ class ToolDefinitionTests(unittest.TestCase):
             return await k.create_server().list_tools()
         with patch.dict(os.environ, {"TELEGRAM_DOC_AUTO_SYNC": "0"}):
             listing = asyncio.run(tools())
-        self.assertEqual(len(listing), 5)
+        self.assertEqual(len(listing), 6)
+        verbs = ("search_", "get_", "list_")
         for tool in listing:
             with self.subTest(tool=tool.name):
                 self.assertTrue(tool.title)
+                self.assertTrue(tool.name.startswith(verbs))
                 self.assertGreater(len(tool.description), 150)
                 for name, schema in tool.inputSchema.get("properties", {}).items():
                     self.assertTrue(schema.get("description"), name)
         search = next(tool for tool in listing if tool.name == "search_telegram_docs")
         areas = set(search.inputSchema["properties"]["area"]["enum"])
         self.assertEqual(areas - {""}, {k.family(url) for url in k.SEEDS} | {"media-design", "gateway"})
+
+
+class CachedPagesTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.old_db = k.DB
+        k.DB = Path(self.temp.name) / "pages.sqlite3"
+
+    def tearDown(self):
+        k.DB = self.old_db
+        self.temp.cleanup()
+
+    def test_lists_cached_pages_by_area_with_paging(self):
+        with k.connect() as conn:
+            for url in ("https://core.telegram.org/bots/api", "https://core.telegram.org/bots/webapps",
+                        "https://docs.ton.org/applications/ton-connect/overview"):
+                k.save(conn, url, (url, url.rsplit("/", 1)[-1], "# Title\nSome documented text for the page.", []))
+        first = k.cached_pages(limit=2)
+        self.assertEqual((first["total"], len(first["pages"]), first["next_offset"]), (3, 2, 2))
+        self.assertIsNone(k.cached_pages(offset=2, limit=2)["next_offset"])
+        ton = k.cached_pages(area="ton")
+        self.assertEqual([page["url"] for page in ton["pages"]], ["https://docs.ton.org/applications/ton-connect/overview"])
+        self.assertFalse(ton["pages"][0]["freshness"]["stale"])
