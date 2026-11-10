@@ -1,0 +1,21 @@
+{
+  "task": "red-button",
+  "config": "plugin",
+  "run": 1,
+  "exit": 0,
+  "seconds": 41.9,
+  "project": "/tmp/tgdev-evals-5ibo8we0/plugin-red-button-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-5ibo8we0/plugin-red-button-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-5ibo8we0/plugin-red-button-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}

@@ -9,7 +9,7 @@
 
 Telegram Dev is an MCP server plus an agent skill. The server fetches, indexes and searches the official docs and keeps them fresh: Bot API, Mini Apps, MTProto, TDLib, on the TON side docs.ton.org (TON Connect, Tolk, TVM, APIs), the TEP standards and the changelogs, and the docs of the bot libraries aiogram, python-telegram-bot and grammY. The skill teaches the agent to pick the right API, follow Telegram's rules, check library support, and cite what it read.
 
-**Measured (Codex CLI, 11 tasks, [evals](evals/README.md)):** with Codex's own web access the plugin made no difference (45/47 rubric facts either way); with web access off, Telegram Dev kept answers current at 45/47 against 38/47 without it — Bot API 10.4 and the renamed TON coin and wallet were the gap.
+**Measured (Codex CLI, 11 questions and 10 code tasks, [evals](evals/README.md)):** with Codex's own web access the plugin made no difference to correctness (45/47 rubric facts and 26/26 code checks either way). With web access off, Telegram Dev kept answers current: 45/47 against 38/47 and 26/26 against 23/26 — without it Codex did not know Bot API 10.3–10.4 (ephemeral messages, HTML widgets) or the renamed TON coin and wallet.
 
 [Русская версия](README.ru.md)
 
@@ -134,6 +134,20 @@ The tools work without the skill, but the skill is what makes an agent use them 
 | `list_telegram_document_revisions` | Revisions of a page captured by this installation |
 | `list_telegram_sources` | The 61 official entry points, grouped by API area |
 | `list_telegram_cached_pages` | Pages already stored in the local cache, by area, with freshness |
+| `get_bot_api_definition` | One Bot API method or type as structured data: parameters or fields, types, required flags, allowed values, length limits, and the changelog entries that mention it |
+| `check_bot_api_call` | Checks a request your code sends against the current Bot API schema: unknown methods and parameters (with suggestions), missing required ones, wrong types, values outside the documented list, retired parameters with the version that replaced them |
+| `list_bot_api_changes` | Official Bot API changelog as structured releases, filtered by version (`since_version="9.0"`) or by a method, type or field name |
+
+### Checking Bot API calls
+
+The Bot API tools are built from the official API page and changelog in the cache, so they follow Telegram's current version (Bot API 10.4 at the time of writing) without a hand-written schema. For example, `check_bot_api_call` on
+
+```json
+{"method": "sendMessage", "params": {"chat_id": 1, "text": "Delete?", "reply_to_message_id": 42,
+  "reply_markup": {"inline_keyboard": [[{"text": "Delete", "callback_data": "del", "style": "red"}]]}}}
+```
+
+returns an error for `reply_markup.inline_keyboard[0][0].style` (must be one of `danger`, `success`, `primary`) and a warning that `reply_to_message_id` was replaced by `reply_parameters` in Bot API 7.0. It does not call Telegram, so permissions, chat state and file contents still need a real test.
 
 The cache starts empty. Pages are fetched the first time the agent reads them and indexed right away. To pre-fetch everything reachable from the configured sources:
 

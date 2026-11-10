@@ -1,0 +1,21 @@
+{
+  "task": "bot-utf16-entities",
+  "config": "plugin",
+  "run": 1,
+  "exit": 0,
+  "seconds": 30.5,
+  "project": "/tmp/tgdev-evals-lney_3ro/plugin-bot-utf16-entities-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-lney_3ro/plugin-bot-utf16-entities-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-lney_3ro/plugin-bot-utf16-entities-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}

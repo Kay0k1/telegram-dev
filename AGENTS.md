@@ -5,6 +5,7 @@ MCP server + agent skill that give Claude Code, Codex and Cursor current officia
 ## Layout
 
 - `telegram_knowledge.py` — the whole server and CLI: crawler, SQLite FTS5 cache, freshness policy, MCP tools (`serve`, `search`, `status`, `sync`, `maintain`; `install` is dispatched to the installer).
+- `bot_api_schema.py` — parses the cached Bot API page and changelog Markdown into a schema (methods, types, constraints, releases) and checks request payloads; nothing is hand-written per method. Used by `get_bot_api_definition`, `check_bot_api_call`, `list_bot_api_changes`.
 - `telegram_dev_install.py` — project installer. From a checkout it points the agent at the checkout's Python; from the package it writes a pinned `uvx --from <spec> telegram-dev serve` launcher (spec detected from `direct_url.json`).
 - `skills/telegram-dev/` — the skill; shipped in the wheel as the `telegram_dev_skill` package (see `[tool.setuptools]` in `pyproject.toml`).
 - `.claude-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.agents/plugins/` — native plugin manifests and catalogs. `server.json` — MCP Registry entry.

@@ -1,0 +1,21 @@
+{
+  "task": "quiz-multi",
+  "config": "baseline",
+  "run": 1,
+  "exit": 0,
+  "seconds": 34.7,
+  "project": "/tmp/tgdev-evals-os914ejm/baseline-quiz-multi-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-os914ejm/baseline-quiz-multi-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-os914ejm/baseline-quiz-multi-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}

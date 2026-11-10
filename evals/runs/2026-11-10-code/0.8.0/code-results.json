@@ -1,0 +1,581 @@
+[
+ {
+  "task": "album",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "media-group": true,
+   "caption": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "get_telegram_document",
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "check_bot_api_call"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 218540,
+   "cached_input_tokens": 177664,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1656,
+   "reasoning_output_tokens": 529
+  }
+ },
+ {
+  "task": "album",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "media-group": true,
+   "caption": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "search_telegram_docs",
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "get_telegram_document"
+  ],
+  "web_calls": 1,
+  "usage": {
+   "input_tokens": 234203,
+   "cached_input_tokens": 178816,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2553,
+   "reasoning_output_tokens": 1473
+  }
+ },
+ {
+  "task": "copy-button",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "copy-text": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "get_bot_api_definition",
+   "check_bot_api_call"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 162252,
+   "cached_input_tokens": 140800,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1669,
+   "reasoning_output_tokens": 602
+  }
+ },
+ {
+  "task": "copy-button",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "copy-text": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "search_telegram_docs",
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "get_telegram_document"
+  ],
+  "web_calls": 1,
+  "usage": {
+   "input_tokens": 163814,
+   "cached_input_tokens": 121344,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2004,
+   "reasoning_output_tokens": 1017
+  }
+ },
+ {
+  "task": "ephemeral-reply",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 2,
+  "checks": {
+   "valid": true,
+   "ephemeral": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "get_bot_api_definition",
+   "check_bot_api_call",
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "search_telegram_docs",
+   "search_telegram_docs",
+   "check_bot_api_call",
+   "get_telegram_document",
+   "check_bot_api_call",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "get_telegram_document"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 257258,
+   "cached_input_tokens": 231296,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2530,
+   "reasoning_output_tokens": 953
+  }
+ },
+ {
+  "task": "ephemeral-reply",
+  "config": "plugin",
+  "run": 1,
+  "requests": 2,
+  "checks": {
+   "valid": true,
+   "ephemeral": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "search_telegram_docs",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "search_telegram_docs",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "get_bot_api_definition",
+   "search_telegram_docs",
+   "check_bot_api_call",
+   "check_bot_api_call"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 341145,
+   "cached_input_tokens": 306560,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2764,
+   "reasoning_output_tokens": 1261
+  }
+ },
+ {
+  "task": "html-widget",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "send-widget": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "list_bot_api_changes",
+   "search_telegram_docs",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "get_telegram_document",
+   "search_telegram_docs",
+   "search_telegram_docs",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "search_telegram_docs",
+   "search_telegram_docs",
+   "check_bot_api_call",
+   "get_telegram_document",
+   "get_telegram_document"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 347717,
+   "cached_input_tokens": 307712,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 3285,
+   "reasoning_output_tokens": 1449
+  }
+ },
+ {
+  "task": "html-widget",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "send-widget": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "list_bot_api_changes",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "get_telegram_document",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "check_bot_api_call"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 333082,
+   "cached_input_tokens": 293632,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 3465,
+   "reasoning_output_tokens": 1818
+  }
+ },
+ {
+  "task": "no-preview",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "link-preview": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "check_bot_api_call",
+   "get_bot_api_definition"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 83735,
+   "cached_input_tokens": 64896,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1358,
+   "reasoning_output_tokens": 489
+  }
+ },
+ {
+  "task": "no-preview",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "link-preview": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "check_bot_api_call",
+   "get_telegram_document"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 140396,
+   "cached_input_tokens": 120576,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1648,
+   "reasoning_output_tokens": 706
+  }
+ },
+ {
+  "task": "private-topic",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "create-topic": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "check_bot_api_call",
+   "get_telegram_document"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 181384,
+   "cached_input_tokens": 159744,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1988,
+   "reasoning_output_tokens": 939
+  }
+ },
+ {
+  "task": "private-topic",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "create-topic": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "check_bot_api_call",
+   "get_telegram_document"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 157031,
+   "cached_input_tokens": 120320,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2088,
+   "reasoning_output_tokens": 1122
+  }
+ },
+ {
+  "task": "quiz-multi",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "quiz": true,
+   "two-correct": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "get_bot_api_definition"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 182819,
+   "cached_input_tokens": 160512,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2178,
+   "reasoning_output_tokens": 1214
+  }
+ },
+ {
+  "task": "quiz-multi",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "quiz": true,
+   "two-correct": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "search_telegram_docs",
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "check_bot_api_call"
+  ],
+  "web_calls": 1,
+  "usage": {
+   "input_tokens": 239186,
+   "cached_input_tokens": 195200,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2209,
+   "reasoning_output_tokens": 1041
+  }
+ },
+ {
+  "task": "red-button",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "style": true,
+   "icon": true,
+   "callback": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "search_telegram_docs",
+   "get_bot_api_definition",
+   "get_telegram_corpus_status",
+   "get_telegram_document",
+   "check_bot_api_call"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 166841,
+   "cached_input_tokens": 138880,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2038,
+   "reasoning_output_tokens": 989
+  }
+ },
+ {
+  "task": "red-button",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "style": true,
+   "icon": true,
+   "callback": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "search_telegram_docs",
+   "get_telegram_document",
+   "check_bot_api_call"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 166978,
+   "cached_input_tokens": 134912,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1919,
+   "reasoning_output_tokens": 822
+  }
+ },
+ {
+  "task": "reply-to",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "reply-parameters": true,
+   "without-reply": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "get_bot_api_definition",
+   "search_telegram_docs",
+   "check_bot_api_call",
+   "get_telegram_document"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 127748,
+   "cached_input_tokens": 105856,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1471,
+   "reasoning_output_tokens": 565
+  }
+ },
+ {
+  "task": "reply-to",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "reply-parameters": true,
+   "without-reply": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "search_telegram_docs",
+   "get_telegram_corpus_status",
+   "get_telegram_document",
+   "check_bot_api_call",
+   "get_bot_api_definition"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 153303,
+   "cached_input_tokens": 130432,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 1866,
+   "reasoning_output_tokens": 1075
+  }
+ },
+ {
+  "task": "stars-link",
+  "config": "plugin-noweb",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "invoice-link": true,
+   "amount": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "get_bot_api_definition",
+   "search_telegram_docs",
+   "search_telegram_docs",
+   "check_bot_api_call",
+   "get_telegram_document",
+   "get_telegram_document"
+  ],
+  "web_calls": 0,
+  "usage": {
+   "input_tokens": 180357,
+   "cached_input_tokens": 142976,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2114,
+   "reasoning_output_tokens": 797
+  }
+ },
+ {
+  "task": "stars-link",
+  "config": "plugin",
+  "run": 1,
+  "requests": 1,
+  "checks": {
+   "valid": true,
+   "invoice-link": true,
+   "amount": true
+  },
+  "schema_errors": [],
+  "mcp_calls": [
+   "get_telegram_corpus_status",
+   "search_telegram_docs",
+   "get_bot_api_definition",
+   "get_telegram_document",
+   "check_bot_api_call"
+  ],
+  "web_calls": 1,
+  "usage": {
+   "input_tokens": 265966,
+   "cached_input_tokens": 233728,
+   "cache_write_input_tokens": 0,
+   "output_tokens": 2599,
+   "reasoning_output_tokens": 1242
+  }
+ }
+]

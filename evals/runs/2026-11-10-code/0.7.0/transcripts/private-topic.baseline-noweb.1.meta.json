@@ -1,0 +1,25 @@
+{
+  "task": "private-topic",
+  "config": "baseline-noweb",
+  "run": 1,
+  "exit": 0,
+  "seconds": 45.4,
+  "project": "/tmp/tgdev-evals-htjgbtzl/baseline-noweb-private-topic-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-htjgbtzl/baseline-noweb-private-topic-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-htjgbtzl/baseline-noweb-private-topic-1\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "task": "copy-button",
+  "config": "baseline",
+  "run": 1,
+  "exit": 0,
+  "seconds": 25.3,
+  "project": "/tmp/tgdev-evals-os914ejm/baseline-copy-button-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-os914ejm/baseline-copy-button-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-os914ejm/baseline-copy-button-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}

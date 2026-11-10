@@ -72,12 +72,36 @@ The skill was picked up in all 22 plugin runs and every one of them called the M
 - **Rubrics measure required facts, not overall quality.** Differences such as WalletTg support in `ton_proof` are described above but not scored.
 - **Claude Code and Cursor were not measured.**
 
+## Code tasks — 2026-11-10 (telegram-dev 0.7.0 and 0.8.0)
+
+Ten code-writing tasks in [code-tasks.json](code-tasks.json), mostly on recent Bot API features (button `style` and `icon_custom_emoji_id`, ephemeral replies, `sendWidget`, quizzes with several correct answers, `reply_parameters`, `link_preview_options`, albums, Stars invoice links, topics in private chats, copy-text buttons). The agent writes Python with httpx against the raw Bot API and ends with the exact requests its code sends. [grade_code.py](grade_code.py) grades automatically: each task has a `valid` check (every request passes the official Bot API 10.4 schema with no errors) and request checks for the method and key fields — 26 checks in total. Expected values were checked against core.telegram.org/bots/api on the run date, and a reference answer for every task passes the grader. Codex CLI 0.167.0, one run per task and configuration.
+
+| | Telegram Dev 0.8.0 | Telegram Dev 0.7.0 | No plugin |
+| --- | --- | --- | --- |
+| With Codex web access | 26/26 | 26/26 | 26/26 |
+| Without web access | 26/26 | 26/26 | 23/26 |
+
+- **With web access every configuration got every check right.** On these tasks a strong agent with good web search does not need the plugin to be correct. 0.8.0 is not more accurate than 0.7.0 here.
+- **Without web access the plugin closed the gap.** Plain Codex said that the Bot API cannot send a message visible to only one group member (ephemeral messages arrived in Bot API 10.3) and that an HTML widget cannot be sent inside a message (`sendWidget`, Bot API 10.4), and offered workarounds.
+- **The new tools were used.** 0.8.0 agents called `check_bot_api_call` in most tasks (9 calls with web, 11 without) and `get_bot_api_definition` instead of part of the page reads. Every check they ran passed on the first try: the agents had already read the right definitions, so the checker confirmed requests but never had to correct one. With web access they used about 30% more uncached input tokens than 0.7.0 (360 K against 278 K) and a similar median time (50 s against 47 s).
+- The validity check uses the same schema code the 0.8.0 agents can call, so it is not independent of the plugin. It was verified separately (see [docs/validation.md](../docs/validation.md)): aiogram cross-check, a valid payload for every method and 502 broken payloads detected.
+
+Results per run: `runs/2026-11-10-code/<version>/code-results.json`; transcripts next to them.
+
+### Questions rerun with 0.8.0
+
+The 11 questions above were run again with telegram-dev 0.8.0 (configs with and without web, one run each) and graded with the same rubrics and the same strictness ([grades.json](runs/2026-11-10-qa-0.8.0/grades.json)): 45/47 facts and 9/11 fully correct in both configurations, no wrong claims — the same as 0.5.0. One qualitative change not covered by a rubric: in `ton-proof-login` without web, the 0.8.0 answer accepted only V3R1–V5R1 wallet contracts and only mentioned in a sentence that WalletTg needs a separate check, while the earlier plugin runs verified WalletTg in code; the 0.8.0 run with web still did. With one run per configuration this may be run-to-run variation.
+
 ## Reproduce
 
 ```sh
 uv run --frozen python evals/run_codex.py --out evals/runs/<date> --isolated-home
 uv run --frozen python evals/run_codex.py --out evals/runs/<date> --isolated-home --configs plugin-noweb baseline-noweb
 uv run --frozen python evals/grade.py evals/runs/<date>
+
+# code tasks
+uv run --frozen python evals/run_codex.py --tasks evals/code-tasks.json --out evals/runs/<date>-code/<version> --isolated-home --configs plugin baseline --spec telegram-dev==<version>
+uv run --frozen python evals/grade_code.py evals/runs/<date>-code/<version>
 ```
 
 `run_codex.py` needs Python 3.11+ (`uv run` provides it), a logged-in Codex CLI and `uvx`. `grade.py` lists the answers that still need a manual decision; record them in `<run>/grades.json` (see the existing file for the format) and run it again. `--show <task>.<config>.<run>` prints one final answer.

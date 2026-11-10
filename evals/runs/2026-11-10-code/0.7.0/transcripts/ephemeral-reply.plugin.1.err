@@ -1,0 +1,4 @@
+WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/tmp/tgdev-evals-os914ejm/codex-home"))
+Reading additional input from stdin...
+2026-11-10T20:51:32.414459Z ERROR codex_skills_extension::loader::host: failed to scan skill path file:///tmp/tgdev-evals-os914ejm/codex-home/plugins/cache/openai-curated-remote/sites/1.1.6/skills/sites/templates/vinext-starter/components/ui/direction.tsx: No such file or directory (os error 2)
+2026-11-10T20:51:32.414479Z ERROR codex_skills_extension::loader::host: failed to scan skill path file:///tmp/tgdev-evals-os914ejm/codex-home/plugins/cache/openai-curated-remote/sites/1.1.6/skills/sites/templates/vinext-starter/components/ui/drawer.tsx: No such file or directory (os error 2)

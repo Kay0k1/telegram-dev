@@ -1,0 +1,21 @@
+{
+  "task": "stars-link",
+  "config": "baseline",
+  "run": 1,
+  "exit": 0,
+  "seconds": 38.6,
+  "project": "/tmp/tgdev-evals-os914ejm/baseline-stars-link-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-os914ejm/baseline-stars-link-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-os914ejm/baseline-stars-link-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}

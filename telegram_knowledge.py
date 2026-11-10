@@ -23,6 +23,8 @@ from markdownify import markdownify
 from platformdirs import user_cache_path
 from pydantic import Field
 
+import bot_api_schema
+
 ROOT = Path(__file__).resolve().parent
 DB = Path(os.environ.get("TELEGRAM_KNOWLEDGE_DB", str(user_cache_path("telegram-dev") / "corpus.sqlite3")))
 SEEDS = [
@@ -683,6 +685,46 @@ def cached_pages(area="", offset=0, limit=50):
             "next_offset": offset + len(pages) if offset + len(pages) < total else None}
 
 
+_schema_cache = {}
+
+
+def _bot_api(kind):
+    """Parsed Bot API page ('schema') or changelog ('changelog'), rebuilt when the cached page changes."""
+    url = bot_api_schema.PAGE if kind == "schema" else bot_api_schema.CHANGELOG
+    row = refresh_page(url)
+    key = (kind, row["sha"])
+    if key not in _schema_cache:
+        if len(_schema_cache) > 8:
+            _schema_cache.clear()
+        parsed = bot_api_schema.parse(row["body"]) if kind == "schema" else bot_api_schema.parse_changelog(row["body"])
+        _schema_cache[key] = parsed
+    return _schema_cache[key], {"source": row["url"], "checked_at": row["checked_at"], "freshness": freshness(row)}
+
+
+def bot_api_definition(name):
+    schema, source = _bot_api("schema")
+    releases, _ = _bot_api("changelog")
+    result = bot_api_schema.definition(schema, name.strip())
+    if result["kind"]:
+        result["changes"] = [{"version": release["version"], "date": release["date"], "url": release["url"], "text": change["text"]}
+                             for release in bot_api_schema.changes(releases, name=result["name"], limit=5)
+                             for change in release["changes"]]
+    return {**result, "bot_api_version": schema["version"], **source}
+
+
+def check_bot_api(method, params):
+    schema, source = _bot_api("schema")
+    releases, _ = _bot_api("changelog")
+    return {**bot_api_schema.check(schema, method.strip(), params, releases), "bot_api_version": schema["version"], **source}
+
+
+def bot_api_changes(since="", name="", limit=5):
+    releases, source = _bot_api("changelog")
+    selected = bot_api_schema.changes(releases, since=since.strip(), name=name.strip(), limit=None if since else limit)
+    return {"current_version": next((release["version"] for release in releases if release["version"]), None),
+            "releases": selected, **source}
+
+
 def coverage():
     with connect() as conn:
         states = dict(conn.execute("SELECT state,count(*) FROM frontier GROUP BY state"))
@@ -887,7 +929,7 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
     def get_telegram_corpus_status() -> dict:
         """Report how complete and how current the local documentation cache is, as totals.
 
-        Use it at the start of a task or when search results look incomplete. For the configured entry points use `list_telegram_sources`; for the individual cached pages use `list_telegram_cached_pages`; to answer a question use `search_telegram_docs`. Refreshing is automatic (on read, on search and in a background cycle), so there is no refresh command. Returns page counts per area, crawl queue state, stale page count, last and oldest successful checks, refresh policy and the latest source errors. Indexed pages are not all of Telegram's knowledge: absence from the cache is not evidence that a feature does not exist."""
+        Use it at the start of a task or when search results look incomplete. Returns `pages`, per-area counts (`families`), crawl queue state (`frontier`), `stale_pages`, last and oldest successful checks, `refresh_policy` and up to 15 recent source `errors`. For the configured entry points use `list_telegram_sources`; for the individual cached pages use `list_telegram_cached_pages`; to answer a question use `search_telegram_docs`. Refreshing is automatic (on read, on search and in a background cycle), so there is no refresh command. Returns page counts per area, crawl queue state, stale page count, last and oldest successful checks, refresh policy and the latest source errors. Indexed pages are not all of Telegram's knowledge: absence from the cache is not evidence that a feature does not exist."""
         return coverage()
 
     @server.tool(title="Observed revisions of a page", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
@@ -896,7 +938,7 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
     ) -> dict:
         """List the revisions of one documentation page that this installation has observed, newest first.
 
-        Use it to see whether a page changed since an earlier read. To read the current text use `get_telegram_document`. Returns content hash, capture time and length for each revision. It does not reconstruct history before the page was first fetched here; for Telegram release history read the official changelogs (area `releases` or `ton-releases`)."""
+        Use it to see whether a page changed since an earlier read. To read the current text use `get_telegram_document`. Returns `revisions`: a list of {sha, captured_at, characters}, newest first. A page that this installation has never fetched returns an empty list; a URL outside the official sources is rejected with an error. It does not reconstruct history before the page was first fetched here; for Telegram release history use `list_bot_api_changes` or the changelogs (area `releases` or `ton-releases`)."""
         with connect() as conn:
             base = canonical(url)
             if base is None:
@@ -908,7 +950,7 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
     def list_telegram_sources() -> dict:
         """List the official entry points this server crawls, each with its documentation area.
 
-        Use it to find where to start reading for an unfamiliar area (for example the Bot API index, docs.ton.org/llms.txt or a library's docs) and pass the URL to `get_telegram_document`. If you already know the feature or API name, use `search_telegram_docs` instead. This is the source configuration, not the cache: `list_telegram_cached_pages` shows what is already stored."""
+        Use it to find where to start reading for an unfamiliar area (for example the Bot API index, docs.ton.org/llms.txt or a library's docs) and pass the URL to `get_telegram_document`. If you already know the feature or API name, use `search_telegram_docs` instead. Returns `sources`: a list of {url, area} in the configured order (Telegram core docs, then TON, then bot libraries), and a short `scope` note. This is the source configuration, not the cache: `list_telegram_cached_pages` shows what is already stored."""
         return {"sources": [{"url": url, "area": family(url)} for url in SEEDS],
                 "scope": "Entry points for discovery. Follow each official API index and schema for additional features."}
 
@@ -920,8 +962,38 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
     ) -> dict:
         """List the documentation pages already stored in the local cache, sorted by URL.
 
-        Use it to see which pages of an area are available offline or to pick a page to open with `get_telegram_document`. Returns URL, title, area, last check time and freshness for each page, the total count and `next_offset` (null at the end). It lists stored pages only; to find content by topic use `search_telegram_docs`, and for totals and errors use `get_telegram_corpus_status`."""
+        Use it to see which pages of an area are available offline or to pick a page to open with `get_telegram_document`. Filter with `area`, page through results with `offset` and `limit`. Returns `pages` (url, title, area, checked_at, freshness), `total` matching pages and `next_offset` to pass back for the next page (null at the end). It lists stored pages only; to find content by topic use `search_telegram_docs`, and for totals and errors use `get_telegram_corpus_status`."""
         return cached_pages(area, offset, limit)
+
+    @server.tool(title="Bot API method or type definition", annotations=annotations)
+    def get_bot_api_definition(
+        name: Annotated[str, Field(min_length=1, description="Exact Bot API method or type name, e.g. 'sendMessage', 'InlineKeyboardButton', 'ReplyParameters'. Case-insensitive; close matches are suggested.")],
+    ) -> dict:
+        """Return the current definition of one Bot API method or type as structured data.
+
+        Use it instead of reading the whole Bot API page when you need a method's parameters or a type's fields: each entry has its type, whether it is required, the description and any allowed values or length limits stated by Telegram, plus the changelog entries that mention it. For behaviour explained in prose elsewhere (formatting, payments, limits pages) use `search_telegram_docs` and `get_telegram_document`. Returns `kind` (method or type), `name`, `url`, `description`, then `params` (methods; with `returns`) or `fields` (types; or `one_of` for union types), plus `changes`, `bot_api_version`, `source`, `checked_at` and `freshness`. An unknown name returns `kind: null` with close-match `suggestions`. Built from the cached official page, refreshed when stale."""
+        return bot_api_definition(name)
+
+    @server.tool(title="Check a Bot API call", annotations=annotations)
+    def check_bot_api_call(
+        method: Annotated[str, Field(min_length=1, description="Bot API method name, e.g. 'sendMessage'.")],
+        params: Annotated[dict, Field(description="The request parameters exactly as your code sends them, as a JSON object. Nested objects such as reply_markup may be objects or JSON strings.")],
+    ) -> dict:
+        """Check a Bot API request against the current official schema before running or shipping code.
+
+        Reports errors (unknown method or parameter with suggestions, missing required parameters, wrong types, values outside the documented list, a wrong `type` in union objects such as InputMedia) and warnings (lengths outside documented limits, parameters retired in an older Bot API version with the changelog entry that replaced them, numbers or booleans sent as strings). It does not call Telegram and cannot check permissions, chat state or file contents. Returns `valid` (true when there are no errors), `errors` and `warnings` as lists of {path, message} where path points into params (for example `reply_markup.inline_keyboard[0][0].style`), plus `url`, `bot_api_version` and freshness. An unknown method returns `valid: false` with suggestions. Use `get_bot_api_definition` to read the definitions it checks against."""
+        return check_bot_api(method, params)
+
+    @server.tool(title="Bot API changes by version", annotations=annotations)
+    def list_bot_api_changes(
+        since_version: Annotated[str, Field(description="Only releases newer than this Bot API version, e.g. '9.0'. Empty returns the latest releases.")] = "",
+        name: Annotated[str, Field(description="Only changes that mention this method, type, field or parameter, e.g. 'InlineKeyboardButton' or 'reply_parameters'.")] = "",
+        limit: Annotated[int, Field(ge=1, le=50, description="Maximum number of releases when since_version is empty.")] = 5,
+    ) -> dict:
+        """List official Bot API changelog entries as structured releases: version, date, link and the individual changes.
+
+        Use it when upgrading a bot or a library ("what changed since 9.0?"), when a field seems new or missing, or to find when a method or field was added, replaced or removed. Returns `current_version` and `releases`, newest first: each has `version`, `date`, `url` and `changes` ({text, topic, refs: linked methods and types, terms: field and parameter names}). A name that no change mentions returns an empty list. For the full current definition use `get_bot_api_definition`; for TON or library changelogs use `search_telegram_docs` with area `ton-releases` or the library area."""
+        return bot_api_changes(since_version, name, limit)
 
     return server
 

@@ -48,6 +48,13 @@ If available, use the telegram-knowledge MCP tools:
 3. `get_telegram_document` to read actual requirements; start at the search result's `document_offset` and paginate beyond a truncated excerpt. Reads/searches automatically check stale matched sources, and the runtime can also synchronize sources in the background while MCP is running. Inspect each result's freshness/error metadata rather than assuming a background task finished. Use the existing `refresh=true` parameter when a current limit, permission rule, newly released method or deprecated behavior needs an immediate source check. After a refresh changes the source hash, search again because offsets may have changed. If a source check fails, distinguish usable cached evidence from verified current evidence and use direct official browsing when available.
 4. `list_telegram_document_revisions` only for observed local revisions. Release history is in official changelog documents, not inferred from local capture timestamps.
 
+For the Bot API, prefer the structured tools over reading the long API page:
+- `get_bot_api_definition` for a method's parameters or a type's fields, with allowed values, length limits and the changelog entries that mention it.
+- `list_bot_api_changes` for "what changed since version X", when a field looks new or missing, or before upgrading a bot or its library.
+- `check_bot_api_call` on every Bot API request you build or change, with the parameters exactly as the code sends them. Fix every error; explain any warning you keep. It checks names, required parameters, types, documented values and retired parameters, not permissions or chat state.
+
+When these tools or the cached pages already answer the question with fresh evidence, do not repeat the same lookup with web search; use the web for sources the server does not cover or when its freshness metadata reports an error.
+
 Without MCP, open the official sources linked in the surface map using available browsing tools. If neither is available, explicitly identify unverified details instead of fabricating methods or restrictions.
 
 Search snippets alone are not sufficient evidence. Read parameters, related types, return values, availability notes, and relevant release entries together. A failed search is not proof that a feature is unsupported. An announcement is evidence of a product release, not proof of availability through every API or installed SDK.
@@ -60,7 +67,7 @@ Verify current constraints from documentation rather than retaining numeric limi
 
 Check the dependency version actually installed: an official API feature may not yet be wrapped by that version. For aiogram, python-telegram-bot and grammY, read the indexed library docs, compare their version with the installed one, and say so when they differ. Make a justified upgrade or use a supported raw call where appropriate; do not silently switch stacks.
 
-Test observable outcomes proportional to the task: entity offsets and escaping, media metadata, correct API method and response type, updates, permission failures, client feature support, or server-side Mini App authentication. A mock test proves request construction, not Telegram acceptance or appearance in real clients. Clearly distinguish those validation levels.
+Before reporting Bot API code as done, run `check_bot_api_call` on each request it sends (one representative payload per call site is enough) and mention the result. Test observable outcomes proportional to the task: entity offsets and escaping, media metadata, correct API method and response type, updates, permission failures, client feature support, or server-side Mini App authentication. A mock test proves request construction, not Telegram acceptance or appearance in real clients. Clearly distinguish those validation levels.
 
 For real account actions, use only an authorized target and operation. Reading public documentation requires no token. Never ask for login codes, bot tokens, or session files just to answer a documentation question. Do not retry an ambiguous payment, gift transfer, post or destructive moderation operation blindly; first reconcile whether it succeeded.
 

@@ -1,0 +1,259 @@
+{
+ "version": 1,
+ "checked_on": "2026-11-10",
+ "prompt_suffix": "\n\nНапиши код на Python с httpx, напрямую к Bot API (без библиотек ботов). В конце ответа выпиши каждый запрос к Bot API, который отправляет код, одним блоком ```json — массивом объектов {\"method\": \"...\", \"params\": {...}} с конкретными значениями из задачи. Файлы не создавай и не меняй.",
+ "notes": "Every check is automatic. A request check passes when some request in the final ```json block uses the method and satisfies every predicate; `[*]` matches any list element. Each task also has a `valid` check: every request passes the official Bot API schema with no errors (bot_api_schema.check against the page fetched on the run date). Expected values were checked against https://core.telegram.org/bots/api on the date above.",
+ "tasks": [
+  {
+   "id": "red-button",
+   "prompt": "Отправь сообщение «Удалить заказ?» с inline-кнопкой «Удалить»: кнопка красная, перед текстом custom emoji (id 5368324170671202286), callback_data `buy:42`.",
+   "checks": [
+    {
+     "id": "style",
+     "fact": "InlineKeyboardButton style is danger",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "reply_markup.inline_keyboard[*][*].style",
+       "equals": "danger"
+      }
+     ]
+    },
+    {
+     "id": "icon",
+     "fact": "custom emoji in icon_custom_emoji_id",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "reply_markup.inline_keyboard[*][*].icon_custom_emoji_id",
+       "equals": "5368324170671202286"
+      }
+     ]
+    },
+    {
+     "id": "callback",
+     "fact": "callback_data kept",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "reply_markup.inline_keyboard[*][*].callback_data",
+       "equals": "buy:42"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ephemeral-reply",
+   "prompt": "В группе под сообщением бота есть inline-кнопка «Мой баланс». Когда пользователь её нажимает (пришёл callback query с id `4382bfdwdsb323b2d9`), отправь в этот же чат сообщение «Ваш баланс: 120 ⭐», которое увидит только он, остальные участники — нет.",
+   "checks": [
+    {
+     "id": "ephemeral",
+     "fact": "sendMessage with ephemeral_message_parameters.callback_query_id",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "ephemeral_message_parameters.callback_query_id",
+       "equals": "4382bfdwdsb323b2d9"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "html-widget",
+   "prompt": "Отправь пользователю в личку (chat_id 123456789) интерактивный HTML-виджет — простой счётчик с кнопкой «+1» — прямо как сообщение в чате, не как Mini App и не ссылкой.",
+   "checks": [
+    {
+     "id": "send-widget",
+     "fact": "uses sendWidget with html",
+     "method": "sendWidget",
+     "where": [
+      {
+       "path": "html",
+       "exists": true
+      },
+      {
+       "path": "chat_id",
+       "exists": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "quiz-multi",
+   "prompt": "Отправь в чат 123456789 викторину «Какие из этих языков компилируемые?» с вариантами Rust, Python, Go, Ruby, где правильных ответов два: Rust и Go.",
+   "checks": [
+    {
+     "id": "quiz",
+     "fact": "sendPoll type quiz",
+     "method": "sendPoll",
+     "where": [
+      {
+       "path": "type",
+       "equals": "quiz"
+      }
+     ]
+    },
+    {
+     "id": "two-correct",
+     "fact": "correct_option_ids is [0, 2]",
+     "method": "sendPoll",
+     "where": [
+      {
+       "path": "correct_option_ids",
+       "equals": [
+        0,
+        2
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "reply-to",
+   "prompt": "Ответь в чате 123456789 на сообщение с id 42 текстом «Принято». Если исходное сообщение уже удалено, всё равно отправь ответ без цитаты.",
+   "checks": [
+    {
+     "id": "reply-parameters",
+     "fact": "reply_parameters.message_id is 42",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "reply_parameters.message_id",
+       "equals": 42
+      }
+     ]
+    },
+    {
+     "id": "without-reply",
+     "fact": "reply_parameters.allow_sending_without_reply is true",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "reply_parameters.allow_sending_without_reply",
+       "equals": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "no-preview",
+   "prompt": "Отправь в чат 123456789 текст «Документация: https://core.telegram.org/bots/api» так, чтобы под ним не было превью ссылки.",
+   "checks": [
+    {
+     "id": "link-preview",
+     "fact": "link_preview_options.is_disabled is true",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "link_preview_options.is_disabled",
+       "equals": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "album",
+   "prompt": "Отправь в чат 123456789 одним альбомом фото (file_id `AgACAgIAAxkBAAIB`) и видео (file_id `BAACAgIAAxkBAAIC`) с общей подписью «Отчёт за ноябрь» под альбомом.",
+   "checks": [
+    {
+     "id": "media-group",
+     "fact": "sendMediaGroup with photo then video",
+     "method": "sendMediaGroup",
+     "where": [
+      {
+       "path": "media[0].type",
+       "equals": "photo"
+      },
+      {
+       "path": "media[1].type",
+       "equals": "video"
+      }
+     ]
+    },
+    {
+     "id": "caption",
+     "fact": "caption on the first item",
+     "method": "sendMediaGroup",
+     "where": [
+      {
+       "path": "media[0].caption",
+       "exists": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stars-link",
+   "prompt": "Сделай ссылку на оплату цифрового товара «Премиум-скин» за 250 Telegram Stars, чтобы открыть её из Mini App.",
+   "checks": [
+    {
+     "id": "invoice-link",
+     "fact": "createInvoiceLink in XTR",
+     "method": "createInvoiceLink",
+     "where": [
+      {
+       "path": "currency",
+       "equals": "XTR"
+      }
+     ]
+    },
+    {
+     "id": "amount",
+     "fact": "one price of 250",
+     "method": "createInvoiceLink",
+     "where": [
+      {
+       "path": "prices[*].amount",
+       "equals": 250
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "private-topic",
+   "prompt": "Создай тему (топик) «Заказы» в личном чате бота с пользователем 777000111.",
+   "checks": [
+    {
+     "id": "create-topic",
+     "fact": "createForumTopic in the private chat",
+     "method": "createForumTopic",
+     "where": [
+      {
+       "path": "chat_id",
+       "equals": 777000111
+      },
+      {
+       "path": "name",
+       "equals": "Заказы"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "copy-button",
+   "prompt": "Отправь в чат 123456789 сообщение с промокодом и inline-кнопкой «Скопировать», которая по нажатию копирует `PROMO2026` в буфер обмена, без колбэка в бот.",
+   "checks": [
+    {
+     "id": "copy-text",
+     "fact": "button copy_text.text is PROMO2026",
+     "method": "sendMessage",
+     "where": [
+      {
+       "path": "reply_markup.inline_keyboard[*][*].copy_text.text",
+       "equals": "PROMO2026"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

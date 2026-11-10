@@ -1,0 +1,25 @@
+{
+  "task": "quiz-multi",
+  "config": "plugin-noweb",
+  "run": 1,
+  "exit": 0,
+  "seconds": 49.2,
+  "project": "/tmp/tgdev-evals-htjgbtzl/plugin-noweb-quiz-multi-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-htjgbtzl/plugin-noweb-quiz-multi-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-htjgbtzl/plugin-noweb-quiz-multi-1\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}

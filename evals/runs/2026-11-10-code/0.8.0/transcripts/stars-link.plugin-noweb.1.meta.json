@@ -1,0 +1,25 @@
+{
+  "task": "stars-link",
+  "config": "plugin-noweb",
+  "run": 1,
+  "exit": 0,
+  "seconds": 52.1,
+  "project": "/tmp/tgdev-evals-2via3p30/plugin-noweb-stars-link-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-2via3p30/plugin-noweb-stars-link-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-2via3p30/plugin-noweb-stars-link-1\"={trust_level=\"trusted\"}}",
+    "-c",
+    "web_search=\"disabled\"",
+    "--disable",
+    "apps",
+    "<prompt>"
+  ]
+}

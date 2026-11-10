@@ -1,6 +1,20 @@
 # Проверки / Validation
 
-## Agent evals — 2026-11-10 (Linux)
+## 0.8.0 — 2026-11-10 (Linux)
+
+Bot API schema, call checks and changelog tools, checked against the live Bot API 10.4 page and changelog cached on 2026-11-10.
+
+| Check | Result |
+| --- | --- |
+| Parsing | 193 methods and 425 types; every type name referenced by a parameter or field resolves; 29 union types; 17 enum fields, 184 constant fields (`type`, `status`, `source` discriminators and one currency), 135 length limits, 14 "required unless" parameters |
+| Independent cross-check | aiogram 3.31.0 (Bot API 10.3, generated from the same page): all 185 of its methods are in the schema; every parameter it has that the schema lacks is explained by the changelog (ephemeral parameters moved into `ephemeral_message_parameters` in 10.4, `reply_to_message_id`, `disable_web_page_preview`, `correct_option_id`, `switch_pm_*` and others replaced earlier) |
+| Retired parameters | All 69 parameters aiogram still accepts but the current docs no longer list are reported as warnings naming the Bot API version and changelog entry that replaced them, not as errors |
+| False positives | A minimal valid payload built from the schema for each of the 193 methods passes with no errors (14 send methods keep the expected warning that `chat_id` is required unless the message is an ephemeral reply) |
+| Detection | 502 broken payloads (each required parameter removed in turn, plus an invented parameter per method): all 502 rejected |
+| MCP | With an empty cache the server fetched the page and changelog and answered `get_bot_api_definition("InlineKeyboardButton")` (14 fields, 6 changelog entries, about 6,400 characters) in 3.5 s; later checks take about 10 ms |
+| Tests | 84 repository tests, including 10 for the schema on a hand-written page excerpt |
+
+## 0.6.0: agent evals — 2026-11-10 (Linux)
 
 Does the plugin change what an agent answers? 11 Telegram and TON tasks with rubrics checked against the official pages, run with Codex CLI 0.167.0 (`gpt-6.1-sol`, effort `ultra`) and telegram-dev 0.5.0 from PyPI, each in a fresh project, in four configurations. Details, per-task results, transcripts and limitations: [evals/README.md](../evals/README.md).
 
@@ -16,7 +30,7 @@ Does the plugin change what an agent answers? 11 Telegram and TON tasks with rub
 - On the Tolk task the plugin runs scored one fact lower: they did not mention FunC, which the run without the plugin called Tolk's predecessor.
 - Not measured: Claude Code (headless login expired on the test machine), Cursor, other models, executing the generated code.
 
-## Unreleased: bot library docs — 2026-11-10 (Linux)
+## 0.6.0: bot library docs — 2026-11-10 (Linux)
 
 | Check | Result |
 | --- | --- |

@@ -1,0 +1,1196 @@
+[
+  {
+    "task": "bot-api-latest",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "version": {
+        "auto": true,
+        "final": true
+      },
+      "widgets": {
+        "auto": true,
+        "final": true
+      },
+      "private-only": {
+        "auto": true,
+        "final": true
+      },
+      "sdk-gap": {
+        "auto": null,
+        "final": true
+      }
+    },
+    "must_not": {
+      "old-version": {
+        "auto": null,
+        "final": false
+      },
+      "invented-api": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "10.4 / Nov 9, widgets, private chats only and no forwarding, 32 KiB / 4 KiB after zlib, no network; 'в aiogram 3.31.0 заявлена поддержка Bot API 10.3', so a custom TelegramMethod; TelegramWidget.copyText exists. All from MCP.",
+    "mcp_calls": 14,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 95.3,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 518444,
+      "cached_input_tokens": 478336,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4526,
+      "reasoning_output_tokens": 2630
+    },
+    "errors": 0,
+    "answer_chars": 2136
+  },
+  {
+    "task": "bot-api-latest",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "version": {
+        "auto": true,
+        "final": true
+      },
+      "widgets": {
+        "auto": true,
+        "final": true
+      },
+      "private-only": {
+        "auto": true,
+        "final": true
+      },
+      "sdk-gap": {
+        "auto": null,
+        "final": true
+      }
+    },
+    "must_not": {
+      "old-version": {
+        "auto": null,
+        "final": false
+      },
+      "invented-api": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "10.4 / Nov 9, HTML widgets, private chats only, no forwarding, no network; 'aiogram 3.31.0 пока поддерживает API 10.3', so sendWidget through a custom TelegramMethod. Parameters html and caption, TelegramWidget.ready(), widget_query and editMessageWidgetData all exist.",
+    "mcp_calls": 16,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 116.9,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 568415,
+      "cached_input_tokens": 508416,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4901,
+      "reasoning_output_tokens": 2706
+    },
+    "errors": 0,
+    "answer_chars": 2208
+  },
+  {
+    "task": "bot-red-button-emoji",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "style-danger": {
+        "auto": true,
+        "final": true
+      },
+      "icon-field": {
+        "auto": true,
+        "final": true
+      },
+      "callback-kept": {
+        "auto": true,
+        "final": true
+      },
+      "eligibility": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "colors-unsupported": {
+        "auto": null,
+        "final": false
+      },
+      "emoji-in-label": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Correct, read from the Bot API page over MCP; same eligibility rule and Bot API 9.4 as with web.",
+    "mcp_calls": 5,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 43.5,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 149172,
+      "cached_input_tokens": 133760,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1743,
+      "reasoning_output_tokens": 861
+    },
+    "errors": 0,
+    "answer_chars": 1052
+  },
+  {
+    "task": "bot-red-button-emoji",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "style-danger": {
+        "auto": true,
+        "final": true
+      },
+      "icon-field": {
+        "auto": true,
+        "final": true
+      },
+      "callback-kept": {
+        "auto": true,
+        "final": true
+      },
+      "eligibility": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "colors-unsupported": {
+        "auto": null,
+        "final": false
+      },
+      "emoji-in-label": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Correct JSON (style danger, icon_custom_emoji_id, callback_data buy:42); eligibility quoted from InlineKeyboardButton (Fragment usernames, or owner Premium for messages sent directly to private/group/supergroup chats, not channels or inline mode); adds Bot API 9.4.",
+    "mcp_calls": 5,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 45.9,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 181158,
+      "cached_input_tokens": 158080,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1778,
+      "reasoning_output_tokens": 824
+    },
+    "errors": 0,
+    "answer_chars": 984
+  },
+  {
+    "task": "bot-utf16-entities",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "offset": {
+        "auto": true,
+        "final": true
+      },
+      "length": {
+        "auto": true,
+        "final": true
+      },
+      "utf16": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "python-offset": {
+        "auto": false,
+        "final": false
+      }
+    },
+    "facts": 3,
+    "facts_total": 3,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "offset 3, length 6, UTF-16 explained.",
+    "mcp_calls": 5,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 27.9,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 119723,
+      "cached_input_tokens": 103296,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1112,
+      "reasoning_output_tokens": 304
+    },
+    "errors": 0,
+    "answer_chars": 950
+  },
+  {
+    "task": "bot-utf16-entities",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "offset": {
+        "auto": true,
+        "final": true
+      },
+      "length": {
+        "auto": true,
+        "final": true
+      },
+      "utf16": {
+        "auto": false,
+        "final": true
+      }
+    },
+    "must_not": {
+      "python-offset": {
+        "auto": false,
+        "final": false
+      }
+    },
+    "facts": 3,
+    "facts_total": 3,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Pattern missed 'UTF‑16' written with a non-breaking hyphen (U+2011): 'offset и length измеряются в кодовых единицах UTF‑16'. offset 3, length 6.",
+    "mcp_calls": 7,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 30.5,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 120052,
+      "cached_input_tokens": 100864,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1320,
+      "reasoning_output_tokens": 444
+    },
+    "errors": 0,
+    "answer_chars": 929
+  },
+  {
+    "task": "bot-video-note",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "method": {
+        "auto": true,
+        "final": true
+      },
+      "square": {
+        "auto": true,
+        "final": true
+      },
+      "one-minute": {
+        "auto": true,
+        "final": true
+      },
+      "no-url": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "send-video": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "answer_video_note with an ffmpeg crop to 480x480, 60 s, re-upload; 20/50 MB; 'Передавать URL непосредственно в video_note нельзя'.",
+    "mcp_calls": 17,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 76.4,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 272545,
+      "cached_input_tokens": 236032,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3564,
+      "reasoning_output_tokens": 1584
+    },
+    "errors": 0,
+    "answer_chars": 2997
+  },
+  {
+    "task": "bot-video-note",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "method": {
+        "auto": true,
+        "final": true
+      },
+      "square": {
+        "auto": true,
+        "final": true
+      },
+      "one-minute": {
+        "auto": true,
+        "final": true
+      },
+      "no-url": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "send-video": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "answer_video_note with an ffmpeg center crop to 384x384, first 60 s, re-upload because a video file_id cannot become a video note; 20/50 MB limits; 'Передавать URL прямо в video_note нельзя'.",
+    "mcp_calls": 9,
+    "web_searches": 2,
+    "commands": 1,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 80.3,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 358400,
+      "cached_input_tokens": 310400,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3603,
+      "reasoning_output_tokens": 1750
+    },
+    "errors": 0,
+    "answer_chars": 3287
+  },
+  {
+    "task": "bot-vs-mtproto-history",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "no-bot-history": {
+        "auto": null,
+        "final": true
+      },
+      "user-client": {
+        "auto": true,
+        "final": true
+      },
+      "history-method": {
+        "auto": true,
+        "final": true
+      },
+      "api-id": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "invented-bot-method": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Same as the web run: no Bot API method, 24 h queue, messages.getHistory user-only, Telethon iter_messages, api_id from my.telegram.org.",
+    "mcp_calls": 8,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 72.8,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 216611,
+      "cached_input_tokens": 197888,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3488,
+      "reasoning_output_tokens": 2006
+    },
+    "errors": 0,
+    "answer_chars": 2630
+  },
+  {
+    "task": "bot-vs-mtproto-history",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "no-bot-history": {
+        "auto": null,
+        "final": true
+      },
+      "user-client": {
+        "auto": true,
+        "final": true
+      },
+      "history-method": {
+        "auto": true,
+        "final": true
+      },
+      "api-id": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "invented-bot-method": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "'В Bot API нет метода чтения истории канала', 24 h update queue, admin rights would not open the archive; messages.getHistory is user-only; Telethon iter_messages with api_id/api_hash from my.telegram.org.",
+    "mcp_calls": 7,
+    "web_searches": 2,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 83.0,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 294983,
+      "cached_input_tokens": 249984,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4152,
+      "reasoning_output_tokens": 2582
+    },
+    "errors": 0,
+    "answer_chars": 2753
+  },
+  {
+    "task": "miniapp-initdata",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "webappdata-key": {
+        "auto": true,
+        "final": true
+      },
+      "check-string": {
+        "auto": true,
+        "final": true
+      },
+      "auth-date": {
+        "auto": true,
+        "final": true
+      },
+      "ed25519": {
+        "auto": true,
+        "final": true
+      },
+      "bot-id-prefix": {
+        "auto": true,
+        "final": true
+      },
+      "public-key": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "trust-unsafe": {
+        "auto": null,
+        "final": false
+      },
+      "share-token": {
+        "auto": null,
+        "final": false
+      },
+      "wrong-key": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 6,
+    "facts_total": 6,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Both checks correct, both published keys; says to use initData, not initDataUnsafe.",
+    "mcp_calls": 3,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 94.6,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 141578,
+      "cached_input_tokens": 124416,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4969,
+      "reasoning_output_tokens": 3020
+    },
+    "errors": 0,
+    "answer_chars": 4855
+  },
+  {
+    "task": "miniapp-initdata",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "webappdata-key": {
+        "auto": true,
+        "final": true
+      },
+      "check-string": {
+        "auto": true,
+        "final": true
+      },
+      "auth-date": {
+        "auto": true,
+        "final": true
+      },
+      "ed25519": {
+        "auto": true,
+        "final": true
+      },
+      "bot-id-prefix": {
+        "auto": true,
+        "final": true
+      },
+      "public-key": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "trust-unsafe": {
+        "auto": null,
+        "final": false
+      },
+      "share-token": {
+        "auto": null,
+        "final": false
+      },
+      "wrong-key": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 6,
+    "facts_total": 6,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Both checks correct: HMAC with WebAppData excludes only hash, Ed25519 excludes hash and signature with the bot_id:WebAppData prefix; production key (split over two string literals) and test key match the page.",
+    "mcp_calls": 3,
+    "web_searches": 1,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 96.0,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 229969,
+      "cached_input_tokens": 205184,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 5233,
+      "reasoning_output_tokens": 3244
+    },
+    "errors": 0,
+    "answer_chars": 5050
+  },
+  {
+    "task": "miniapp-sell-for-ton",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "stars-rule": {
+        "auto": true,
+        "final": true
+      },
+      "xtr": {
+        "auto": true,
+        "final": true
+      },
+      "invoice-flow": {
+        "auto": true,
+        "final": true
+      },
+      "ton-connect-scope": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "must_not": {
+      "ton-payment": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 3,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": false,
+    "pending": [],
+    "note": "Stars/XTR flow with createInvoiceLink + openInvoice, grant on successful_payment, refunds via refundStarPayment and /paysupport; does not say what TON Connect is still allowed for.",
+    "mcp_calls": 15,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 185.0,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 335148,
+      "cached_input_tokens": 304128,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 10222,
+      "reasoning_output_tokens": 6782
+    },
+    "errors": 0,
+    "answer_chars": 8009
+  },
+  {
+    "task": "miniapp-sell-for-ton",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "stars-rule": {
+        "auto": true,
+        "final": true
+      },
+      "xtr": {
+        "auto": true,
+        "final": true
+      },
+      "invoice-flow": {
+        "auto": true,
+        "final": true
+      },
+      "ton-connect-scope": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "must_not": {
+      "ton-payment": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 3,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": false,
+    "pending": [],
+    "note": "Stars/XTR with createInvoiceLink + openInvoice, grant on successful_payment in a DB transaction with charge-id uniqueness, refundStarPayment and /paysupport. Says crypto is forbidden for the skin; TON Connect is not mentioned, so what it is still allowed for is missing.",
+    "mcp_calls": 14,
+    "web_searches": 1,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 142.5,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 362633,
+      "cached_input_tokens": 325120,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 7959,
+      "reasoning_output_tokens": 4772
+    },
+    "errors": 0,
+    "answer_chars": 7544
+  },
+  {
+    "task": "ton-jetton-transfer",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "own-jetton-wallet": {
+        "auto": true,
+        "final": true
+      },
+      "opcode": {
+        "auto": true,
+        "final": true
+      },
+      "decimals": {
+        "auto": true,
+        "final": true
+      },
+      "forward": {
+        "auto": false,
+        "final": true
+      }
+    },
+    "must_not": {
+      "to-master": {
+        "auto": null,
+        "final": false
+      },
+      "nano-amount": {
+        "auto": false,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Pattern missed forward_ton_amount = storeCoins(1n) ('1 nanoton для уведомления'); 0.1 TON attached. get_wallet_address via runMethod on the master, sends to the sender's jetton wallet, 25_000_000n.",
+    "mcp_calls": 12,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 83.0,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 276018,
+      "cached_input_tokens": 240768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4437,
+      "reasoning_output_tokens": 2391
+    },
+    "errors": 0,
+    "answer_chars": 3994
+  },
+  {
+    "task": "ton-jetton-transfer",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "own-jetton-wallet": {
+        "auto": true,
+        "final": true
+      },
+      "opcode": {
+        "auto": true,
+        "final": true
+      },
+      "decimals": {
+        "auto": true,
+        "final": true
+      },
+      "forward": {
+        "auto": false,
+        "final": true
+      }
+    },
+    "must_not": {
+      "to-master": {
+        "auto": null,
+        "final": false
+      },
+      "nano-amount": {
+        "auto": false,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Pattern missed it: forward_ton_amount is storeCoins(1n) ('1 nanotON для transfer_notification') and 0.1 TON is attached. Sends to the sender's jetton wallet from getWalletAddress, 25n * 10n ** 6n with 6 decimals.",
+    "mcp_calls": 9,
+    "web_searches": 6,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 91.7,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 442488,
+      "cached_input_tokens": 363904,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4477,
+      "reasoning_output_tokens": 1922
+    },
+    "errors": 0,
+    "answer_chars": 3950
+  },
+  {
+    "task": "ton-proof-login",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "ton-proof": {
+        "auto": true,
+        "final": true
+      },
+      "payload": {
+        "auto": true,
+        "final": true
+      },
+      "message-format": {
+        "auto": true,
+        "final": true
+      },
+      "digest": {
+        "auto": false,
+        "final": true
+      },
+      "domain-time": {
+        "auto": true,
+        "final": true
+      },
+      "state-init": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "client-only": {
+        "auto": null,
+        "final": false
+      },
+      "trust-sdk-pubkey": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 6,
+    "facts_total": 6,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Pattern missed the [0xff, 0xff] digest. Random challenge in Redis for 300 s bound to an attempt cookie, consumed atomically. Supports V3R1/V3R2/V4R2/V5R1 only and rejects unknown contracts; says WalletTg needs a separate live-key check but gives no code, so Telegram Money users would be rejected (not a rubric fact).",
+    "mcp_calls": 16,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 209.2,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 543678,
+      "cached_input_tokens": 502656,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 11667,
+      "reasoning_output_tokens": 6947
+    },
+    "errors": 0,
+    "answer_chars": 11251
+  },
+  {
+    "task": "ton-proof-login",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "ton-proof": {
+        "auto": true,
+        "final": true
+      },
+      "payload": {
+        "auto": true,
+        "final": true
+      },
+      "message-format": {
+        "auto": true,
+        "final": true
+      },
+      "digest": {
+        "auto": false,
+        "final": true
+      },
+      "domain-time": {
+        "auto": true,
+        "final": true
+      },
+      "state-init": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "client-only": {
+        "auto": null,
+        "final": false
+      },
+      "trust-sdk-pubkey": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 6,
+    "facts_total": 6,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Pattern missed the digest written as Buffer.from([0xff, 0xff]) + 'ton-connect'. 32-byte random challenge in Redis for 300 s, bound to the session and consumed once by a Lua script. V3R2/V4R2/V5R1 key from stateInit and WalletTg (trampoline hash, active code, live get_public_key); client publicKey only compared.",
+    "mcp_calls": 6,
+    "web_searches": 3,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 281.8,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 805278,
+      "cached_input_tokens": 741760,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 15508,
+      "reasoning_output_tokens": 10613
+    },
+    "errors": 0,
+    "answer_chars": 13305
+  },
+  {
+    "task": "ton-telegram-wallet-naming",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "gram": {
+        "auto": true,
+        "final": true
+      },
+      "telegram-money": {
+        "auto": true,
+        "final": true
+      },
+      "wallettg": {
+        "auto": true,
+        "final": true
+      },
+      "key-rotation": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "old-wallet": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Gram (formerly Toncoin), Telegram Money, WalletTg, live get_public_key with the trampoline hash and active-code checks.",
+    "mcp_calls": 14,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 108.8,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 644880,
+      "cached_input_tokens": 591616,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 5042,
+      "reasoning_output_tokens": 2662
+    },
+    "errors": 0,
+    "answer_chars": 3305
+  },
+  {
+    "task": "ton-telegram-wallet-naming",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "gram": {
+        "auto": true,
+        "final": true
+      },
+      "telegram-money": {
+        "auto": true,
+        "final": true
+      },
+      "wallettg": {
+        "auto": true,
+        "final": true
+      },
+      "key-rotation": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "old-wallet": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 4,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": true,
+    "pending": [],
+    "note": "Gram (Toncoin as the former name), Telegram Money, WalletTg; key rotation without address change, so the live get_public_key after trampoline hash and active-code checks. Adds that the former Wallet in Telegram is now Walt, a separate service (walt.io letter opened via web).",
+    "mcp_calls": 13,
+    "web_searches": 2,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 120.1,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 1020380,
+      "cached_input_tokens": 931712,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 5229,
+      "reasoning_output_tokens": 2362
+    },
+    "errors": 0,
+    "answer_chars": 3821
+  },
+  {
+    "task": "ton-tolk-contract",
+    "config": "plugin-noweb",
+    "run": 1,
+    "must": {
+      "tolk": {
+        "auto": true,
+        "final": true
+      },
+      "func-legacy": {
+        "auto": null,
+        "final": false
+      },
+      "entrypoint": {
+        "auto": true,
+        "final": true
+      },
+      "getter": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "func-main": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 3,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": false,
+    "pending": [],
+    "note": "Current Tolk with contract/struct/lazy match; FunC not mentioned.",
+    "mcp_calls": 13,
+    "web_searches": 0,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 64.0,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 335653,
+      "cached_input_tokens": 304768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2862,
+      "reasoning_output_tokens": 1138
+    },
+    "errors": 0,
+    "answer_chars": 1620
+  },
+  {
+    "task": "ton-tolk-contract",
+    "config": "plugin",
+    "run": 1,
+    "must": {
+      "tolk": {
+        "auto": true,
+        "final": true
+      },
+      "func-legacy": {
+        "auto": null,
+        "final": false
+      },
+      "entrypoint": {
+        "auto": true,
+        "final": true
+      },
+      "getter": {
+        "auto": true,
+        "final": true
+      }
+    },
+    "must_not": {
+      "func-main": {
+        "auto": null,
+        "final": false
+      }
+    },
+    "facts": 3,
+    "facts_total": 4,
+    "violations": 0,
+    "correct": false,
+    "pending": [],
+    "note": "Current Tolk: contract declaration, struct opcodes, lazy match, onInternalMessage(in: InMessage), get fun. FunC is not mentioned at all, so the 'FunC is legacy' fact is missing.",
+    "mcp_calls": 10,
+    "web_searches": 1,
+    "commands": 0,
+    "baseline_plugin_access": [],
+    "mentions_skill": true,
+    "seconds": 59.4,
+    "exit": 0,
+    "usage": {
+      "input_tokens": 361514,
+      "cached_input_tokens": 323840,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2435,
+      "reasoning_output_tokens": 1022
+    },
+    "errors": 0,
+    "answer_chars": 1690
+  }
+]

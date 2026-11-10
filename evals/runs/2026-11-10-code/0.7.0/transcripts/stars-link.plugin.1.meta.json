@@ -1,0 +1,21 @@
+{
+  "task": "stars-link",
+  "config": "plugin",
+  "run": 1,
+  "exit": 0,
+  "seconds": 57.6,
+  "project": "/tmp/tgdev-evals-os914ejm/plugin-stars-link-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-os914ejm/plugin-stars-link-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-os914ejm/plugin-stars-link-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "task": "ephemeral-reply",
+  "config": "baseline",
+  "run": 1,
+  "exit": 0,
+  "seconds": 46.8,
+  "project": "/tmp/tgdev-evals-os914ejm/baseline-ephemeral-reply-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-os914ejm/baseline-ephemeral-reply-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-os914ejm/baseline-ephemeral-reply-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}

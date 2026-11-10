@@ -2,6 +2,20 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.8.0] - 2026-11-10
+
+### Added
+
+- `get_bot_api_definition`: one Bot API method or type as structured data — parameters or fields with types, required flags, allowed values, constants and length limits stated by Telegram — plus the changelog entries that mention it.
+- `check_bot_api_call`: checks a request payload against the current Bot API schema. Errors for unknown methods and parameters (with close-match suggestions), missing required parameters, wrong types, values outside the documented list and wrong `type` in union objects such as `InputMedia`; warnings for length limits, numbers or booleans sent as strings, "required unless" parameters and parameters retired in an older Bot API version, quoting the changelog entry that replaced them.
+- `list_bot_api_changes`: the official Bot API changelog as structured releases, filtered by version or by a method, type or field name.
+- `bot_api_schema.py`: builds the schema from the cached official API page and changelog, so it follows new Bot API versions without hand-written definitions.
+- `evals/code-tasks.json` and `evals/grade_code.py`: code-writing tasks graded automatically by the requests the answer sends.
+
+### Changed
+
+- The skill uses the structured Bot API tools instead of reading the long API page, checks every Bot API request it writes, and does not repeat a lookup with web search when the server already answered with fresh evidence.
+
 ## [0.7.0] - 2026-11-10
 
 ### Changed
@@ -80,6 +94,7 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 - First public release: documentation MCP server with an on-demand local cache, agent skill, project installer for Codex, Claude Code and Cursor, and a Claude Code plugin catalog.
 
+[0.8.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.5.1...v0.6.0
