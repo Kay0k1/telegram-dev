@@ -95,7 +95,7 @@ class KnowledgeTests(unittest.TestCase):
                 async with ClientSession(read, write) as session:
                     await session.initialize()
                     listing = await session.list_tools()
-                    self.assertEqual(len(listing.tools), 9)
+                    self.assertEqual(len(listing.tools), 10)
                     result = await session.call_tool("get_telegram_corpus_status", {})
                     self.assertFalse(result.isError)
                     payload = result.structuredContent or json.loads(result.content[0].text)
@@ -129,7 +129,7 @@ class ToolDefinitionTests(unittest.TestCase):
             return await k.create_server().list_tools()
         with patch.dict(os.environ, {"TELEGRAM_DOC_AUTO_SYNC": "0"}):
             listing = asyncio.run(tools())
-        self.assertEqual(len(listing), 9)
+        self.assertEqual(len(listing), 10)
         verbs = ("search_", "get_", "list_", "check_")
         for tool in listing:
             with self.subTest(tool=tool.name):

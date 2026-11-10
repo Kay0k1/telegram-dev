@@ -1,0 +1,34 @@
+name: Telegram Dev check
+description: Check a Telegram bot's Bot API calls against the current official documentation
+author: Kay0k1
+branding:
+  icon: send
+  color: blue
+inputs:
+  path:
+    description: Bot project directory or Python file, relative to the repository root
+    default: "."
+  exclude:
+    description: Glob patterns to skip, separated by spaces or new lines (for example "tests/* migrations/*")
+    default: ""
+  strict:
+    description: Fail on warnings too ("true" or "false")
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - uses: astral-sh/setup-uv@v6
+    - name: Check Bot API usage
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_EXCLUDE: ${{ inputs.exclude }}
+        INPUT_STRICT: ${{ inputs.strict }}
+      run: |
+        args=(check "$INPUT_PATH" --format github)
+        set -f  # keep exclude globs for telegram-dev instead of expanding them here
+        for pattern in $INPUT_EXCLUDE; do args+=(--exclude "$pattern"); done
+        set +f
+        if [ "$INPUT_STRICT" = "true" ]; then args+=(--strict); fi
+        # The action runs the telegram-dev version of the ref it was used with.
+        uvx --from "$GITHUB_ACTION_PATH" telegram-dev "${args[@]}"

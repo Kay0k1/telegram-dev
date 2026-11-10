@@ -995,7 +995,61 @@ def create_server(transport="stdio", host="127.0.0.1", port=8000):
         Use it when upgrading a bot or a library ("what changed since 9.0?"), when a field seems new or missing, or to find when a method or field was added, replaced or removed. Returns `current_version` and `releases`, newest first: each has `version`, `date`, `url` and `changes` ({text, topic, refs: linked methods and types, terms: field and parameter names}). A name that no change mentions returns an empty list. For the full current definition use `get_bot_api_definition`; for TON or library changelogs use `search_telegram_docs` with area `ton-releases` or the library area."""
         return bot_api_changes(since_version, name, limit)
 
+    if transport == "stdio":
+        # Reads local files, so it is offered only when the server runs on the user's machine.
+        @server.tool(title="Check a bot project", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+        def check_telegram_project(
+            path: Annotated[str, Field(min_length=1, description="Absolute path to the bot project directory or a single Python file on this machine.")],
+            exclude: Annotated[list[str], Field(description="Glob patterns relative to path to skip, e.g. ['tests/*', 'migrations/*'].")] = [],
+            max_findings: Annotated[int, Field(ge=1, le=1000, description="Maximum number of findings to return; totals always count everything.")] = 200,
+        ) -> dict:
+            """Check every Bot API call in a Python bot project (aiogram, python-telegram-bot, pyTelegramBotAPI, raw HTTP requests) against the current official schema in one run.
+
+            Use it after changing an existing bot, before an upgrade, or when asked to review a bot: it reads the whole project locally and returns only findings, so the documentation does not have to enter the context. Errors: values outside the documented list (for example `style="red"`), unknown methods or parameters in raw API requests. Warnings: parameters Telegram retired, with the Bot API version and changelog entry that replaced them; keyword arguments that are neither Bot API parameters nor known library options; bot methods with no Bot API counterpart. It does not run code, follow variables or check required parameters. Returns `findings` ({file, line, severity, call, message}), `errors`, `warnings`, `files_scanned`, declared `libraries` with versions and `bot_api_version`. To check one request instead use `check_bot_api_call`. The same check runs in a shell or CI as `telegram-dev check PATH`."""
+            report = project_report(path, exclude)
+            report["truncated_findings"] = len(report["findings"]) > max_findings
+            report["findings"] = report["findings"][:max_findings]
+            return report
+
     return server
+
+
+def project_report(path, exclude=()):
+    import project_check
+    schema, source = _bot_api("schema")
+    releases, _ = _bot_api("changelog")
+    report = project_check.check_project(path, schema, releases, exclude=exclude)
+    report["schema_checked_at"] = source["checked_at"]
+    report["schema_stale"] = source["freshness"]["stale"]
+    return report
+
+
+def check_main(argv, prog="telegram-dev check"):
+    import project_check
+    parser = argparse.ArgumentParser(prog=prog, description=(
+        "Check a bot project's Bot API usage (aiogram, python-telegram-bot, pyTelegramBotAPI, raw HTTP calls) "
+        "against the current official schema. Exits with 1 when there are errors."))
+    parser.add_argument("path", nargs="?", default=".", help="Project directory or Python file (default: current directory)")
+    parser.add_argument("--json", action="store_true", help="Print the full report as JSON")
+    parser.add_argument("--format", choices=["text", "github"], default="text",
+                        help="text (default) or github: GitHub Actions annotations on the changed lines")
+    parser.add_argument("--strict", action="store_true", help="Exit with 1 on warnings too")
+    parser.add_argument("--exclude", action="append", default=[], metavar="GLOB",
+                        help="Skip files matching this glob, relative to PATH (repeatable), e.g. 'tests/*'")
+    args = parser.parse_args(argv)
+    try:
+        report = project_report(args.path, args.exclude)
+    except ValueError as exc:
+        parser.error(str(exc))
+    if args.json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+    else:
+        target = Path(args.path).resolve()
+        base = os.path.relpath(target if target.is_dir() else target.parent, Path.cwd())
+        print(project_check.format_report(report, args.format, base))
+    if report["errors"] or (args.strict and report["warnings"]):
+        raise SystemExit(1)
+    return None
 
 
 def _version():
@@ -1017,13 +1071,16 @@ def main(argv=None):
     if argv[:1] == ["install"]:
         from telegram_dev_install import main as install_main
         return install_main(argv[1:], prog=f"{prog} install")
+    if argv[:1] == ["check"]:
+        return check_main(argv[1:], prog=f"{prog} check")
     if argv[:1] in (["--version"], ["version"]):
         print(_version())
         return None
     parser = argparse.ArgumentParser(
         prog=prog,
         description="Telegram Dev: official Telegram documentation for AI agents (MCP server and CLI).",
-        epilog="Connect a project: %(prog)s install --agent claude|codex|cursor [--project PATH]")
+        epilog="Connect a project: %(prog)s install --agent claude|codex|cursor [--project PATH]. "
+               "Check a bot project: %(prog)s check [PATH] [--json].")
     parser.add_argument("command", choices=["serve", "search", "status", "sync", "maintain"],
                         help="serve: run the MCP server (stdio by default); search QUERY; status; "
                              "sync: pre-fetch documentation; maintain: one refresh cycle")

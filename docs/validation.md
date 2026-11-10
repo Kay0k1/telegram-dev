@@ -1,5 +1,20 @@
 # Проверки / Validation
 
+## 0.9.0 — 2026-11-11 (Linux)
+
+`telegram-dev check` was run on 24 popular open-source Telegram bots found by GitHub search (aiogram, python-telegram-bot and pyTelegramBotAPI, 5 to 1,191 stars, last pushed 2018–2026; library repositories and MTProto userbots excluded), against the Bot API 10.4 page and changelog.
+
+| Result | |
+| --- | --- |
+| Bots with findings | 12 of 24 (638 Python files with bot code scanned) |
+| Findings | 129: 126 warnings and 3 errors |
+| Retired parameters | `disable_web_page_preview` 54, `reply_to_message_id` 40, `switch_pm_text`/`switch_pm_parameter` 12, `thumb_url`/`thumb_width`/`thumb_height` 15, `hide_url`, `correct_option_id`, `request_user` |
+| Other | one `start_parameter` passed to `createInvoiceLink`, which has no such parameter; one `disable_web_page_preview` passed to `InlineQueryResultArticle`, which never had it |
+| Errors | 3 `style` values (`"link"`, `"rainbow"`) on `InlineKeyboardButton` — correct by the schema, but in a project's tests that feed invalid values on purpose; `--exclude 'tests/*'` removes them |
+| False positives | none after review of every finding against the source |
+
+Precision was improved on this set before the numbers above: the first run reported the projects' own `User` models, `telegram.ext.filters`, websocket `close()`, pyTelegramBotAPI options and project helpers named `send_message` (263 false warnings out of 389). The released version resolves imports, reports unknown keyword arguments only on bot objects and Telegram types, and treats pyTelegramBotAPI helpers and options (`row_width`, `visible_file_name`) as library features. An independent review before release found false errors on raw HTTP requests that work (multipart uploads, string values in form data, lower-case method names, parameters split across `params=` and `json=`): raw requests now report only unknown methods or parameters and values outside the documented list. It also fixed files with a UTF-8 byte order mark, deeply nested expressions that stopped the whole run, glob expansion in the GitHub Action and annotation paths for single files; each has a regression test. After these changes the 24 bots give the same 129 findings, and one file with a syntax error in its project is now listed as not analysed instead of being skipped silently. This set measures false positives, not missed problems: a finding that the checker cannot see does not show up here. 96 repository tests pass, including 12 for the project check on hand-written code (aiogram, python-telegram-bot, pyTelegramBotAPI, raw HTTP, the project's own models, exclusions, GitHub annotations). CI runs the GitHub Action on a fixture in normal and strict mode.
+
 ## 0.8.0 — 2026-11-10 (Linux)
 
 Bot API schema, call checks and changelog tools, checked against the live Bot API 10.4 page and changelog cached on 2026-11-10.

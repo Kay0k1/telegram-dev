@@ -59,6 +59,7 @@ class HttpTransportTests(unittest.TestCase):
                                 await session.initialize()
                                 listing = await session.list_tools()
                                 self.assertEqual(len(listing.tools), 9)
+                                self.assertNotIn("check_telegram_project", {tool.name for tool in listing.tools})
                                 self.assertTrue(all(tool.annotations.readOnlyHint for tool in listing.tools))
                                 result = await session.call_tool("search_telegram_docs", {"query": "InlineKeyboardButton", "area": "bot-api"})
                                 self.assertFalse(result.isError)

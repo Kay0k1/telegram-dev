@@ -31,6 +31,29 @@ jobs:
       - run: uv sync --frozen --managed-python
       - run: uv run --frozen python --version
       - run: uv run --frozen python -m unittest discover -s tests -v
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the repository's own action on a fixture
+        uses: ./
+        with:
+          path: tests/fixtures/action-bot
+      - name: Strict mode fails on the fixture's warning
+        id: strict
+        continue-on-error: true
+        uses: ./
+        with:
+          path: tests/fixtures/action-bot
+          strict: "true"
+      - run: test "${{ steps.strict.outcome }}" = failure
+      - name: The fixture's warning is the reason
+        run: |
+          set +e
+          uvx --from . telegram-dev check tests/fixtures/action-bot --strict > out.txt
+          code=$?
+          cat out.txt
+          test "$code" = 1 && grep -q "reply_to_message_id\` was retired in Bot API 7.0" out.txt
   container:
     runs-on: ubuntu-latest
     steps:

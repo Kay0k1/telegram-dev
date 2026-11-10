@@ -137,6 +137,7 @@ The tools work without the skill, but the skill is what makes an agent use them 
 | `get_bot_api_definition` | One Bot API method or type as structured data: parameters or fields, types, required flags, allowed values, length limits, and the changelog entries that mention it |
 | `check_bot_api_call` | Checks a request your code sends against the current Bot API schema: unknown methods and parameters (with suggestions), missing required ones, wrong types, values outside the documented list, retired parameters with the version that replaced them |
 | `list_bot_api_changes` | Official Bot API changelog as structured releases, filtered by version (`since_version="9.0"`) or by a method, type or field name |
+| `check_telegram_project` | Checks every Bot API call in a local Python bot project in one run (see [Check a bot project](#check-a-bot-project)); local stdio server only |
 
 ### Checking Bot API calls
 
@@ -156,6 +157,43 @@ uvx telegram-dev sync --max-pages 0
 uvx telegram-dev search "sendVideoNote"
 uvx telegram-dev status
 ```
+
+## Check a bot project
+
+`check_bot_api_call` checks one request. `telegram-dev check` checks every Bot API call in a Python bot — aiogram, python-telegram-bot, pyTelegramBotAPI or raw HTTP requests to api.telegram.org — in one run, and prints only the findings:
+
+```sh
+uvx telegram-dev check ./my-bot
+```
+
+```text
+$ uvx telegram-dev check ./tutorial        # a popular open-source aiogram 3 tutorial
+code/03_buttons/bot.py:79: warning: types.KeyboardButton: `request_user` was retired in Bot API 7.0: Renamed the field request_user in the class KeyboardButton to request_users. The old name will still work for backward compatibility. ...
+code/08_inline_mode/handlers/inline_mode.py:48: warning: inline_query.answer: `switch_pm_text` was retired in Bot API 6.7: ... replacing the parameters switch_pm_text and switch_pm_parameter of the method answerInlineQuery with the parameter button of type InlineQueryResultsButton. ...
+Bot API 10.4; 95 files with bot code; libraries: aiogram ==3.14.0 ==3.7.0 >=3.24.0 ...; 0 errors, 5 warnings
+```
+
+A wrong value is an error, for example `InlineKeyboardButton(text="Delete", style="red")` gives `style: must be one of danger, success, primary`.
+
+Errors are values outside the documented list and unknown methods or parameters in raw API requests. Warnings are parameters Telegram retired (with the version and the changelog entry that replaced them), keyword arguments that are neither Bot API parameters nor known library options, and bot methods with no Bot API counterpart. It reads code without running it, so it does not follow variables or check required parameters. Options: `--json`, `--exclude 'tests/*'`, `--strict` (fail on warnings), `--format github`. In an agent session the same check is the `check_telegram_project` tool (local stdio server only, since it reads files).
+
+On a GitHub repository, run it on every pull request; findings appear as annotations on the changed lines:
+
+```yaml
+# .github/workflows/telegram.yml
+on: [pull_request]
+jobs:
+  bot-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Kay0k1/telegram-dev@v0.9.0
+        with:
+          path: .
+          exclude: "tests/*"
+```
+
+Tried on 24 popular open-source Telegram bots on GitHub (aiogram, python-telegram-bot, pyTelegramBotAPI; November 2026): 12 of them call parameters that Telegram has since retired — 129 findings, mostly `disable_web_page_preview` and `reply_to_message_id` from Bot API 7.0, plus `switch_pm_text`, `thumb_url`, `hide_url`, `correct_option_id` and `request_user` — and one passes `start_parameter` to `createInvoiceLink`, which has no such parameter, so Telegram ignores it. Every finding was read against the source; none was a false positive. Libraries and Telegram still accept many retired names for compatibility, so most are warnings about undocumented behaviour rather than broken bots.
 
 ## What the skill covers
 

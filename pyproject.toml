@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "telegram-dev"
-version = "0.8.0"
+version = "0.9.0"
 description = "Source-grounded Telegram development skills and documentation MCP"
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -15,7 +15,7 @@ dependencies = ["mcp>=1.30,<2", "httpx>=0.28,<1", "beautifulsoup4>=4.13,<5", "ma
 telegram-dev = "telegram_knowledge:main"
 
 [tool.setuptools]
-py-modules = ["telegram_knowledge", "telegram_dev_install", "bot_api_schema"]
+py-modules = ["telegram_knowledge", "telegram_dev_install", "bot_api_schema", "project_check"]
 packages = ["telegram_dev_skill"]
 package-dir = {"telegram_dev_skill" = "skills/telegram-dev"}
 

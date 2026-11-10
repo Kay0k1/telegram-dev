@@ -2,6 +2,19 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.9.0] - 2026-11-11
+
+### Added
+
+- `telegram-dev check [PATH]`: checks every Bot API call in a Python bot project (aiogram, python-telegram-bot, pyTelegramBotAPI, raw HTTP requests to api.telegram.org) against the current official schema in one run and prints only findings. Errors: values outside the documented list, unknown methods or parameters in raw API requests. Warnings: parameters Telegram retired, with the version and changelog entry that replaced them; keyword arguments that are neither Bot API parameters nor known library options; bot methods with no Bot API counterpart. Options `--json`, `--exclude`, `--strict`, `--format github`; exits with 1 on errors.
+- `check_telegram_project` MCP tool with the same check; offered only by the local stdio server because it reads files.
+- GitHub Action (`uses: Kay0k1/telegram-dev@v0.9.0`) that runs the check on a repository and annotates the findings.
+- The skill checks the whole project after changing or reviewing an existing bot.
+
+### Changed
+
+- The "required unless" warning of `check_bot_api_call` says when it is fine to leave the parameter out.
+
 ## [0.8.0] - 2026-11-10
 
 ### Added
@@ -94,6 +107,7 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 - First public release: documentation MCP server with an on-demand local cache, agent skill, project installer for Codex, Claude Code and Cursor, and a Claude Code plugin catalog.
 
+[0.9.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Kay0k1/telegram-dev/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/Kay0k1/telegram-dev/compare/v0.6.0...v0.6.1

@@ -4,7 +4,7 @@ COPY --from=uv /uv /usr/local/bin/uv
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project --no-dev
-COPY telegram_knowledge.py bot_api_schema.py ./
+COPY telegram_knowledge.py bot_api_schema.py project_check.py ./
 RUN groupadd --gid 10001 telegram && useradd --uid 10001 --gid telegram --create-home telegram && mkdir /data && chown telegram:telegram /data
 ENV TELEGRAM_KNOWLEDGE_DB=/data/corpus.sqlite3
 USER telegram

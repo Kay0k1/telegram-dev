@@ -131,6 +131,7 @@ Cursor: [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](htt
 | `get_bot_api_definition` | Один метод или тип Bot API в виде структуры: параметры или поля, типы, обязательность, допустимые значения, ограничения длины и записи changelog, где он упоминается |
 | `check_bot_api_call` | Проверяет запрос, который отправляет ваш код, по текущей схеме Bot API: несуществующие методы и параметры (с подсказками), пропущенные обязательные, неверные типы, значения вне списка из документации, устаревшие параметры с версией, где их заменили |
 | `list_bot_api_changes` | Changelog Bot API в виде структурированных выпусков, с фильтром по версии (`since_version="9.0"`) или по имени метода, типа или поля |
+| `check_telegram_project` | Проверяет за один запуск все вызовы Bot API в локальном Python-проекте бота (см. [Проверка проекта бота](#проверка-проекта-бота)); только у локального сервера stdio |
 
 ### Проверка вызовов Bot API
 
@@ -150,6 +151,43 @@ uvx telegram-dev sync --max-pages 0
 uvx telegram-dev search "sendVideoNote"
 uvx telegram-dev status
 ```
+
+## Проверка проекта бота
+
+`check_bot_api_call` проверяет один запрос. `telegram-dev check` за один запуск проверяет все вызовы Bot API в Python-боте — aiogram, python-telegram-bot, pyTelegramBotAPI или прямые HTTP-запросы к api.telegram.org — и выводит только находки:
+
+```sh
+uvx telegram-dev check ./my-bot
+```
+
+```text
+$ uvx telegram-dev check ./tutorial        # популярный открытый учебник по aiogram 3
+code/03_buttons/bot.py:79: warning: types.KeyboardButton: `request_user` was retired in Bot API 7.0: Renamed the field request_user in the class KeyboardButton to request_users. The old name will still work for backward compatibility. ...
+code/08_inline_mode/handlers/inline_mode.py:48: warning: inline_query.answer: `switch_pm_text` was retired in Bot API 6.7: ... replacing the parameters switch_pm_text and switch_pm_parameter of the method answerInlineQuery with the parameter button of type InlineQueryResultsButton. ...
+Bot API 10.4; 95 files with bot code; libraries: aiogram ==3.14.0 ==3.7.0 >=3.24.0 ...; 0 errors, 5 warnings
+```
+
+Неверное значение — ошибка: например, `InlineKeyboardButton(text="Delete", style="red")` даёт `style: must be one of danger, success, primary`.
+
+Ошибки — значения вне списка из документации и несуществующие методы или параметры в прямых запросах к API. Предупреждения — параметры, которые Telegram убрал (с версией и записью changelog, где их заменили), именованные аргументы, которые не являются ни параметрами Bot API, ни известными опциями библиотек, и методы бота, которых нет в Bot API. Код читается без запуска, поэтому переменные не отслеживаются и обязательность параметров не проверяется. Опции: `--json`, `--exclude 'tests/*'`, `--strict` (падать и на предупреждениях), `--format github`. В сессии агента та же проверка — инструмент `check_telegram_project` (только у локального сервера stdio, потому что он читает файлы).
+
+В репозитории на GitHub её можно запускать на каждый pull request — находки появятся аннотациями на изменённых строках:
+
+```yaml
+# .github/workflows/telegram.yml
+on: [pull_request]
+jobs:
+  bot-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Kay0k1/telegram-dev@v0.9.0
+        with:
+          path: .
+          exclude: "tests/*"
+```
+
+Опробовано на 24 популярных открытых Telegram-ботах с GitHub (aiogram, python-telegram-bot, pyTelegramBotAPI; ноябрь 2026): в 12 из них есть параметры, которые Telegram уже убрал, — 129 находок, в основном `disable_web_page_preview` и `reply_to_message_id` из Bot API 7.0, а также `switch_pm_text`, `thumb_url`, `hide_url`, `correct_option_id` и `request_user`; ещё в одном в `createInvoiceLink` передаётся `start_parameter`, которого у метода нет, и Telegram его молча игнорирует. Каждая находка сверена с исходным кодом, ложных срабатываний не было. Многие убранные имена библиотеки и Telegram пока принимают ради совместимости, так что это в основном предупреждения о недокументированном поведении, а не сломанные боты.
 
 ## Что охватывает скилл
 
