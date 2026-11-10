@@ -18,7 +18,8 @@ class HttpTransportTests(unittest.TestCase):
         from mcp import ClientSession
         from mcp.client.streamable_http import streamable_http_client
 
-        with tempfile.TemporaryDirectory() as folder:
+        # A Windows venv python.exe is a launcher; its child may hold files briefly after exit.
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as folder:
             database = Path(folder) / "http.sqlite3"
             old_db = k.DB
             k.DB = database
@@ -66,6 +67,9 @@ class HttpTransportTests(unittest.TestCase):
                                 self.assertFalse(payload["results"][0]["freshness"]["stale"])
                     asyncio.run(roundtrip())
                 finally:
+                    if os.name == "nt":
+                        # Stop the launcher and the interpreter it started.
+                        subprocess.run(["taskkill", "/F", "/T", "/PID", str(process.pid)], capture_output=True)
                     process.terminate()
                     try:
                         process.wait(timeout=5)
