@@ -1,0 +1,21 @@
+{
+  "task": "bot-api-latest",
+  "config": "baseline",
+  "run": 1,
+  "exit": 0,
+  "seconds": 82.6,
+  "project": "/tmp/tgdev-evals-0vftjfiq/baseline-bot-api-latest-1",
+  "command": [
+    "codex",
+    "exec",
+    "--json",
+    "--skip-git-repo-check",
+    "-s",
+    "read-only",
+    "-C",
+    "/tmp/tgdev-evals-0vftjfiq/baseline-bot-api-latest-1",
+    "-c",
+    "projects={\"/tmp/tgdev-evals-0vftjfiq/baseline-bot-api-latest-1\"={trust_level=\"trusted\"}}",
+    "<prompt>"
+  ]
+}
