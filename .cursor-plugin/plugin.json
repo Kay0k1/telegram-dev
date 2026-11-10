@@ -1,6 +1,6 @@
 {
   "name": "telegram-dev",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Source-verified Telegram and TON development: Bot API, Mini Apps, MTProto, TDLib, TON Connect, Tolk and public releases",
   "author": {"name": "Kay0k1"},
   "license": "MIT",
