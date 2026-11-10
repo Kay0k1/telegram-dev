@@ -1,4 +1,4 @@
-include README.ru.md CHANGELOG.md AGENTS.md server.json uv.lock .mcp.json
+include README.ru.md CHANGELOG.md AGENTS.md server.json glama.json uv.lock .mcp.json
 include Dockerfile .dockerignore
 recursive-include docs *.md
 recursive-include deploy *.yml Caddyfile .env.example .gitkeep
