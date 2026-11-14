@@ -1,8 +1,8 @@
 # Telegram Dev — состояние официальных источников / source status
 
-Проверено / Checked: `2026-11-13T14:42:59.540801+00:00`
+Проверено / Checked: `2026-11-14T13:39:34.329783+00:00`
 
-Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **1** · Без изменений / Unchanged: **60** · Ошибок / Failures: **0**
+Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **2** · Без изменений / Unchanged: **59** · Ошибок / Failures: **0**
 
 Проверяется извлечённый текст официальных страниц. Хэш показывает изменение текста, но не описывает его смысл. Ошибка загрузки не считается обновлением или удалением документа.
 
@@ -66,7 +66,7 @@ Hashes compare extracted official source text; this report does not infer what a
 | [TON Enhancement Proposals (TEPs)](https://raw.githubusercontent.com/ton-blockchain/TEPs/master/README.md) | ton | unchanged |
 | [ton / Changelog.md](https://raw.githubusercontent.com/ton-blockchain/ton/master/Changelog.md) | ton-releases | unchanged |
 | [python-telegram-bot wiki documentation index](https://raw.githubusercontent.com/wiki/python-telegram-bot/python-telegram-bot/_Sidebar.md) | python-telegram-bot | unchanged |
-| [Telegram Applications](https://telegram.org/apps) | telegram-api | unchanged |
+| [Telegram Applications](https://telegram.org/apps) | telegram-api | changed |
 | [Telegram Blog](https://telegram.org/blog) | product-releases | unchanged |
 | [The Evolution of Telegram](https://telegram.org/evolution) | product-releases | unchanged |
 | [Telegram FAQ](https://telegram.org/faq) | telegram-api | unchanged |
