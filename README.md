@@ -1,8 +1,8 @@
 # Telegram Dev — состояние официальных источников / source status
 
-Проверено / Checked: `2026-11-14T13:39:34.329783+00:00`
+Проверено / Checked: `2026-11-15T14:04:55.484189+00:00`
 
-Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **2** · Без изменений / Unchanged: **59** · Ошибок / Failures: **0**
+Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **1** · Без изменений / Unchanged: **60** · Ошибок / Failures: **0**
 
 Проверяется извлечённый текст официальных страниц. Хэш показывает изменение текста, но не описывает его смысл. Ошибка загрузки не считается обновлением или удалением документа.
 
@@ -62,7 +62,7 @@ Hashes compare extracted official source text; this report does not infer what a
 | [Instant View Manual](https://instantview.telegram.org/docs) | web-integrations | unchanged |
 | [CHANGELOG.md](https://raw.githubusercontent.com/tdlib/td/master/CHANGELOG.md) | releases | unchanged |
 | [td_api.tl](https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl) | tdlib | unchanged |
-| [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | changed |
+| [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | unchanged |
 | [TON Enhancement Proposals (TEPs)](https://raw.githubusercontent.com/ton-blockchain/TEPs/master/README.md) | ton | unchanged |
 | [ton / Changelog.md](https://raw.githubusercontent.com/ton-blockchain/ton/master/Changelog.md) | ton-releases | unchanged |
 | [python-telegram-bot wiki documentation index](https://raw.githubusercontent.com/wiki/python-telegram-bot/python-telegram-bot/_Sidebar.md) | python-telegram-bot | unchanged |
