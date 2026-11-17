@@ -1,8 +1,8 @@
 # Telegram Dev — состояние официальных источников / source status
 
-Проверено / Checked: `2026-11-16T16:02:32.368415+00:00`
+Проверено / Checked: `2026-11-17T16:13:36.275731+00:00`
 
-Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **1** · Без изменений / Unchanged: **60** · Ошибок / Failures: **0**
+Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **2** · Без изменений / Unchanged: **59** · Ошибок / Failures: **0**
 
 Проверяется извлечённый текст официальных страниц. Хэш показывает изменение текста, но не описывает его смысл. Ошибка загрузки не считается обновлением или удалением документа.
 
@@ -53,15 +53,15 @@ Hashes compare extracted official source text; this report does not infer what a
 | [Telegram Database Library](https://core.telegram.org/tdlib) | tdlib | unchanged |
 | [TDLib: TDLib](https://core.telegram.org/tdlib/docs/) | tdlib | unchanged |
 | [Telegram Widgets](https://core.telegram.org/widgets) | web-integrations | unchanged |
-| [aiogram 3.32.0 documentation](https://docs.aiogram.dev/en/latest/) | aiogram | changed |
+| [aiogram 3.32.0 documentation](https://docs.aiogram.dev/en/latest/) | aiogram | unchanged |
 | [python-telegram-bot v22.8](https://docs.python-telegram-bot.org/en/stable/) | python-telegram-bot | unchanged |
 | [Docs](https://docs.ton.org/llms.txt) | ton | unchanged |
 | [Changelog](https://docs.ton.org/tolk/changelog) | ton-releases | unchanged |
-| [grammY documentation index](https://grammy.dev/sitemap.xml) | grammy | unchanged |
+| [grammY documentation index](https://grammy.dev/sitemap.xml) | grammy | changed |
 | [Instant View](https://instantview.telegram.org/) | web-integrations | unchanged |
 | [Instant View Manual](https://instantview.telegram.org/docs) | web-integrations | unchanged |
 | [CHANGELOG.md](https://raw.githubusercontent.com/tdlib/td/master/CHANGELOG.md) | releases | unchanged |
-| [td_api.tl](https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl) | tdlib | unchanged |
+| [td_api.tl](https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl) | tdlib | changed |
 | [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | unchanged |
 | [TON Enhancement Proposals (TEPs)](https://raw.githubusercontent.com/ton-blockchain/TEPs/master/README.md) | ton | unchanged |
 | [ton / Changelog.md](https://raw.githubusercontent.com/ton-blockchain/ton/master/Changelog.md) | ton-releases | unchanged |
