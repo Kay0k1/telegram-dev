@@ -1,8 +1,8 @@
 # Telegram Dev — состояние официальных источников / source status
 
-Проверено / Checked: `2026-11-20T15:36:25.459710+00:00`
+Проверено / Checked: `2026-11-21T14:46:43.786266+00:00`
 
-Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **3** · Без изменений / Unchanged: **58** · Ошибок / Failures: **0**
+Источников / Sources: **61** · Новых / New: **0** · Изменившихся / Changed: **0** · Без изменений / Unchanged: **61** · Ошибок / Failures: **0**
 
 Проверяется извлечённый текст официальных страниц. Хэш показывает изменение текста, но не описывает его смысл. Ошибка загрузки не считается обновлением или удалением документа.
 
@@ -53,7 +53,7 @@ Hashes compare extracted official source text; this report does not infer what a
 | [Telegram Database Library](https://core.telegram.org/tdlib) | tdlib | unchanged |
 | [TDLib: TDLib](https://core.telegram.org/tdlib/docs/) | tdlib | unchanged |
 | [Telegram Widgets](https://core.telegram.org/widgets) | web-integrations | unchanged |
-| [aiogram 3.33.0 documentation](https://docs.aiogram.dev/en/latest/) | aiogram | changed |
+| [aiogram 3.33.0 documentation](https://docs.aiogram.dev/en/latest/) | aiogram | unchanged |
 | [python-telegram-bot v22.8](https://docs.python-telegram-bot.org/en/stable/) | python-telegram-bot | unchanged |
 | [Docs](https://docs.ton.org/llms.txt) | ton | unchanged |
 | [Changelog](https://docs.ton.org/tolk/changelog) | ton-releases | unchanged |
@@ -62,11 +62,11 @@ Hashes compare extracted official source text; this report does not infer what a
 | [Instant View Manual](https://instantview.telegram.org/docs) | web-integrations | unchanged |
 | [CHANGELOG.md](https://raw.githubusercontent.com/tdlib/td/master/CHANGELOG.md) | releases | unchanged |
 | [td_api.tl](https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl) | tdlib | unchanged |
-| [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | changed |
+| [changelog.txt](https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/changelog.txt) | releases | unchanged |
 | [TON Enhancement Proposals (TEPs)](https://raw.githubusercontent.com/ton-blockchain/TEPs/master/README.md) | ton | unchanged |
 | [ton / Changelog.md](https://raw.githubusercontent.com/ton-blockchain/ton/master/Changelog.md) | ton-releases | unchanged |
 | [python-telegram-bot wiki documentation index](https://raw.githubusercontent.com/wiki/python-telegram-bot/python-telegram-bot/_Sidebar.md) | python-telegram-bot | unchanged |
-| [Telegram Applications](https://telegram.org/apps) | telegram-api | changed |
+| [Telegram Applications](https://telegram.org/apps) | telegram-api | unchanged |
 | [Telegram Blog](https://telegram.org/blog) | product-releases | unchanged |
 | [The Evolution of Telegram](https://telegram.org/evolution) | product-releases | unchanged |
 | [Telegram FAQ](https://telegram.org/faq) | telegram-api | unchanged |
